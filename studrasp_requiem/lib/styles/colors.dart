@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class AppDarkColors extends AppColors {
-  const AppDarkColors(Color importTaskColor)
+  const AppDarkColors()
       : super(
           separator: const Color(0xFFDEE2F5),
           accentPrimary: const Color(0xFF252837),
@@ -14,7 +14,7 @@ class AppDarkColors extends AppColors {
 }
 
 class AppLightColors extends AppColors {
-  const AppLightColors(Color importTaskColor)
+  const AppLightColors()
       : super(
           separator: const Color(0xFF3C3F51),
           accentPrimary: const Color(0xFFF6F7FF),
@@ -53,7 +53,7 @@ class AppColors extends ThemeExtension<AppColors> {
     Color? disable,
     Color? backgroundPrimary,
     Color? backgroundSecondary,
-    Color? destructive, 
+    Color? destructive,
   }) {
     return AppColors(
       separator: separator ?? this.separator,
@@ -76,12 +76,9 @@ class AppColors extends ThemeExtension<AppColors> {
       accentPrimary: Color.lerp(accentPrimary, other.accentPrimary, t),
       accentSecondary: Color.lerp(accentSecondary, other.accentSecondary, t),
       disable: Color.lerp(disable, other.disable, t),
-      backgroundPrimary:
-          Color.lerp(backgroundPrimary, other.backgroundPrimary, t),
-      backgroundSecondary:
-          Color.lerp(backgroundSecondary, other.backgroundSecondary, t),
-      destructive:
-          Color.lerp(destructive, other.destructive, t),
+      backgroundPrimary: Color.lerp(backgroundPrimary, other.backgroundPrimary, t),
+      backgroundSecondary: Color.lerp(backgroundSecondary, other.backgroundSecondary, t),
+      destructive: Color.lerp(destructive, other.destructive, t),
     );
   }
 }
