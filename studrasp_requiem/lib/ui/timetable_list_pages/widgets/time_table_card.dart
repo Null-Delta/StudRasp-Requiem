@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../../../models/time_table/time_table_model.dart';
+import '../../../models/timetable/timetable_model.dart';
 
 class TimeTableCard extends StatelessWidget {
   const TimeTableCard({Key? key, required this.timeTable, required this.button})
