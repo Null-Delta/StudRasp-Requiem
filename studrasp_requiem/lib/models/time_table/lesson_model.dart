@@ -1,12 +1,19 @@
-class Lesson {
-  String name;
-  String type;
-  String teacher;
-  String audience;
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  bool get isEmpty => name == "";
+part 'lesson_model.freezed.dart';
 
-  Lesson(this.name, this.type, this.teacher, this.audience);
+part 'lesson_model.g.dart';
 
-  factory Lesson.empty() => Lesson("", "", "", "");
+@freezed
+class Lesson with _$Lesson {
+  const Lesson._();
+
+  const factory Lesson({
+    required String name,
+    required String type,
+    required String teacher,
+    required String audience,
+  }) = _Lesson;
+
+  factory Lesson.fromJson(Map<String, Object?> json) => _$LessonFromJson(json);
 }
