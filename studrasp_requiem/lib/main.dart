@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:studrasp_requiem/support/logger.dart';
+import 'support/logger.dart';
 
 import 'support/error_handler.dart';
 import 'ui/my_app.dart';
