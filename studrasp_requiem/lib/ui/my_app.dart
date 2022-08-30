@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'timetable_page/timetable_page.dart';
 
 import '../models/lesson/lesson_model.dart';
 import '../models/time_interval/time_interval_model.dart';
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         extensions: const [AppLightColors()],
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const TimetablePage(),
     );
   }
 }
@@ -44,7 +45,11 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).extension<AppColors>()!;
-    const lesson = Lesson(name: "Дискретная математика", type: "Практика", teacher: "Жук А.С.", audience: "A305");
+    const lesson = Lesson(
+        name: "Дискретная математика",
+        type: "Практика",
+        teacher: "Жук А.С.",
+        audience: "A305");
     final lesson2 = Lesson.empty();
 
     return Scaffold(
@@ -60,7 +65,9 @@ class _MyHomePageState extends State<MyHomePage> {
             children: [
               LessonCard(
                 index: 1,
-                interval: TimeInterval(from: DateTime.now(), to: DateTime.now().add(const Duration(minutes: 10))),
+                interval: TimeInterval(
+                    from: DateTime.now(),
+                    to: DateTime.now().add(const Duration(minutes: 10))),
                 lesson: lesson,
               ),
               const SizedBox(
@@ -68,14 +75,17 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               EmptyLessonCard(
                 index: 2,
-                interval: TimeInterval(from: DateTime.now(), to: DateTime.now().add(const Duration(minutes: 10))),
+                interval: TimeInterval(
+                    from: DateTime.now(),
+                    to: DateTime.now().add(const Duration(minutes: 10))),
               ),
               const SizedBox(
                 height: 12,
               ),
               LessonCard(
                 index: 1,
-                interval: TimeInterval(from: DateTime.now(), to: DateTime.now()),
+                interval:
+                    TimeInterval(from: DateTime.now(), to: DateTime.now()),
                 lesson: lesson,
                 isEditable: true,
               ),
@@ -84,7 +94,8 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               LessonCard(
                 index: 1,
-                interval: TimeInterval(from: DateTime.now(), to: DateTime.now()),
+                interval:
+                    TimeInterval(from: DateTime.now(), to: DateTime.now()),
                 lesson: lesson,
                 showDeadline: true,
               ),
@@ -93,7 +104,8 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               LessonCard(
                 index: 1,
-                interval: TimeInterval(from: DateTime.now(), to: DateTime.now()),
+                interval:
+                    TimeInterval(from: DateTime.now(), to: DateTime.now()),
                 lesson: lesson,
               ),
               const SizedBox(
