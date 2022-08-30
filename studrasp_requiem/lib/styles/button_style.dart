@@ -1,25 +1,17 @@
 import 'package:flutter/material.dart';
 
-class CustomButtonStyle extends ButtonStyle {
-  final Size buttonSize;
+import 'colors.dart';
 
-  const CustomButtonStyle(this.buttonSize);
-
-  @override
-  MaterialStateProperty<double?>? get elevation => MaterialStateProperty.all(0.0);
-
-  @override
-  MaterialStateProperty<Color?>? get backgroundColor => MaterialStateProperty.all(Colors.transparent);
-
-  @override
-  MaterialStateProperty<Size?>? get fixedSize => MaterialStateProperty.all(buttonSize);
-
-  @override
-  MaterialStateProperty<Size?>? get maximumSize => MaterialStateProperty.all(buttonSize);
-
-  @override
-  MaterialStateProperty<Size?>? get minimumSize => MaterialStateProperty.all(buttonSize);
-
-  @override
-  MaterialStateProperty<EdgeInsetsGeometry?>? get padding => MaterialStateProperty.all(EdgeInsets.zero);
-}
+ButtonStyle plainButton(AppColors colors) => ElevatedButton.styleFrom(
+      primary: Colors.transparent,
+      onPrimary: colors.accentPrimary,
+      shadowColor: Colors.transparent,
+      onSurface: colors.backgroundPrimary,
+      surfaceTintColor: colors.backgroundPrimary,
+      elevation: 0,
+      maximumSize: const Size(36, 36),
+      minimumSize: const Size(36, 36),
+      fixedSize: const Size(36, 36),
+      padding: const EdgeInsets.all(0),
+      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(6))),
+    );
