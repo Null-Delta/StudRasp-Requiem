@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-
-import '../models/lesson/lesson_model.dart';
-import '../models/time_interval/time_interval_model.dart';
-import '../styles/colors.dart';
-import '../styles/widget_styles.dart';
-import '../support/date_time_converter.dart';
+import '../../models/lesson/lesson_model.dart';
+import '../../models/time_interval/time_interval_model.dart';
+import '../../styles/colors.dart';
+import '../../styles/fonts.dart';
+import '../../styles/widget_styles.dart';
+import '../../support/date_time_converter.dart';
 
 class LessonCard extends StatelessWidget {
   final int index;
@@ -23,9 +23,7 @@ class LessonCard extends StatelessWidget {
   }) : super(key: key);
 
   Color cardBackground(AppColors colors) {
-    if (lesson.isEmpty) {
-      return colors.backgroundSecondary!;
-    } else if (interval.constains(DateTime.now())) {
+    if (interval.constains(DateTime.now())) {
       return colors.accentPrimary!;
     } else {
       return colors.backgroundPrimary!;
@@ -33,9 +31,7 @@ class LessonCard extends StatelessWidget {
   }
 
   Color cardBorder(AppColors colors) {
-    if (lesson.isEmpty) {
-      return colors.backgroundSecondary!;
-    } else if (interval.constains(DateTime.now())) {
+    if (interval.constains(DateTime.now())) {
       return colors.accentPrimary!;
     } else {
       return colors.separator!;
@@ -53,20 +49,20 @@ class LessonCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).extension<AppColors>()!;
-
+    final textStyles = Theme.of(context).extension<AppTextStyles>()!;
     return DecoratedBox(
       decoration: BoxDecoration(
-          borderRadius: BurderRadiusStyles.large,
-          border: Border.all(color: cardBorder(colors), width: 1),
-          color: cardBackground(colors),
-          boxShadow: [
-            if (!lesson.isEmpty)
-              BoxShadow(
-                color: colors.shadow!,
-                blurRadius: 12,
-                offset: const Offset(0, 4),
-              )
-          ]),
+        borderRadius: BurderRadiusStyles.large,
+        border: Border.all(color: cardBorder(colors), width: 1),
+        color: cardBackground(colors),
+        boxShadow: [
+          BoxShadow(
+            color: colors.shadow!,
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+          )
+        ],
+      ),
       child: Column(
         children: [
           LessonCardTitle(
@@ -75,57 +71,48 @@ class LessonCard extends StatelessWidget {
             isEditable: isEditable,
             showDeadline: showDeadline,
           ),
-          if (!lesson.isEmpty)
-            Padding(
-              padding: const EdgeInsets.only(left: 12, right: 12, bottom: 12),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          lesson.name,
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                            color: lessonTitle(colors),
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        "${lesson.audience} • ${lesson.type}",
-                        maxLines: 1,
+          Padding(
+            padding: const EdgeInsets.only(left: 12, right: 12, bottom: 12),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        lesson.name,
                         textAlign: TextAlign.left,
-                        style: TextStyle(
-                          color: colors.disable,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500,
-                        ),
+                        style: textStyles.subtitle!,
                       ),
-                      const Spacer(),
-                      Text(
-                        lesson.teacher,
-                        maxLines: 1,
-                        textAlign: TextAlign.left,
-                        style: TextStyle(
-                          color: colors.disable,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500,
-                        ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 8,
+                ),
+                Row(
+                  children: [
+                    Text(
+                      "${lesson.audience} • ${lesson.type}",
+                      maxLines: 1,
+                      textAlign: TextAlign.left,
+                      style: textStyles.smallLabel!.copyWith(color: colors.disable),
+                    ),
+                    const Spacer(),
+                    Text(
+                      lesson.teacher,
+                      maxLines: 1,
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                        color: colors.disable,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
                       ),
-                    ],
-                  )
-                ],
-              ),
-            )
+                    ),
+                  ],
+                )
+              ],
+            ),
+          )
         ],
       ),
     );
@@ -147,7 +134,9 @@ class LessonCardTitle extends StatelessWidget {
   }) : super(key: key);
 
   EdgeInsets get titlePadding {
-    return !isEditable ? const EdgeInsets.all(12) : const EdgeInsets.only(left: 12, top: 6, bottom: 6, right: 6);
+    return !isEditable
+        ? const EdgeInsets.only(left: 12, right: 12, top: 12, bottom: 6)
+        : const EdgeInsets.only(left: 12, top: 6, bottom: 0, right: 6);
   }
 
   BoxDecoration indexDecorator(AppColors colors) {
@@ -160,6 +149,7 @@ class LessonCardTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).extension<AppColors>()!;
+    final textStyles = Theme.of(context).extension<AppTextStyles>()!;
 
     return Padding(
       padding: titlePadding,
@@ -172,12 +162,7 @@ class LessonCardTitle extends StatelessWidget {
             decoration: indexDecorator(colors),
             child: Text(
               index.toString(),
-              style: TextStyle(
-                color: colors.accentPrimary!,
-              ).copyWith(
-                fontSize: 12,
-                fontWeight: FontWeight.bold,
-              ),
+              style: textStyles.smallLabel!.copyWith(fontWeight: FontWeight.bold),
             ),
           ),
           const SizedBox(

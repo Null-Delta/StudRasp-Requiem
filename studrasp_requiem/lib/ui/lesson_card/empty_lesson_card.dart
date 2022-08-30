@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../models/time_interval/time_interval_model.dart';
-import '../styles/button_style.dart';
-import '../styles/colors.dart';
-import '../styles/widget_styles.dart';
-import 'lesson_card.dart';
+import '../../models/time_interval/time_interval_model.dart';
+import '../../styles/button_style.dart';
+import '../../styles/colors.dart';
+import '../../styles/fonts.dart';
+import '../../styles/widget_styles.dart';
 
 class EmptyLessonCard extends StatelessWidget {
   final int index;
@@ -19,6 +19,7 @@ class EmptyLessonCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).extension<AppColors>()!;
+    final textStyles = Theme.of(context).extension<AppTextStyles>()!;
 
     return DecoratedBox(
       decoration: BoxDecoration(
@@ -35,7 +36,10 @@ class EmptyLessonCard extends StatelessWidget {
               alignment: Alignment.center,
               child: Text(
                 "1",
-                style: TextStyle(fontSize: 12, color: colors.disable!),
+                style: textStyles.label!.copyWith(
+                  color: colors.disable,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
             const SizedBox(
@@ -43,7 +47,9 @@ class EmptyLessonCard extends StatelessWidget {
             ),
             Text(
               "9:30 - 11:00",
-              style: TextStyle(fontSize: 12, color: colors.disable),
+              style: textStyles.smallLabel!.copyWith(
+                color: colors.disable,
+              ),
             ),
             const Spacer(),
             ElevatedButton(
