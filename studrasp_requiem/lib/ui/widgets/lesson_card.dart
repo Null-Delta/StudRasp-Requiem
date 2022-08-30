@@ -5,7 +5,7 @@ import '../../models/lesson/lesson_model.dart';
 import '../../styles/colors.dart';
 import '../../styles/widget_styles.dart';
 
-final currentLessonInCard = Provider<Lesson>((ref) {
+final currentLessonInCard = Provider.autoDispose<Lesson>((ref) {
   return Lesson.empty();
 });
 
@@ -33,42 +33,91 @@ class _LessonCard extends ConsumerWidget {
     final lesson = ref.read(currentLessonInCard);
     final colors = Theme.of(context).extension<AppColors>()!;
     return Container(
-      padding: const EdgeInsets.all(AppPadding.normal),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
         color: colors.backgroundPrimary,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.2),
-            blurRadius: 10,
-            spreadRadius: 5,
-          ),
-        ],
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const [
-              Text('data'),
-              Text('data'),
-            ],
+      clipBehavior: Clip.antiAlias,
+      child: Material(
+        type: MaterialType.transparency,
+        child: InkWell(
+          onTap: () {},
+          child: Container(
+            padding: const EdgeInsets.all(AppPadding.normal),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: colors.separator!,
+                width: 1.5,
+              ),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const _LessonCardHeader(),
+                const SizedBox(height: AppPadding.small),
+                Text(
+                  lesson.name,
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(height: AppPadding.small),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('${lesson.audience} • ${lesson.type}'),
+                    Text(lesson.teacher),
+                  ],
+                ),
+              ],
+            ),
           ),
-          const SizedBox(height: AppPadding.small),
-          Text(
-            lesson.name,
-          ),
-          const SizedBox(height: AppPadding.small),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text('${lesson.audience} • ${lesson.type}'),
-              Text(lesson.teacher),
-            ],
-          ),
-        ],
+        ),
       ),
+    );
+  }
+}
+
+class _LessonCardHeader extends ConsumerStatefulWidget {
+  const _LessonCardHeader({Key? key}) : super(key: key);
+
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _LessonCardHeaderState();
+}
+
+class _LessonCardHeaderState extends ConsumerState<_LessonCardHeader> {
+  @override
+  Widget build(BuildContext context) {
+    final lesson = ref.read(currentLessonInCard);
+    final colors = Theme.of(context).extension<AppColors>()!;
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Row(
+          children: [
+            Container(
+              height: 24,
+              width: 24,
+              decoration: BoxDecoration(
+                color: colors.accentPrimary,
+                shape: BoxShape.circle,
+              ),
+              child: Center(
+                child: Text(
+                  '1',
+                  style: TextStyle(
+                    color: colors.backgroundPrimary,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(width: AppPadding.small),
+            const Text('9:30 - 11:00'),
+          ],
+        ),
+        const Text('data'),
+      ],
     );
   }
 }

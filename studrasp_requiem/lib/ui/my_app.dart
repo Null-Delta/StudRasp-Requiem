@@ -56,7 +56,8 @@ class _MyHomePageState extends State<MyHomePage> {
               padding: EdgeInsets.all(8.0),
               child: LessonCard(
                 lesson: Lesson(
-                  name: 'Алгебра',
+                  name:
+                      'Функциональное и логическое программирование Функциональное и логическое программирование Функциональное и логическое программирование Функциональное и логическое программирование',
                   type: 'Лекция',
                   teacher: 'Иванов И.И.',
                   audience: '105',
