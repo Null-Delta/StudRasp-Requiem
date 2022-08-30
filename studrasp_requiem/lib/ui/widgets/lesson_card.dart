@@ -43,7 +43,7 @@ class _LessonCard extends ConsumerWidget {
         child: InkWell(
           onTap: () {},
           child: Container(
-            padding: const EdgeInsets.all(AppPadding.normal),
+            padding: const EdgeInsets.all(AppPadding.medium),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),
               border: Border.all(
@@ -65,7 +65,13 @@ class _LessonCard extends ConsumerWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('${lesson.audience} • ${lesson.type}'),
+                    Flexible(
+                      child: Text(
+                        '${lesson.audience} • ${lesson.type}',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
                     Text(lesson.teacher),
                   ],
                 ),

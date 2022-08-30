@@ -1,4 +1,8 @@
+import 'dart:math';
+
 import 'package:freezed_annotation/freezed_annotation.dart';
+
+import 'lesson_constants.dart';
 
 part 'lesson_model.freezed.dart';
 
@@ -26,4 +30,16 @@ class Lesson with _$Lesson {
         teacher: '',
         audience: '',
       );
+
+  factory Lesson.random() {
+    final random = Random();
+
+    return Lesson(
+      name: LessonConstants.names[random.nextInt(LessonConstants.names.length)],
+      type: LessonConstants.types[random.nextInt(LessonConstants.types.length)],
+      teacher: LessonConstants
+          .teachers[random.nextInt(LessonConstants.teachers.length)],
+      audience: random.nextInt(1000).toString(),
+    );
+  }
 }

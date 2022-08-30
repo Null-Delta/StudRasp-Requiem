@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../models/lesson/lesson_model.dart';
 import '../styles/colors.dart';
+import 'timetable_page/timetable_page.dart';
 import 'widgets/lesson_card.dart';
 
 void main() {
@@ -24,49 +25,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         extensions: const [AppLightColors()],
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  @override
-  Widget build(BuildContext context) {
-    final colors = Theme.of(context).extension<AppColors>()!;
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      backgroundColor: colors.backgroundPrimary!,
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
-            Padding(
-              padding: EdgeInsets.all(8.0),
-              child: LessonCard(
-                lesson: Lesson(
-                  name:
-                      'Функциональное и логическое программирование Функциональное и логическое программирование Функциональное и логическое программирование Функциональное и логическое программирование',
-                  type: 'Лекция',
-                  teacher: 'Иванов И.И.',
-                  audience: '105',
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
+      home: const TimetablePage(),
     );
   }
 }

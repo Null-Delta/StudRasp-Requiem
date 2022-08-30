@@ -6,6 +6,7 @@ extension BurderRadiusStyles on BorderRadius {
 }
 
 class AppPadding {
-  static const double normal = 12;
-  static const double small = 12;
+  static const double large = 16;
+  static const double medium = 12;
+  static const double small = 8;
 }
