@@ -7,14 +7,17 @@ import 'support/error_handler.dart';
 import 'ui/my_app.dart';
 
 void main() {
-  runZonedGuarded(() async {
-    // await initFirebase();
+  runZonedGuarded(
+    () async {
+      // await initFirebase();
 
-    initLogger();
-    logger.info('Start main');
+      initLogger();
+      logger.info('Start main');
 
-    ErrorHandler.init();
+      ErrorHandler.init();
 
-    runApp(const MyApp());
-  }, ErrorHandler.recordError);
+      runApp(const MyApp());
+    },
+    ErrorHandler.recordError,
+  );
 }

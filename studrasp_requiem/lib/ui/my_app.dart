@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
+import '../models/lesson/lesson_model.dart';
+import '../models/time_interval/time_interval_model.dart';
 import '../styles/colors.dart';
-import 'day_button.dart';
+import 'empty_lesson_card.dart';
+import 'lesson_card.dart';
 
 void main() {
   runApp(const MyApp());
@@ -41,6 +44,8 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).extension<AppColors>()!;
+    const lesson = Lesson(name: "Дискретная математика", type: "Практика", teacher: "Жук А.С.", audience: "A305");
+    final lesson2 = Lesson.empty();
 
     return Scaffold(
       appBar: AppBar(
@@ -48,41 +53,54 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       backgroundColor: colors.backgroundPrimary!,
       body: Center(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Spacer(),
-            SizedBox(
-              width: 36,
-              height: 48,
-              child: DayButton(
-                style: DayButtonStyle.defalut,
-                time: DateTime.now(),
-                onSelect: () {},
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              LessonCard(
+                index: 1,
+                interval: TimeInterval(from: DateTime.now(), to: DateTime.now().add(const Duration(minutes: 10))),
+                lesson: lesson,
               ),
-            ),
-            const Spacer(),
-            SizedBox(
-              width: 36,
-              height: 48,
-              child: DayButton(
-                style: DayButtonStyle.highlighted,
-                time: DateTime.now(),
-                onSelect: () {},
+              const SizedBox(
+                height: 12,
               ),
-            ),
-            const Spacer(),
-            SizedBox(
-              width: 36,
-              height: 48,
-              child: DayButton(
-                style: DayButtonStyle.selected,
-                time: DateTime.now(),
-                onSelect: () {},
+              EmptyLessonCard(
+                index: 2,
+                interval: TimeInterval(from: DateTime.now(), to: DateTime.now().add(const Duration(minutes: 10))),
               ),
-            ),
-            const Spacer(),
-          ],
+              const SizedBox(
+                height: 12,
+              ),
+              LessonCard(
+                index: 1,
+                interval: TimeInterval(from: DateTime.now(), to: DateTime.now()),
+                lesson: lesson,
+                isEditable: true,
+              ),
+              const SizedBox(
+                height: 12,
+              ),
+              LessonCard(
+                index: 1,
+                interval: TimeInterval(from: DateTime.now(), to: DateTime.now()),
+                lesson: lesson,
+                showDeadline: true,
+              ),
+              const SizedBox(
+                height: 12,
+              ),
+              LessonCard(
+                index: 1,
+                interval: TimeInterval(from: DateTime.now(), to: DateTime.now()),
+                lesson: lesson,
+              ),
+              const SizedBox(
+                height: 12,
+              ),
+            ],
+          ),
         ),
       ),
     );

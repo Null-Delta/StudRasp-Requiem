@@ -16,4 +16,8 @@ class Lesson with _$Lesson {
   }) = _Lesson;
 
   factory Lesson.fromJson(Map<String, Object?> json) => _$LessonFromJson(json);
+
+  factory Lesson.empty() => const Lesson(name: "", type: "", teacher: "", audience: "");
+
+  bool get isEmpty => name.isEmpty;
 }

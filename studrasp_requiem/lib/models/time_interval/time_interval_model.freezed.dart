@@ -25,14 +25,12 @@ mixin _$TimeInterval {
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $TimeIntervalCopyWith<TimeInterval> get copyWith =>
-      throw _privateConstructorUsedError;
+  $TimeIntervalCopyWith<TimeInterval> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class $TimeIntervalCopyWith<$Res> {
-  factory $TimeIntervalCopyWith(
-          TimeInterval value, $Res Function(TimeInterval) then) =
+  factory $TimeIntervalCopyWith(TimeInterval value, $Res Function(TimeInterval) then) =
       _$TimeIntervalCopyWithImpl<$Res>;
   $Res call({DateTime from, DateTime to});
 }
@@ -64,21 +62,17 @@ class _$TimeIntervalCopyWithImpl<$Res> implements $TimeIntervalCopyWith<$Res> {
 }
 
 /// @nodoc
-abstract class _$$_TimeIntervalCopyWith<$Res>
-    implements $TimeIntervalCopyWith<$Res> {
-  factory _$$_TimeIntervalCopyWith(
-          _$_TimeInterval value, $Res Function(_$_TimeInterval) then) =
+abstract class _$$_TimeIntervalCopyWith<$Res> implements $TimeIntervalCopyWith<$Res> {
+  factory _$$_TimeIntervalCopyWith(_$_TimeInterval value, $Res Function(_$_TimeInterval) then) =
       __$$_TimeIntervalCopyWithImpl<$Res>;
   @override
   $Res call({DateTime from, DateTime to});
 }
 
 /// @nodoc
-class __$$_TimeIntervalCopyWithImpl<$Res>
-    extends _$TimeIntervalCopyWithImpl<$Res>
+class __$$_TimeIntervalCopyWithImpl<$Res> extends _$TimeIntervalCopyWithImpl<$Res>
     implements _$$_TimeIntervalCopyWith<$Res> {
-  __$$_TimeIntervalCopyWithImpl(
-      _$_TimeInterval _value, $Res Function(_$_TimeInterval) _then)
+  __$$_TimeIntervalCopyWithImpl(_$_TimeInterval _value, $Res Function(_$_TimeInterval) _then)
       : super(_value, (v) => _then(v as _$_TimeInterval));
 
   @override
@@ -104,11 +98,10 @@ class __$$_TimeIntervalCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_TimeInterval implements _TimeInterval {
-  const _$_TimeInterval({required this.from, required this.to});
+class _$_TimeInterval extends _TimeInterval {
+  const _$_TimeInterval({required this.from, required this.to}) : super._();
 
-  factory _$_TimeInterval.fromJson(Map<String, dynamic> json) =>
-      _$$_TimeIntervalFromJson(json);
+  factory _$_TimeInterval.fromJson(Map<String, dynamic> json) => _$$_TimeIntervalFromJson(json);
 
   @override
   final DateTime from;
@@ -131,10 +124,8 @@ class _$_TimeInterval implements _TimeInterval {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(from),
-      const DeepCollectionEquality().hash(to));
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(from), const DeepCollectionEquality().hash(to));
 
   @JsonKey(ignore: true)
   @override
@@ -149,13 +140,11 @@ class _$_TimeInterval implements _TimeInterval {
   }
 }
 
-abstract class _TimeInterval implements TimeInterval {
-  const factory _TimeInterval(
-      {required final DateTime from,
-      required final DateTime to}) = _$_TimeInterval;
+abstract class _TimeInterval extends TimeInterval {
+  const factory _TimeInterval({required final DateTime from, required final DateTime to}) = _$_TimeInterval;
+  const _TimeInterval._() : super._();
 
-  factory _TimeInterval.fromJson(Map<String, dynamic> json) =
-      _$_TimeInterval.fromJson;
+  factory _TimeInterval.fromJson(Map<String, dynamic> json) = _$_TimeInterval.fromJson;
 
   @override
   DateTime get from;
@@ -163,6 +152,5 @@ abstract class _TimeInterval implements TimeInterval {
   DateTime get to;
   @override
   @JsonKey(ignore: true)
-  _$$_TimeIntervalCopyWith<_$_TimeInterval> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$_TimeIntervalCopyWith<_$_TimeInterval> get copyWith => throw _privateConstructorUsedError;
 }

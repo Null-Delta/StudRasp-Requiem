@@ -10,6 +10,12 @@ class TimeInterval with _$TimeInterval {
     required DateTime to,
   }) = _TimeInterval;
 
-  factory TimeInterval.fromJson(Map<String, dynamic> json) =>
-      _$TimeIntervalFromJson(json);
+  const TimeInterval._();
+
+  factory TimeInterval.fromJson(Map<String, dynamic> json) => _$TimeIntervalFromJson(json);
+
+  bool constains(DateTime time) {
+    return time.millisecondsSinceEpoch >= from.millisecondsSinceEpoch &&
+        time.millisecondsSinceEpoch < to.millisecondsSinceEpoch;
+  }
 }
