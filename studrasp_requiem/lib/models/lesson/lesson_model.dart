@@ -8,6 +8,9 @@ part 'lesson_model.g.dart';
 class Lesson with _$Lesson {
   const Lesson._();
 
+  bool get isEmpty =>
+      name == '' && type == '' && teacher == '' && audience == '';
+
   const factory Lesson({
     required String name,
     required String type,
@@ -16,4 +19,11 @@ class Lesson with _$Lesson {
   }) = _Lesson;
 
   factory Lesson.fromJson(Map<String, Object?> json) => _$LessonFromJson(json);
+
+  factory Lesson.empty() => const Lesson(
+        name: '',
+        type: '',
+        teacher: '',
+        audience: '',
+      );
 }

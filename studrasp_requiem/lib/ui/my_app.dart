@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../models/lesson/lesson_model.dart';
 import '../styles/colors.dart';
-import 'day_button.dart';
+import 'widgets/lesson_card.dart';
 
 void main() {
   runApp(const MyApp());
@@ -48,40 +49,20 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       backgroundColor: colors.backgroundPrimary!,
       body: Center(
-        child: Row(
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Spacer(),
-            SizedBox(
-              width: 36,
-              height: 48,
-              child: DayButton(
-                style: DayButtonStyle.defalut,
-                time: DateTime.now(),
-                onSelect: () {},
+          children: const [
+            Padding(
+              padding: EdgeInsets.all(8.0),
+              child: LessonCard(
+                lesson: Lesson(
+                  name: 'Алгебра',
+                  type: 'Лекция',
+                  teacher: 'Иванов И.И.',
+                  audience: '105',
+                ),
               ),
             ),
-            const Spacer(),
-            SizedBox(
-              width: 36,
-              height: 48,
-              child: DayButton(
-                style: DayButtonStyle.highlighted,
-                time: DateTime.now(),
-                onSelect: () {},
-              ),
-            ),
-            const Spacer(),
-            SizedBox(
-              width: 36,
-              height: 48,
-              child: DayButton(
-                style: DayButtonStyle.selected,
-                time: DateTime.now(),
-                onSelect: () {},
-              ),
-            ),
-            const Spacer(),
           ],
         ),
       ),
