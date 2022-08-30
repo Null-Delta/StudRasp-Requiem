@@ -1,4 +1,4 @@
-import 'lesson_model.dart';
+import '../lesson/lesson_model.dart';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 

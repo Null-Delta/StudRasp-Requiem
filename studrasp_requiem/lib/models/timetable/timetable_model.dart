@@ -1,8 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../user_model.dart';
-
-import 'day_model.dart';
+import '../day/day_model.dart';
+import '../user/user_model.dart';
 
 part 'timetable_model.freezed.dart';
 part 'timetable_model.g.dart';

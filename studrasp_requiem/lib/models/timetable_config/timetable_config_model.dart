@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import 'time_interval_model.dart';
+import '../time_interval/time_interval_model.dart';
 
 part 'timetable_config_model.freezed.dart';
 part 'timetable_config_model.g.dart';
