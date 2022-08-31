@@ -15,6 +15,6 @@ class Day with _$Day {
 
   factory Day.fromJson(Map<String, dynamic> json) => _$DayFromJson(json);
 
-  static Day empty() =>
+  factory Day.empty() =>
       Day(lessons: [for (int i = 0; i < 8; i++) Lesson.empty()]);
 }

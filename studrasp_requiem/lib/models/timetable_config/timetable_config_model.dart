@@ -18,7 +18,7 @@ class TimetableConfig with _$TimetableConfig {
   factory TimetableConfig.fromJson(Map<String, dynamic> json) =>
       _$TimetableConfigFromJson(json);
 
-  static TimetableConfig empty() => TimetableConfig(
+  factory TimetableConfig.empty() => TimetableConfig(
         timeIntervals: [
           for (int i = 0; i < 8; i++)
             TimeInterval(
