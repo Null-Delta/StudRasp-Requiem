@@ -28,7 +28,7 @@ class EmptyLessonCard extends StatelessWidget {
         borderRadius: BurderRadiusStyles.large,
       ),
       child: Padding(
-        padding: const EdgeInsets.only(left: 12, right: 0, top: 6, bottom: 6),
+        padding: const EdgeInsets.only(left: 12, right: 6, top: 6, bottom: 6),
         child: LessonHeader(
           index: index,
           interval: interval,
