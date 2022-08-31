@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../../models/time_interval/time_interval_model.dart';
-import '../../styles/button_style.dart';
-import '../../styles/colors.dart';
-import '../../styles/widget_styles.dart';
-import 'lesson_header.dart';
+import '../../../models/time_interval/time_interval_model.dart';
+import '../../../styles/button_style.dart';
+import '../../../styles/colors.dart';
+import '../../../styles/widget_styles.dart';
+import '../lesson_header.dart';
 
 class EmptyLessonCard extends StatelessWidget {
   final int index;
@@ -28,7 +28,7 @@ class EmptyLessonCard extends StatelessWidget {
         borderRadius: BurderRadiusStyles.large,
       ),
       child: Padding(
-        padding: const EdgeInsets.only(left: 12, right: 6, top: 6, bottom: 6),
+        padding: const EdgeInsets.only(left: 12, right: 0, top: 6, bottom: 6),
         child: LessonHeader(
           index: index,
           interval: interval,
