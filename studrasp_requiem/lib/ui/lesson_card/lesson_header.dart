@@ -4,7 +4,6 @@ import '../../models/time_interval/time_interval_model.dart';
 import '../../styles/colors.dart';
 import '../../styles/fonts.dart';
 import '../../styles/widget_styles.dart';
-import '../../support/date_time_converter.dart';
 
 class LessonHeader extends StatelessWidget {
   final int index;
@@ -42,7 +41,7 @@ class LessonHeader extends StatelessWidget {
           width: 8,
         ),
         Text(
-          "${interval.from.inHours}:${interval.from.inMinutes} - ${interval.to.inHours}:${interval.to.inMinutes}",
+          "${interval.from.inHours}:${interval.from.inMinutes % 60 >= 10 ? (interval.from.inMinutes % 60).toString() : '${interval.from.inMinutes % 60}0'} - ${interval.to.inHours}:${interval.to.inMinutes % 60 >= 10 ? (interval.to.inMinutes % 60).toString() : '${interval.to.inMinutes % 60}0'}",
           style: TextStyle(
             color: colors.disable,
           ).copyWith(

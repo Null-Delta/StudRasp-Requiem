@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../../gen/assets.gen.dart';
 import '../../styles/colors.dart';
 import '../../styles/fonts.dart';
 import 'widgets/lesson_part_input.dart';
@@ -32,7 +33,7 @@ class LessonEditorPage extends StatelessWidget {
                   // переход назад
                 },
                 icon: SvgPicture.asset(
-                  'assets/images/circle_chevron_left.svg',
+                  Assets.images.circleChevronLeft.path,
                   color: colors.accentPrimary,
                   fit: BoxFit.cover,
                 ),
