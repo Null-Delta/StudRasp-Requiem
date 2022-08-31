@@ -1,9 +1,13 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../models/lesson/lesson_model.dart';
 import '../../models/time_interval/time_interval_model.dart';
-import '../lesson_card.dart';
+import '../../styles/colors.dart';
+import '../lesson_card/empty_lesson_card.dart';
+import '../lesson_card/lesson_card.dart';
 
 class TimetablePage extends ConsumerStatefulWidget {
   const TimetablePage({Key? key}) : super(key: key);
@@ -15,20 +19,44 @@ class TimetablePage extends ConsumerStatefulWidget {
 class _TimetablePageState extends ConsumerState<TimetablePage> {
   @override
   Widget build(BuildContext context) {
+    final colors = Theme.of(context).extension<AppColors>()!;
+
     return Scaffold(
-      body: ListView.builder(
+      backgroundColor: colors.backgroundPrimary!,
+      body: ListView.separated(
         physics: const BouncingScrollPhysics(),
         padding: const EdgeInsets.all(16),
         itemCount: 50,
-        itemBuilder: (context, index) {
-          return Padding(
-            padding: const EdgeInsets.only(bottom: 12),
-            child: LessonCard(
-              index: 1,
-              lesson: Lesson.random(),
-              interval: TimeInterval(from: DateTime.now(), to: DateTime.now()),
-            ),
+        separatorBuilder: (context, index) {
+          return const SizedBox(
+            height: 12,
           );
+        },
+        itemBuilder: (context, index) {
+          if (Random().nextInt(100) % 2 == 0) {
+            return EmptyLessonCard(
+              index: index % 10,
+              interval: TimeInterval(
+                from: DateTime.now(),
+                to: DateTime.now().add(
+                  Duration(minutes: Random().nextInt(100) % 2 == 0 ? 1 : 0),
+                ),
+              ),
+              onTap: () {},
+            );
+          } else {
+            return LessonCard(
+              index: index % 10,
+              lesson: Lesson.random(),
+              interval: TimeInterval(
+                from: DateTime.now(),
+                to: DateTime.now().add(
+                  Duration(minutes: Random().nextInt(100) % 2 == 0 ? 1 : 0),
+                ),
+              ),
+              isEditable: Random().nextInt(100) % 2 == 0,
+            );
+          }
         },
       ),
     );
