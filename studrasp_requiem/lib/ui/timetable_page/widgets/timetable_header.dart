@@ -57,7 +57,9 @@ class TimetableHeader extends ConsumerWidget with PreferredSizeWidget {
               ],
             ),
           ),
-          const WeekTimeline(),
+          const WeekTimeline(
+            weekCount: 1,
+          ),
         ],
       ),
     );

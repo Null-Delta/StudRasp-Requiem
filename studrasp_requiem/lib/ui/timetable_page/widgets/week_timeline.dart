@@ -5,19 +5,22 @@ import '../../../providers/providers.dart';
 import '../../day_button.dart';
 
 class WeekTimeline extends ConsumerWidget {
-  const WeekTimeline({Key? key}) : super(key: key);
+  const WeekTimeline({Key? key, this.weekCount}) : super(key: key);
 
-  static const initialPage = 1000;
+  final int? weekCount;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final weekDay = ref.watch(currentDate).weekday - 1;
+
+    final initialPage = weekCount != null ? 0 : 1000;
 
     return Expanded(
       child: PageView.builder(
         controller: PageController(
           initialPage: initialPage,
         ),
+        itemCount: weekCount,
         itemBuilder: (BuildContext context, int index) {
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12),
