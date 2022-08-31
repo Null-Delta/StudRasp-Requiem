@@ -6,8 +6,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../models/lesson/lesson_model.dart';
 import '../../models/time_interval/time_interval_model.dart';
 import '../../styles/colors.dart';
+import '../../styles/fonts.dart';
 import '../lesson_card/empty_lesson_card.dart';
 import '../lesson_card/lesson_card.dart';
+import 'widgets/timetable_header.dart';
 
 class TimetablePage extends ConsumerStatefulWidget {
   const TimetablePage({Key? key}) : super(key: key);
@@ -20,11 +22,10 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).extension<AppColors>()!;
+    final textStyles = Theme.of(context).extension<AppTextStyles>()!;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Timetable'),
-      ),
+      appBar: const TimetableHeader(),
       backgroundColor: colors.backgroundPrimary!,
       body: ListView.separated(
         physics: const BouncingScrollPhysics(),
