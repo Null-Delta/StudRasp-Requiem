@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import '../../models/time_interval/time_interval_model.dart';
 import '../../styles/build_context_extension.dart';
 import '../../styles/button_style.dart';
-import '../../styles/colors.dart';
-import '../../styles/fonts.dart';
 import '../../support/date_time_converter.dart';
 
 class LessonIntervalPicker extends StatelessWidget {
@@ -20,7 +18,6 @@ class LessonIntervalPicker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
-    ;
     final textStyles = context.textStyles;
 
     return Padding(

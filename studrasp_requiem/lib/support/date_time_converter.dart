@@ -1,5 +1,5 @@
-extension DateTimeConverter on DateTime {
+extension DurationConverter on Duration {
   String get stringTime {
-    return "${hour < 10 ? "0" : ""}$hour:${minute < 10 ? "0" : ""}$minute";
+    return "${inHours < 10 ? "0" : ""}$inHours:${inMinutes % 60 < 10 ? "0" : ""}${inMinutes % 60}";
   }
 }
