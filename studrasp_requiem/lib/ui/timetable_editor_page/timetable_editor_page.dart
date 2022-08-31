@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../../gen/assets.gen.dart';
 import '../../models/time_interval/time_interval_model.dart';
 import '../../models/timetable/timetable_model.dart';
 import '../../styles/colors.dart';
@@ -42,7 +43,7 @@ class TimetableEditorPage extends StatelessWidget {
                       // переход назад
                     },
                     icon: SvgPicture.asset(
-                      'assets/images/circle_chevron_left.svg',
+                      Assets.images.circleChevronLeft.path,
                       color: colors.accentPrimary,
                       fit: BoxFit.cover,
                     ),
@@ -62,9 +63,8 @@ class TimetableEditorPage extends StatelessWidget {
                       // переход назад
                     },
                     icon: SvgPicture.asset(
-                      'assets/images/command.svg',
+                      Assets.images.settings.path,
                       color: colors.accentPrimary,
-                      fit: BoxFit.cover,
                     ),
                   ),
                 ),
@@ -97,9 +97,9 @@ class TimetableEditorPage extends StatelessWidget {
                 const Spacer(),
                 Text(
                   // высчитывать день?
-                  timeTable.config.lessonTypes[0],
+                  timeTable.config.weekTypes[0],
                   style: textStyles.label!.copyWith(
-                    color: colors.disable,
+                    color: colors.accentPrimary,
                   ),
                 ),
               ],
@@ -131,7 +131,9 @@ class TimetableEditorPage extends StatelessWidget {
                         from: timeTable.config.timeIntervals[index].from,
                         to: timeTable.config.timeIntervals[index].to,
                       ),
-                      onTap: () {},
+                      onTap: () {
+                        //переход в редактор пары
+                      },
                     );
                   } else {
                     return EditableLessonCard(
