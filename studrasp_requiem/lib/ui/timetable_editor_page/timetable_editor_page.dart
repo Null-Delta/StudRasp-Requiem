@@ -7,7 +7,7 @@ import '../../styles/colors.dart';
 import '../../styles/fonts.dart';
 import '../lesson_card/card_styles/editable_lesson_card.dart';
 import '../lesson_card/card_styles/empty_lesson_card.dart';
-import '../popup_menu_action.dart';
+import '../widgets/popup_menu_action.dart';
 
 class TimetableEditorPage extends StatelessWidget {
   TimetableEditorPage({Key? key, Timetable? editingTimetable})

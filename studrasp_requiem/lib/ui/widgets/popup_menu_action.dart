@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../styles/button_style.dart';
-import '../styles/colors.dart';
-import '../styles/fonts.dart';
+import '../../styles/colors.dart';
+import '../../styles/fonts.dart';
 
 enum PopupMenuActionStyle { normal, destructive }
 
@@ -33,7 +32,9 @@ class PopupMenuAction extends StatelessWidget {
           Text(
             text,
             style: textStyles.label!.copyWith(
-              color: style == PopupMenuActionStyle.destructive ? colors.destructive : colors.accentPrimary,
+              color: style == PopupMenuActionStyle.destructive
+                  ? colors.destructive
+                  : colors.accentPrimary,
             ),
           ),
           const Spacer(),
@@ -43,7 +44,9 @@ class PopupMenuAction extends StatelessWidget {
             child: Icon(
               icon.icon,
               size: 20,
-              color: style == PopupMenuActionStyle.destructive ? colors.destructive : colors.accentPrimary,
+              color: style == PopupMenuActionStyle.destructive
+                  ? colors.destructive
+                  : colors.accentPrimary,
             ),
           ),
         ],

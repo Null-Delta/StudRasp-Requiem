@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../styles/colors.dart';
 import '../../../styles/fonts.dart';
-import 'week_timeline.dart';
+import '../../widgets/week_timeline.dart';
 
 class TimetableHeader extends ConsumerWidget with PreferredSizeWidget {
   const TimetableHeader({Key? key}) : super(key: key);
@@ -57,9 +57,7 @@ class TimetableHeader extends ConsumerWidget with PreferredSizeWidget {
               ],
             ),
           ),
-          const WeekTimeline(
-            weekCount: 1,
-          ),
+          const WeekTimeline(),
         ],
       ),
     );

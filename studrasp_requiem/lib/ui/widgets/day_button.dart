@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
-import '../providers/providers.dart';
-import '../styles/colors.dart';
-import '../styles/widget_styles.dart';
+import '../../providers/providers.dart';
+import '../../styles/colors.dart';
+import '../../styles/widget_styles.dart';
 
 enum DayButtonStyle { defalut, highlighted, selected }
 

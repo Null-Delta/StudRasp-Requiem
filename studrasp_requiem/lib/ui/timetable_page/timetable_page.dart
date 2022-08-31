@@ -11,7 +11,7 @@ import '../../models/time_interval/time_interval_model.dart';
 import '../../styles/colors.dart';
 import '../../styles/fonts.dart';
 import '../lesson_card/card_styles/empty_lesson_card.dart';
-import '../popup_menu_action.dart';
+import '../widgets/popup_menu_action.dart';
 
 class TimetablePage extends ConsumerStatefulWidget {
   const TimetablePage({Key? key}) : super(key: key);
@@ -54,12 +54,14 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
               index: index % 10,
               lesson: Lesson.random(),
               interval: TimeInterval(
-                  from: Duration(hours: index), to: Duration(hours: index + 1)),
+                from: Duration(hours: index),
+                to: Duration(hours: index + 1),
+              ),
             );
           } else {
             return EditableLessonCard(
               index: index % 10,
-              interval: TimeInterval(from: Duration(), to: Duration()),
+              interval: const TimeInterval(from: Duration(), to: Duration()),
               lesson: Lesson.random(),
               actions: [
                 PopupMenuAction(

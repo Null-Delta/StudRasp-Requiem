@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../providers/providers.dart';
-import '../../day_button.dart';
+import '../../providers/providers.dart';
+import 'day_button.dart';
 
 class WeekTimeline extends ConsumerWidget {
   const WeekTimeline({Key? key, this.weekCount}) : super(key: key);
