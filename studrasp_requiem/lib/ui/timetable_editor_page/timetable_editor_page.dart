@@ -82,79 +82,89 @@ class TimetableEditorPage extends StatelessWidget {
             color: colors.separator,
           ),
           Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
+            padding: const EdgeInsets.only(
+              left: 16.0,
+              right: 16,
+            ),
+            child: Row(
               children: [
-                Row(
-                  children: [
-                    Text(
-                      'Неделя',
-                      style: textStyles.label!.copyWith(
-                        color: colors.disable,
-                      ),
-                    ),
-                    const Spacer(),
-                    Text(
-                      '',
-                      style: textStyles.label!.copyWith(
-                        color: colors.disable,
-                      ),
-                    ),
-                  ],
+                Text(
+                  'Неделя',
+                  style: textStyles.label!.copyWith(
+                    color: colors.disable,
+                  ),
                 ),
-                Expanded(
-                  child: ListView.separated(
-                    physics: const BouncingScrollPhysics(),
-                    itemCount: timeTable.days[0].lessons.length,
-                    separatorBuilder: (context, index) {
-                      return const SizedBox(
-                        height: 12,
-                      );
-                    },
-                    itemBuilder: (context, index) {
-                      if (timeTable.days[0].lessons[index].isEmpty) {
-                        return EmptyLessonCard(
-                          index: index,
-                          // взять из заданного времени
-                          interval: TimeInterval(
-                            from: timeTable.config.timeIntervals[index].from,
-                            to: timeTable.config.timeIntervals[index].to,
-                          ),
-                          onTap: () {},
-                        );
-                      } else {
-                        return EditableLessonCard(
-                          index: index,
-                          // взять из заданного времени
-                          interval: TimeInterval(
-                              from: timeTable.config.timeIntervals[index].from,
-                              to: timeTable.config.timeIntervals[index].to),
-                          lesson: timeTable.days[0].lessons[index],
-                          actions: [
-                            // реализовать действия
-                            PopupMenuAction(
-                              text: "Изменить",
-                              icon: const Icon(Icons.edit),
-                              action: () {},
-                            ),
-                            PopupMenuAction(
-                              text: "Копировать пару",
-                              icon: const Icon(Icons.copy),
-                              action: () {},
-                            ),
-                            PopupMenuAction(
-                              text: "Удалить",
-                              icon: const Icon(Icons.delete),
-                              action: () {},
-                              style: PopupMenuActionStyle.destructive,
-                            ),
-                          ],
-                        );
-                      }
-                    },
+                const Spacer(),
+                Text(
+                  // высчитывать день?
+                  timeTable.config.lessonTypes[0],
+                  style: textStyles.label!.copyWith(
+                    color: colors.disable,
                   ),
                 ),
               ],
+            ),
+          ),
+          const SizedBox(
+            height: 12,
+          ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.only(
+                left: 16,
+                right: 16,
+              ),
+              child: ListView.separated(
+                physics: const BouncingScrollPhysics(),
+                itemCount: timeTable.days[0].lessons.length,
+                separatorBuilder: (context, index) {
+                  return const SizedBox(
+                    height: 12,
+                  );
+                },
+                itemBuilder: (context, index) {
+                  if (timeTable.days[0].lessons[index].isEmpty) {
+                    return EmptyLessonCard(
+                      index: index,
+                      // взять из заданного времени
+                      interval: TimeInterval(
+                        from: timeTable.config.timeIntervals[index].from,
+                        to: timeTable.config.timeIntervals[index].to,
+                      ),
+                      onTap: () {},
+                    );
+                  } else {
+                    return EditableLessonCard(
+                      index: index,
+                      // взять из заданного времени
+                      interval: TimeInterval(
+                        from: timeTable.config.timeIntervals[index].from,
+                        to: timeTable.config.timeIntervals[index].to,
+                      ),
+                      lesson: timeTable.days[0].lessons[index],
+                      actions: [
+                        // реализовать действия
+                        PopupMenuAction(
+                          text: "Изменить",
+                          icon: const Icon(Icons.edit),
+                          action: () {},
+                        ),
+                        PopupMenuAction(
+                          text: "Копировать пару",
+                          icon: const Icon(Icons.copy),
+                          action: () {},
+                        ),
+                        PopupMenuAction(
+                          text: "Удалить",
+                          icon: const Icon(Icons.delete),
+                          action: () {},
+                          style: PopupMenuActionStyle.destructive,
+                        ),
+                      ],
+                    );
+                  }
+                },
+              ),
             ),
           ),
         ],
