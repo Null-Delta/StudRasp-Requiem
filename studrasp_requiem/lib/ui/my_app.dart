@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '../styles/fonts.dart';
 import 'timetable_list_pages/tima_table_list_page.dart';
+import 'lesson_editor_page/lesson_editor_page.dart';
 import 'timetable_page/timetable_page.dart';
 import '../styles/colors.dart';
 
