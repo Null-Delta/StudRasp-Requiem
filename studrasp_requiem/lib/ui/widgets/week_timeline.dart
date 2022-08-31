@@ -15,7 +15,8 @@ class WeekTimeline extends ConsumerWidget {
 
     final initialPage = weekCount != null ? 0 : 1000;
 
-    return Expanded(
+    return SizedBox(
+      height: 64,
       child: PageView.builder(
         controller: PageController(
           initialPage: initialPage,

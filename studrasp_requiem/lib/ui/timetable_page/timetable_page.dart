@@ -2,9 +2,10 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../providers/providers.dart';
 import '../lesson_card/card_styles/default_lesson_card.dart';
 import '../lesson_card/card_styles/editable_lesson_card.dart';
-import 'widgets/timetable_header.dart';
+import '../widgets/week_timeline.dart';
 
 import '../../models/lesson/lesson_model.dart';
 import '../../models/time_interval/time_interval_model.dart';
@@ -27,63 +28,100 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
     final textStyles = Theme.of(context).extension<AppTextStyles>()!;
 
     return Scaffold(
-      appBar: const TimetableHeader(),
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.calendar_month_outlined),
+          splashRadius: 25,
+          onPressed: () {},
+        ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.list_alt),
+            splashRadius: 25,
+            onPressed: () {},
+          ),
+          IconButton(
+            icon: const Icon(Icons.search),
+            splashRadius: 25,
+            onPressed: () {},
+          ),
+        ],
+      ),
       backgroundColor: colors.backgroundPrimary!,
-      body: ListView.separated(
-        physics: const BouncingScrollPhysics(),
-        padding: const EdgeInsets.all(16),
-        itemCount: 50,
-        separatorBuilder: (context, index) {
-          return const SizedBox(
-            height: 12,
-          );
-        },
-        itemBuilder: (context, index) {
-          final type = Random().nextInt(100) % 3;
-          if (type == 0) {
-            return EmptyLessonCard(
-              index: index % 10,
-              interval: TimeInterval(
-                from: Duration(hours: index),
-                to: Duration(hours: index + 1),
-              ),
-              onTap: () {},
-            );
-          } else if (type == 1) {
-            return LessonCard(
-              index: index % 10,
-              lesson: Lesson.random(),
-              interval: TimeInterval(
-                from: Duration(hours: index),
-                to: Duration(hours: index + 1),
-              ),
-            );
-          } else {
-            return EditableLessonCard(
-              index: index % 10,
-              interval: const TimeInterval(from: Duration(), to: Duration()),
-              lesson: Lesson.random(),
-              actions: [
-                PopupMenuAction(
-                  text: "Изменить",
-                  icon: const Icon(Icons.edit),
-                  action: () {},
-                ),
-                PopupMenuAction(
-                  text: "Копировать пару",
-                  icon: const Icon(Icons.copy),
-                  action: () {},
-                ),
-                PopupMenuAction(
-                  text: "Удалить",
-                  icon: const Icon(Icons.delete),
-                  action: () {},
-                  style: PopupMenuActionStyle.destructive,
-                ),
-              ],
-            );
-          }
-        },
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Text(
+              ref.watch(currentTimetable.select((value) => value.name)),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: textStyles.largeTitle,
+              textAlign: TextAlign.start,
+            ),
+          ),
+          const WeekTimeline(),
+          Expanded(
+            child: ListView.separated(
+              physics: const BouncingScrollPhysics(),
+              padding: const EdgeInsets.all(16),
+              itemCount: 50,
+              separatorBuilder: (context, index) {
+                return const SizedBox(
+                  height: 12,
+                );
+              },
+              itemBuilder: (context, index) {
+                final type = Random().nextInt(100) % 3;
+                if (type == 0) {
+                  return EmptyLessonCard(
+                    index: index % 10,
+                    interval: TimeInterval(
+                      from: Duration(hours: index),
+                      to: Duration(hours: index + 1),
+                    ),
+                    onTap: () {},
+                  );
+                } else if (type == 1) {
+                  return LessonCard(
+                    index: index % 10,
+                    lesson: Lesson.random(),
+                    interval: TimeInterval(
+                      from: Duration(hours: index),
+                      to: Duration(hours: index + 1),
+                    ),
+                  );
+                } else {
+                  return EditableLessonCard(
+                    index: index % 10,
+                    interval:
+                        const TimeInterval(from: Duration(), to: Duration()),
+                    lesson: Lesson.random(),
+                    actions: [
+                      PopupMenuAction(
+                        text: "Изменить",
+                        icon: const Icon(Icons.edit),
+                        action: () {},
+                      ),
+                      PopupMenuAction(
+                        text: "Копировать пару",
+                        icon: const Icon(Icons.copy),
+                        action: () {},
+                      ),
+                      PopupMenuAction(
+                        text: "Удалить",
+                        icon: const Icon(Icons.delete),
+                        action: () {},
+                        style: PopupMenuActionStyle.destructive,
+                      ),
+                    ],
+                  );
+                }
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
