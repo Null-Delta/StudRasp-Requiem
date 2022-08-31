@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 import '../../styles/colors.dart';
 import '../../styles/fonts.dart';
@@ -26,12 +27,14 @@ class LessonEditorPage extends StatelessWidget {
               height: 42,
               padding: const EdgeInsets.only(left: 16),
               child: IconButton(
+                padding: EdgeInsets.zero,
                 onPressed: () {
                   // переход назад
                 },
-                icon: Icon(
-                  Icons.chevron_left,
-                  color: colors.accentPrimary!,
+                icon: SvgPicture.asset(
+                  'assets/images/circle_chevron_left.svg',
+                  color: colors.accentPrimary,
+                  fit: BoxFit.cover,
                 ),
               ),
             ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 import '../../../styles/colors.dart';
 import '../../../styles/fonts.dart';
@@ -51,9 +52,10 @@ class LessonPartInput extends StatelessWidget {
                   onPressed: () {
                     // переход назад
                   },
-                  icon: Icon(
-                    Icons.chevron_left,
-                    color: colors.accentPrimary!,
+                  icon: SvgPicture.asset(
+                    'assets/images/command.svg',
+                    color: colors.accentPrimary,
+                    fit: BoxFit.cover,
                   ),
                 ),
               ),
