@@ -25,7 +25,6 @@ class EditableLessonCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
-    ;
 
     return DecoratedBox(
       decoration: BoxDecoration(

@@ -35,7 +35,14 @@ class LessonIntervalPicker extends StatelessWidget {
             const SizedBox(width: 8),
             ElevatedButton(
               onPressed: () {
-                showTimePicker(context: context, initialTime: const TimeOfDay(hour: 0, minute: 0)).then((value) {
+                showTimePicker(
+                  context: context,
+                  initialEntryMode: TimePickerEntryMode.dial,
+                  initialTime: const TimeOfDay(
+                    hour: 0,
+                    minute: 0,
+                  ),
+                ).then((value) {
                   // TODO: set new time
                 });
               },
@@ -53,7 +60,11 @@ class LessonIntervalPicker extends StatelessWidget {
             const SizedBox(width: 8),
             ElevatedButton(
               onPressed: () {
-                showTimePicker(context: context, initialTime: const TimeOfDay(hour: 0, minute: 0)).then((value) {
+                showTimePicker(
+                  context: context,
+                  initialTime: const TimeOfDay(hour: 0, minute: 0),
+                  initialEntryMode: TimePickerEntryMode.dial,
+                ).then((value) {
                   // TODO: set new time
                 });
               },

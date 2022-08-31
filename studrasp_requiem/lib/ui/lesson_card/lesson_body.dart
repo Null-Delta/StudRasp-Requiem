@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../../models/lesson/lesson_model.dart';
 import '../../styles/build_context_extension.dart';
-import '../../styles/colors.dart';
-import '../../styles/fonts.dart';
 
 class LessonBody extends StatelessWidget {
   final Lesson lesson;
@@ -18,7 +16,6 @@ class LessonBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
-    ;
     final textStyles = context.textStyles;
 
     return Padding(

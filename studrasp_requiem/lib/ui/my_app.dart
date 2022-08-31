@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../styles/build_context_extension.dart';
 import '../styles/fonts.dart';
 import '../styles/time_picker_theme.dart';
 import '../styles/colors.dart';
-import 'timetable_page/timetable_page.dart';
-import 'timetable_settings_page/timetable_settings_page.dart';
+import 'timetable_editor_page/timetable_editor_page.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -31,13 +29,11 @@ class MyApp extends StatelessWidget {
         iconTheme: ThemeData.dark().iconTheme.copyWith(
               color: appLightColors.accentPrimary,
             ),
-        textSelectionTheme: TextSelectionThemeData(
-            selectionColor: darkColors.disable!.withOpacity(0.25)),
+        textSelectionTheme: TextSelectionThemeData(selectionColor: darkColors.disable!.withOpacity(0.25)),
         splashColor: darkColors.backgroundPrimary,
         hoverColor: darkColors.backgroundPrimary,
         highlightColor: darkColors.backgroundPrimary,
-        timePickerTheme:
-            appPickerTheme(darkColors, AppDefaultTextStyles(darkColors)),
+        timePickerTheme: appPickerTheme(darkColors, AppDefaultTextStyles(darkColors)),
         extensions: [
           darkColors,
           AppDefaultTextStyles(darkColors),
@@ -52,19 +48,17 @@ class MyApp extends StatelessWidget {
         iconTheme: ThemeData.dark().iconTheme.copyWith(
               color: appDarkColors.accentPrimary,
             ),
-        textSelectionTheme: TextSelectionThemeData(
-            selectionColor: lightColors.disable!.withOpacity(0.25)),
+        textSelectionTheme: TextSelectionThemeData(selectionColor: lightColors.disable!.withOpacity(0.25)),
         splashColor: lightColors.backgroundPrimary,
         hoverColor: lightColors.backgroundPrimary,
         highlightColor: lightColors.backgroundPrimary,
-        timePickerTheme:
-            appPickerTheme(lightColors, AppDefaultTextStyles(lightColors)),
+        timePickerTheme: appPickerTheme(lightColors, AppDefaultTextStyles(lightColors)),
         extensions: [
           lightColors,
           AppDefaultTextStyles(lightColors),
         ],
       ),
-      home: TimeTableSettingsPage(),
+      home: TimetableEditorPage(),
     );
   }
 }
@@ -82,7 +76,6 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
-    ;
 
     return Scaffold(
       appBar: AppBar(

@@ -14,7 +14,6 @@ class ActionHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colors = context.colors;
     final textStyle = context.textStyles;
 
     return SizedBox(

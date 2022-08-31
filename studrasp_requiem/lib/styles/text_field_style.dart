@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:studrasp_requiem/styles/widget_styles.dart';
+import 'widget_styles.dart';
 
 import 'build_context_extension.dart';
 

@@ -3,7 +3,6 @@ import '../../../models/lesson/lesson_model.dart';
 import '../../../models/time_interval/time_interval_model.dart';
 import '../../../styles/build_context_extension.dart';
 import '../../../styles/colors.dart';
-import '../../../styles/fonts.dart';
 import '../../../styles/widget_styles.dart';
 import '../lesson_header.dart';
 import '../lesson_body.dart';
@@ -41,7 +40,6 @@ class LessonCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
-    ;
     final textStyles = context.textStyles;
     return DecoratedBox(
       decoration: BoxDecoration(
@@ -59,8 +57,7 @@ class LessonCard extends StatelessWidget {
       child: Column(
         children: [
           Padding(
-            padding:
-                const EdgeInsets.only(left: 12, top: 6, bottom: 0, right: 12),
+            padding: const EdgeInsets.only(left: 12, top: 6, bottom: 0, right: 12),
             child: LessonHeader(
               index: index,
               interval: interval,

@@ -3,8 +3,6 @@ import 'package:intl/intl.dart';
 
 import '../../../models/timetable/timetable_model.dart';
 import '../../../styles/build_context_extension.dart';
-import '../../../styles/colors.dart';
-import '../../../styles/fonts.dart';
 
 class TimeTableCard extends StatelessWidget {
   final Timetable timeTable;
@@ -27,7 +25,6 @@ class TimeTableCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
-    ;
     final textStyles = context.textStyles;
 
     return Padding(

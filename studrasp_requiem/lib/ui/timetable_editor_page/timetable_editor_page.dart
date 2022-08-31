@@ -8,6 +8,7 @@ import '../../styles/colors.dart';
 import '../../styles/fonts.dart';
 import '../lesson_card/card_styles/editable_lesson_card.dart';
 import '../lesson_card/card_styles/empty_lesson_card.dart';
+import '../timetable_settings_page/labeled_text.dart';
 import '../widgets/popup_menu_action.dart';
 
 class TimetableEditorPage extends StatelessWidget {
@@ -81,30 +82,7 @@ class TimetableEditorPage extends StatelessWidget {
             thickness: 1,
             color: colors.separator,
           ),
-          Padding(
-            padding: const EdgeInsets.only(
-              left: 16.0,
-              right: 16,
-            ),
-            child: Row(
-              children: [
-                Text(
-                  'Неделя',
-                  style: textStyles.label!.copyWith(
-                    color: colors.disable,
-                  ),
-                ),
-                const Spacer(),
-                Text(
-                  // высчитывать день?
-                  timeTable.config.weekTypes[0],
-                  style: textStyles.label!.copyWith(
-                    color: colors.accentPrimary,
-                  ),
-                ),
-              ],
-            ),
-          ),
+          LabeledText(label: 'Неделя', text: timeTable.config.weekTypes[0]),
           const SizedBox(
             height: 12,
           ),

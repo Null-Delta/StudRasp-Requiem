@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../../models/time_interval/time_interval_model.dart';
 import '../../styles/build_context_extension.dart';
-import '../../styles/colors.dart';
-import '../../styles/fonts.dart';
 import '../../styles/widget_styles.dart';
 
 class LessonHeader extends StatelessWidget {
@@ -21,7 +19,6 @@ class LessonHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
-    ;
     final textStyles = context.textStyles;
 
     return Row(
