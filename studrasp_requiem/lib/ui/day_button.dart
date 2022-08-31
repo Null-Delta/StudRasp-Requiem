@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../styles/build_context_extension.dart';
 import '../styles/colors.dart';
 import '../styles/widget_styles.dart';
 
@@ -72,7 +73,8 @@ class DayButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colors = Theme.of(context).extension<AppColors>()!;
+    final colors = context.colors;
+    ;
 
     return GestureDetector(
       onTap: () {

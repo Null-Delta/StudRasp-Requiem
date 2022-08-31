@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../styles/build_context_extension.dart';
 import '../styles/button_style.dart';
 import '../styles/colors.dart';
 import '../styles/fonts.dart';
@@ -23,8 +24,9 @@ class PopupMenuAction extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colors = Theme.of(context).extension<AppColors>()!;
-    final textStyles = Theme.of(context).extension<AppTextStyles>()!;
+    final colors = context.colors;
+    ;
+    final textStyles = context.textStyles;
 
     return Padding(
       padding: const EdgeInsets.only(left: 16, right: 8),

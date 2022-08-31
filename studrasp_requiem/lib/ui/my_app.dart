@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../styles/build_context_extension.dart';
 import '../styles/fonts.dart';
-import 'timetable_list_pages/tima_table_list_page.dart';
-import 'timetable_page/timetable_page.dart';
+import '../styles/time_picker_theme.dart';
 import '../styles/colors.dart';
+import 'timetable_settings_page/timetable_settings_page.dart';
 
 void main() {
   runApp(const ProviderScope(child: MyApp()));
@@ -14,24 +15,35 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const lightColors = AppLightColors();
+    const darkColors = AppDarkColors();
+
     return MaterialApp(
       title: 'Flutter Demo',
       themeMode: ThemeMode.system,
       darkTheme: ThemeData(
-        primarySwatch: Colors.blue,
+        textSelectionTheme: TextSelectionThemeData(selectionColor: darkColors.disable!.withOpacity(0.25)),
+        splashColor: darkColors.backgroundPrimary,
+        hoverColor: darkColors.backgroundPrimary,
+        highlightColor: darkColors.backgroundPrimary,
+        timePickerTheme: appPickerTheme(darkColors, AppDefaultTextStyles(darkColors)),
         extensions: [
-          const AppDarkColors(),
-          AppDefaultTextStyles(const AppDarkColors()),
+          darkColors,
+          AppDefaultTextStyles(darkColors),
         ],
       ),
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        textSelectionTheme: TextSelectionThemeData(selectionColor: lightColors.disable!.withOpacity(0.25)),
+        splashColor: lightColors.backgroundPrimary,
+        hoverColor: lightColors.backgroundPrimary,
+        highlightColor: lightColors.backgroundPrimary,
+        timePickerTheme: appPickerTheme(lightColors, AppDefaultTextStyles(lightColors)),
         extensions: [
-          const AppLightColors(),
-          AppDefaultTextStyles(const AppLightColors()),
+          lightColors,
+          AppDefaultTextStyles(lightColors),
         ],
       ),
-      home: const TimeTableListPage(),
+      home: TimeTableSettingsPage(),
     );
   }
 }
@@ -48,7 +60,8 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    final colors = Theme.of(context).extension<AppColors>()!;
+    final colors = context.colors;
+    ;
 
     return Scaffold(
       appBar: AppBar(
