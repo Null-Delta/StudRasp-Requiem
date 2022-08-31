@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../styles/fonts.dart';
+import 'lesson_editor_page/lesson_editor_page.dart';
 import 'timetable_page/timetable_page.dart';
 import '../styles/colors.dart';
 
@@ -30,7 +31,7 @@ class MyApp extends StatelessWidget {
           AppDefaultTextStyles(const AppLightColors()),
         ],
       ),
-      home: const TimetablePage(),
+      home: const LessonEditorPage(),
     );
   }
 }
