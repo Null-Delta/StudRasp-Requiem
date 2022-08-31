@@ -14,7 +14,6 @@ class WeekTimeline extends ConsumerWidget {
       child: PageView.builder(
         controller: PageController(
           initialPage: initialPage,
-          //viewportFraction: 0.98,
         ),
         itemBuilder: (BuildContext context, int index) {
           return Padding(
@@ -29,10 +28,7 @@ class WeekTimeline extends ConsumerWidget {
                         vertical: 8,
                       ),
                       child: DayButton(
-                        time: DateTime.now()
-                            .add(Duration(days: 7 * (index - initialPage) + i)),
-                        style: DayButtonStyle.defalut,
-                        onSelect: () {},
+                        diration: Duration(days: 7 * (index - initialPage) + i),
                       ),
                     ),
                   ),

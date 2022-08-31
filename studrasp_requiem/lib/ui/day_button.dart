@@ -1,42 +1,46 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 
+import '../providers/providers.dart';
 import '../styles/colors.dart';
 import '../styles/widget_styles.dart';
 
+final dayButtonStyleProvider =
+    Provider.family.autoDispose<DayButtonStyle, Duration>((ref, duration) {
+  if (duration.inDays == ref.watch(selectedDuration).inDays) {
+    return DayButtonStyle.selected;
+  }
+
+  final now = DateTime.now().millisecondsSinceEpoch;
+
+  final buttonDays =
+      Duration(milliseconds: now + duration.inMilliseconds).inDays;
+
+  final currentdays = Duration(milliseconds: now).inDays;
+
+  if (buttonDays == currentdays) {
+    return DayButtonStyle.highlighted;
+  }
+
+  return DayButtonStyle.defalut;
+});
+
 enum DayButtonStyle { defalut, highlighted, selected }
 
-class DayButton extends StatelessWidget {
-  final DateTime time;
-  final DayButtonStyle style;
-
-  final Function() onSelect;
+class DayButton extends ConsumerStatefulWidget {
+  final Duration diration;
 
   const DayButton({
     Key? key,
-    required this.time,
-    required this.style,
-    required this.onSelect,
+    required this.diration,
   }) : super(key: key);
 
-  String get weekDayName {
-    switch (time.weekday) {
-      case 1:
-        return "пн";
-      case 2:
-        return "вт";
-      case 3:
-        return "ср";
-      case 4:
-        return "чт";
-      case 5:
-        return "пт";
-      case 6:
-        return "сб";
-      default:
-        return "вс";
-    }
-  }
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() => _DayButtonState();
+}
 
+class _DayButtonState extends ConsumerState<DayButton> {
   Color backgroundColor(AppColors colors) {
     switch (style) {
       case DayButtonStyle.defalut:
@@ -70,13 +74,16 @@ class DayButton extends StatelessWidget {
     }
   }
 
+  late DayButtonStyle style;
+
   @override
   Widget build(BuildContext context) {
+    style = ref.watch(dayButtonStyleProvider(widget.diration));
     final colors = Theme.of(context).extension<AppColors>()!;
 
     return GestureDetector(
       onTap: () {
-        onSelect();
+        ref.read(selectedDuration.notifier).state = widget.diration;
       },
       child: DecoratedBox(
         decoration: BoxDecoration(
@@ -88,7 +95,7 @@ class DayButton extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              time.day.toString(),
+              ref.watch(currentDate).add(widget.diration).day.toString(),
               style: const TextStyle(fontFamily: "Roboto").copyWith(
                 color: dayColor(colors),
                 fontSize: 12,
@@ -96,7 +103,8 @@ class DayButton extends StatelessWidget {
               ),
             ),
             Text(
-              weekDayName,
+              DateFormat('EEE')
+                  .format(ref.watch(currentDate).add(widget.diration)),
               style: const TextStyle(fontFamily: "Roboto").copyWith(
                 color: colors.disable,
                 fontSize: 10,
