@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+
 import '../styles/fonts.dart';
-import 'timetable_page/timetable_page.dart';
+import 'timetable_editor_page/timetable_editor_page.dart';
 import '../styles/colors.dart';
 
 class MyApp extends StatelessWidget {
@@ -33,7 +34,7 @@ class MyApp extends StatelessWidget {
           AppDefaultTextStyles(appDarkColors),
         ],
       ),
-      home: const TimetablePage(),
+      home: TimetableEditorPage(),
     );
   }
 }

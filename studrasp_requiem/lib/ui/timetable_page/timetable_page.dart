@@ -44,10 +44,8 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
             return EmptyLessonCard(
               index: index % 10,
               interval: TimeInterval(
-                from: DateTime.now(),
-                to: DateTime.now().add(
-                  Duration(minutes: Random().nextInt(100) % 2 == 0 ? 1 : 0),
-                ),
+                from: Duration(hours: index),
+                to: Duration(hours: index + 1),
               ),
               onTap: () {},
             );
@@ -56,16 +54,12 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
               index: index % 10,
               lesson: Lesson.random(),
               interval: TimeInterval(
-                from: DateTime.now(),
-                to: DateTime.now().add(
-                  Duration(minutes: Random().nextInt(100) % 2 == 0 ? 1 : 0),
-                ),
-              ),
+                  from: Duration(hours: index), to: Duration(hours: index + 1)),
             );
           } else {
             return EditableLessonCard(
               index: index % 10,
-              interval: TimeInterval(from: DateTime.now(), to: DateTime.now()),
+              interval: TimeInterval(from: Duration(), to: Duration()),
               lesson: Lesson.random(),
               actions: [
                 PopupMenuAction(
