@@ -22,6 +22,9 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
     final colors = Theme.of(context).extension<AppColors>()!;
 
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Timetable'),
+      ),
       backgroundColor: colors.backgroundPrimary!,
       body: ListView.separated(
         physics: const BouncingScrollPhysics(),

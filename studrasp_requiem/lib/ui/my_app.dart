@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../styles/fonts.dart';
 import 'timetable_page/timetable_page.dart';
 import '../styles/colors.dart';
-
-void main() {
-  runApp(const ProviderScope(child: MyApp()));
-}
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -59,7 +54,7 @@ class _MyHomePageState extends State<MyHomePage> {
           padding: const EdgeInsets.all(16),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [],
+            children: const [],
           ),
         ),
       ),
