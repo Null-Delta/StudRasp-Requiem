@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../models/lesson/lesson_model.dart';
 import '../../../models/time_interval/time_interval_model.dart';
+import '../../../styles/build_context_extension.dart';
 import '../../../styles/colors.dart';
 import '../../../styles/widget_styles.dart';
 import '../../widgets/popup_menu_action.dart';
@@ -24,7 +25,8 @@ class EditableLessonCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colors = Theme.of(context).extension<AppColors>()!;
+    final colors = context.colors;
+    ;
 
     return DecoratedBox(
       decoration: BoxDecoration(

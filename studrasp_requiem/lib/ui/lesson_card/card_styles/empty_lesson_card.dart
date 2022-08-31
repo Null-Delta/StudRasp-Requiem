@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../models/time_interval/time_interval_model.dart';
+import '../../../styles/build_context_extension.dart';
 import '../../../styles/button_style.dart';
 import '../../../styles/colors.dart';
 import '../../../styles/widget_styles.dart';
@@ -20,7 +21,8 @@ class EmptyLessonCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colors = Theme.of(context).extension<AppColors>()!;
+    final colors = context.colors;
+    ;
 
     return DecoratedBox(
       decoration: BoxDecoration(

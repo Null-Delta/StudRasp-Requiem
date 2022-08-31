@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../models/timetable/timetable_model.dart';
 import '../../models/timetable_config/timetable_config_model.dart';
 import '../../models/user/user_model.dart';
+import '../../styles/build_context_extension.dart';
 import '../../styles/button_style.dart';
 import '../../styles/colors.dart';
 import '../../styles/fonts.dart';
@@ -22,8 +23,9 @@ class _TimeTableListPageState extends State<TimeTableListPage> {
 
   @override
   Widget build(BuildContext context) {
-    final colors = Theme.of(context).extension<AppColors>()!;
-    final textStyles = Theme.of(context).extension<AppTextStyles>()!;
+    final colors = context.colors;
+    ;
+    final textStyles = context.textStyles;
 
     final List<Timetable> savedTables = List<Timetable>.generate(
       20,

@@ -13,7 +13,9 @@ ButtonStyle plainButton(AppColors colors, {Size size = const Size(36, 36)}) => E
       minimumSize: size,
       fixedSize: size,
       padding: const EdgeInsets.all(0),
-      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(6))),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(6)),
+      ),
     );
 
 ButtonStyle tabButton(AppColors colors, bool isSelected, {Size size = const Size(36, 36)}) => ElevatedButton.styleFrom(

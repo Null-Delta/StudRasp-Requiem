@@ -1,25 +1,22 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import '../../providers/providers.dart';
+import '../../styles/build_context_extension.dart';
 import '../../styles/colors.dart';
 import '../../styles/widget_styles.dart';
 
 enum DayButtonStyle { defalut, highlighted, selected }
 
-final dayButtonStyleProvider =
-    Provider.family.autoDispose<DayButtonStyle, Duration>((ref, duration) {
+final dayButtonStyleProvider = Provider.family.autoDispose<DayButtonStyle, Duration>((ref, duration) {
   if (duration.inDays == ref.watch(selectedDuration).inDays) {
     return DayButtonStyle.selected;
   }
 
   final now = DateTime.now().millisecondsSinceEpoch;
 
-  final buttonDays =
-      Duration(milliseconds: now + duration.inMilliseconds).inDays;
+  final buttonDays = Duration(milliseconds: now + duration.inMilliseconds).inDays;
 
   final currentdays = Duration(milliseconds: now).inDays;
 
@@ -81,11 +78,11 @@ class _DayButtonState extends ConsumerState<DayButton> {
   @override
   Widget build(BuildContext context) {
     style = ref.watch(dayButtonStyleProvider(widget.diration));
-    final colors = Theme.of(context).extension<AppColors>()!;
+    final colors = context.colors;
 
     return GestureDetector(
       onTap: () {
-        log(ref.read(dayButtonStyleProvider(const Duration())).toString());
+        // log(ref.read(dayButtonStyleProvider(const Duration())).toString());
         ref.read(selectedDuration.notifier).state = widget.diration;
       },
       child: DecoratedBox(
@@ -106,8 +103,7 @@ class _DayButtonState extends ConsumerState<DayButton> {
               ),
             ),
             Text(
-              DateFormat('EEE')
-                  .format(ref.watch(currentDate).add(widget.diration)),
+              DateFormat('EEE').format(ref.watch(currentDate).add(widget.diration)),
               style: const TextStyle(fontFamily: "Roboto").copyWith(
                 color: colors.disable,
                 fontSize: 10,

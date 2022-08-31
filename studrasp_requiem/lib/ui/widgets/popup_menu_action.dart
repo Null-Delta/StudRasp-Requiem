@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../styles/colors.dart';
-import '../../styles/fonts.dart';
+import '../../styles/build_context_extension.dart';
 
 enum PopupMenuActionStyle { normal, destructive }
 
@@ -22,8 +21,8 @@ class PopupMenuAction extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colors = Theme.of(context).extension<AppColors>()!;
-    final textStyles = Theme.of(context).extension<AppTextStyles>()!;
+    final colors = context.colors;
+    final textStyles = context.textStyles;
 
     return Padding(
       padding: const EdgeInsets.only(left: 16, right: 8),
@@ -32,9 +31,7 @@ class PopupMenuAction extends StatelessWidget {
           Text(
             text,
             style: textStyles.label!.copyWith(
-              color: style == PopupMenuActionStyle.destructive
-                  ? colors.destructive
-                  : colors.accentPrimary,
+              color: style == PopupMenuActionStyle.destructive ? colors.destructive : colors.accentPrimary,
             ),
           ),
           const Spacer(),
@@ -44,9 +41,7 @@ class PopupMenuAction extends StatelessWidget {
             child: Icon(
               icon.icon,
               size: 20,
-              color: style == PopupMenuActionStyle.destructive
-                  ? colors.destructive
-                  : colors.accentPrimary,
+              color: style == PopupMenuActionStyle.destructive ? colors.destructive : colors.accentPrimary,
             ),
           ),
         ],

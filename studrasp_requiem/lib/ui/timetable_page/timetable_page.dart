@@ -9,6 +9,7 @@ import '../widgets/week_timeline.dart';
 
 import '../../models/lesson/lesson_model.dart';
 import '../../models/time_interval/time_interval_model.dart';
+import '../../styles/build_context_extension.dart';
 import '../../styles/colors.dart';
 import '../../styles/fonts.dart';
 import '../lesson_card/card_styles/empty_lesson_card.dart';
@@ -24,8 +25,7 @@ class TimetablePage extends ConsumerStatefulWidget {
 class _TimetablePageState extends ConsumerState<TimetablePage> {
   @override
   Widget build(BuildContext context) {
-    final colors = Theme.of(context).extension<AppColors>()!;
-    final textStyles = Theme.of(context).extension<AppTextStyles>()!;
+    final colors = context.colors;
 
     return Scaffold(
       appBar: AppBar(
