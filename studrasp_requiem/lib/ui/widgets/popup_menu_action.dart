@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 import '../../styles/build_context_extension.dart';
 
@@ -6,7 +7,7 @@ enum PopupMenuActionStyle { normal, destructive }
 
 class PopupMenuAction extends StatelessWidget {
   final String text;
-  final Icon icon;
+  final SvgPicture icon;
   final Function() action;
 
   final PopupMenuActionStyle style;
@@ -36,14 +37,10 @@ class PopupMenuAction extends StatelessWidget {
           ),
           const Spacer(),
           SizedBox(
-            width: 42,
-            height: 42,
-            child: Icon(
-              icon.icon,
-              size: 20,
-              color: style == PopupMenuActionStyle.destructive ? colors.destructive : colors.accentPrimary,
-            ),
-          ),
+            width: 20,
+            height: 20,
+            child: icon,
+          )
         ],
       ),
     );

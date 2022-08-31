@@ -126,17 +126,17 @@ class TimetableEditorPage extends StatelessWidget {
                         // реализовать действия
                         PopupMenuAction(
                           text: "Изменить",
-                          icon: const Icon(Icons.edit),
+                          icon: Assets.images.iconEditOutline.svg(color: colors.accentPrimary),
                           action: () {},
                         ),
                         PopupMenuAction(
                           text: "Копировать пару",
-                          icon: const Icon(Icons.copy),
+                          icon: Assets.images.command.svg(color: colors.accentPrimary),
                           action: () {},
                         ),
                         PopupMenuAction(
                           text: "Удалить",
-                          icon: const Icon(Icons.delete),
+                          icon: Assets.images.trashFull.svg(color: colors.accentPrimary),
                           action: () {},
                           style: PopupMenuActionStyle.destructive,
                         ),

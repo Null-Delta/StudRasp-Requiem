@@ -4,6 +4,7 @@ import '../styles/fonts.dart';
 import '../styles/time_picker_theme.dart';
 import '../styles/colors.dart';
 import 'timetable_editor_page/timetable_editor_page.dart';
+import 'timetable_page/timetable_page.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -26,21 +27,21 @@ class MyApp extends StatelessWidget {
               foregroundColor: appLightColors.accentPrimary,
               elevation: 0,
             ),
-        iconTheme: ThemeData.dark().iconTheme.copyWith(
+        iconTheme: ThemeData.light().iconTheme.copyWith(
               color: appLightColors.accentPrimary,
             ),
-        textSelectionTheme: TextSelectionThemeData(selectionColor: darkColors.disable!.withOpacity(0.25)),
-        splashColor: darkColors.backgroundPrimary,
-        hoverColor: darkColors.backgroundPrimary,
-        highlightColor: darkColors.backgroundPrimary,
-        timePickerTheme: appPickerTheme(darkColors, AppDefaultTextStyles(darkColors)),
+        textSelectionTheme: TextSelectionThemeData(selectionColor: lightColors.disable!.withOpacity(0.25)),
+        splashColor: lightColors.separator,
+        hoverColor: lightColors.separator,
+        highlightColor: lightColors.backgroundSecondary,
+        timePickerTheme: appPickerTheme(lightColors, AppDefaultTextStyles(lightColors)),
         extensions: [
-          darkColors,
-          AppDefaultTextStyles(darkColors),
+          lightColors,
+          AppDefaultTextStyles(lightColors),
         ],
       ),
       darkTheme: ThemeData.dark().copyWith(
-        appBarTheme: ThemeData.light().appBarTheme.copyWith(
+        appBarTheme: ThemeData.dark().appBarTheme.copyWith(
               backgroundColor: appDarkColors.backgroundPrimary,
               foregroundColor: appDarkColors.accentPrimary,
               elevation: 0,
@@ -48,17 +49,17 @@ class MyApp extends StatelessWidget {
         iconTheme: ThemeData.dark().iconTheme.copyWith(
               color: appDarkColors.accentPrimary,
             ),
-        textSelectionTheme: TextSelectionThemeData(selectionColor: lightColors.disable!.withOpacity(0.25)),
-        splashColor: lightColors.backgroundPrimary,
-        hoverColor: lightColors.backgroundPrimary,
-        highlightColor: lightColors.backgroundPrimary,
-        timePickerTheme: appPickerTheme(lightColors, AppDefaultTextStyles(lightColors)),
+        textSelectionTheme: TextSelectionThemeData(selectionColor: darkColors.disable!.withOpacity(0.25)),
+        splashColor: darkColors.separator,
+        hoverColor: darkColors.separator,
+        highlightColor: darkColors.backgroundSecondary,
+        timePickerTheme: appPickerTheme(darkColors, AppDefaultTextStyles(darkColors)),
         extensions: [
-          lightColors,
-          AppDefaultTextStyles(lightColors),
+          darkColors,
+          AppDefaultTextStyles(darkColors),
         ],
       ),
-      home: TimetableEditorPage(),
+      home: const TimetablePage(),
     );
   }
 }

@@ -16,7 +16,6 @@ class TimeTableSettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
-    ;
     final textStyles = context.textStyles;
 
     return Scaffold(

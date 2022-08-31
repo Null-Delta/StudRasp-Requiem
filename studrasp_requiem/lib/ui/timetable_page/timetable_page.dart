@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../gen/assets.gen.dart';
 import '../../providers/providers.dart';
 import '../lesson_card/card_styles/default_lesson_card.dart';
 import '../lesson_card/card_styles/editable_lesson_card.dart';
@@ -29,21 +30,28 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: colors.backgroundPrimary,
         leading: IconButton(
-          icon: const Icon(Icons.calendar_month_outlined),
-          splashRadius: 25,
+          icon: Assets.images.calendar.svg(color: colors.accentPrimary),
+          splashRadius: 24,
           onPressed: () {},
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.list_alt),
-            splashRadius: 25,
+            icon: Assets.images.iconDocOutline.svg(color: colors.accentPrimary),
+            splashRadius: 24,
             onPressed: () {},
           ),
+          const SizedBox(
+            width: 8,
+          ),
           IconButton(
-            icon: const Icon(Icons.search),
-            splashRadius: 25,
+            icon: Assets.images.search.svg(color: colors.accentPrimary),
+            splashRadius: 24,
             onPressed: () {},
+          ),
+          const SizedBox(
+            width: 16,
           ),
         ],
       ),
@@ -62,6 +70,11 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
             ),
           ),
           const WeekTimeline(),
+          Divider(
+            height: 1,
+            thickness: 1,
+            color: colors.separator,
+          ),
           Expanded(
             child: ListView.separated(
               physics: const BouncingScrollPhysics(),
@@ -95,23 +108,22 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
                 } else {
                   return EditableLessonCard(
                     index: index % 10,
-                    interval:
-                        const TimeInterval(from: Duration(), to: Duration()),
+                    interval: const TimeInterval(from: Duration(), to: Duration()),
                     lesson: Lesson.random(),
                     actions: [
                       PopupMenuAction(
                         text: "Изменить",
-                        icon: const Icon(Icons.edit),
+                        icon: Assets.images.iconEditOutline.svg(color: colors.accentPrimary),
                         action: () {},
                       ),
                       PopupMenuAction(
                         text: "Копировать пару",
-                        icon: const Icon(Icons.copy),
+                        icon: Assets.images.calendar.svg(color: colors.accentPrimary),
                         action: () {},
                       ),
                       PopupMenuAction(
                         text: "Удалить",
-                        icon: const Icon(Icons.delete),
+                        icon: Assets.images.trashFull.svg(color: colors.destructive),
                         action: () {},
                         style: PopupMenuActionStyle.destructive,
                       ),

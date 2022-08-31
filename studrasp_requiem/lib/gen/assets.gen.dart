@@ -14,6 +14,10 @@ import 'package:flutter/services.dart';
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
+  /// File path: assets/images/Icon_doc_outline.svg
+  SvgGenImage get iconDocOutline =>
+      const SvgGenImage('assets/images/Icon_doc_outline.svg');
+
   /// File path: assets/images/Icon_edit_outline.svg
   SvgGenImage get iconEditOutline =>
       const SvgGenImage('assets/images/Icon_edit_outline.svg');

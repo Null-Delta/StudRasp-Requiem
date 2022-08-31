@@ -16,7 +16,7 @@ class WeekTimeline extends ConsumerWidget {
     final initialPage = weekCount != null ? 0 : 1000;
 
     return SizedBox(
-      height: 64,
+      height: 76,
       child: PageView.builder(
         controller: PageController(
           initialPage: initialPage,
@@ -32,7 +32,7 @@ class WeekTimeline extends ConsumerWidget {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 4,
-                        vertical: 8,
+                        vertical: 12,
                       ),
                       child: DayButton(
                         diration: Duration(

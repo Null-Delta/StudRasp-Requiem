@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../gen/assets.gen.dart';
 import '../../../models/time_interval/time_interval_model.dart';
 import '../../../styles/build_context_extension.dart';
 import '../../../styles/button_style.dart';
@@ -28,14 +29,21 @@ class EmptyLessonCard extends StatelessWidget {
         borderRadius: BurderRadiusStyles.large,
       ),
       child: Padding(
-        padding: const EdgeInsets.only(left: 12, right: 0, top: 6, bottom: 6),
+        padding: const EdgeInsets.only(left: 12, right: 6, top: 6, bottom: 6),
         child: LessonHeader(
           index: index,
           interval: interval,
-          rightWidget: ElevatedButton(
-            style: plainButton(colors),
-            onPressed: () {},
-            child: const Icon(Icons.abc),
+          rightWidget: SizedBox(
+            width: 36,
+            height: 36,
+            child: IconButton(
+              onPressed: () {
+                onTap();
+              },
+              splashRadius: 24,
+              iconSize: 24,
+              icon: Assets.images.iconPlusOutline.svg(color: colors.accentPrimary),
+            ),
           ),
         ),
       ),

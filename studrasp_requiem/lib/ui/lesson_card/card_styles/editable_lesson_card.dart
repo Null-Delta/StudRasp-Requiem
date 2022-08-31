@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../gen/assets.gen.dart';
 import '../../../models/lesson/lesson_model.dart';
 import '../../../models/time_interval/time_interval_model.dart';
 import '../../../styles/build_context_extension.dart';
@@ -70,10 +71,7 @@ class EditableLessonCard extends StatelessWidget {
                 color: colors.backgroundPrimary,
                 elevation: 16,
                 splashRadius: 1,
-                icon: Icon(
-                  Icons.abc,
-                  color: colors.accentPrimary,
-                ),
+                icon: Assets.images.moreHorizontal.svg(color: colors.accentPrimary),
                 constraints: const BoxConstraints(minWidth: 256),
               ),
             ),
