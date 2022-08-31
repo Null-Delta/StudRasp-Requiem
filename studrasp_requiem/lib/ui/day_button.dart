@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -5,6 +7,8 @@ import 'package:intl/intl.dart';
 import '../providers/providers.dart';
 import '../styles/colors.dart';
 import '../styles/widget_styles.dart';
+
+enum DayButtonStyle { defalut, highlighted, selected }
 
 final dayButtonStyleProvider =
     Provider.family.autoDispose<DayButtonStyle, Duration>((ref, duration) {
@@ -25,8 +29,6 @@ final dayButtonStyleProvider =
 
   return DayButtonStyle.defalut;
 });
-
-enum DayButtonStyle { defalut, highlighted, selected }
 
 class DayButton extends ConsumerStatefulWidget {
   final Duration diration;
@@ -83,6 +85,7 @@ class _DayButtonState extends ConsumerState<DayButton> {
 
     return GestureDetector(
       onTap: () {
+        log(ref.read(dayButtonStyleProvider(const Duration())).toString());
         ref.read(selectedDuration.notifier).state = widget.diration;
       },
       child: DecoratedBox(

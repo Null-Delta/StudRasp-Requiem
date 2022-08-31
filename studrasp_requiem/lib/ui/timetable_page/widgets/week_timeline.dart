@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../providers/providers.dart';
 import '../../day_button.dart';
 
 class WeekTimeline extends ConsumerWidget {
@@ -10,6 +11,8 @@ class WeekTimeline extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final weekDay = ref.watch(currentDate).weekday - 1;
+
     return Expanded(
       child: PageView.builder(
         controller: PageController(
@@ -28,7 +31,9 @@ class WeekTimeline extends ConsumerWidget {
                         vertical: 8,
                       ),
                       child: DayButton(
-                        diration: Duration(days: 7 * (index - initialPage) + i),
+                        diration: Duration(
+                          days: 7 * (index - initialPage) + (i - weekDay),
+                        ),
                       ),
                     ),
                   ),
