@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import '../../models/user/user_model.dart';
 import '../../styles/build_context_extension.dart';
 import '../../styles/button_style.dart';
-import '../../styles/colors.dart';
-import '../../styles/fonts.dart';
 
 class EditorCard extends StatelessWidget {
   final User user;
@@ -29,11 +27,12 @@ class EditorCard extends StatelessWidget {
           children: [
             DecoratedBox(
               decoration: BoxDecoration(
-                  color: colors.backgroundSecondary!,
-                  borderRadius: const BorderRadius.all(
-                    Radius.circular(18),
-                  ),
-                  border: Border.all(color: colors.separator!, width: 1)),
+                color: colors.backgroundSecondary!,
+                borderRadius: const BorderRadius.all(
+                  Radius.circular(18),
+                ),
+                border: Border.all(color: colors.separator!, width: 1),
+              ),
               child: Container(
                 width: 36,
                 height: 36,

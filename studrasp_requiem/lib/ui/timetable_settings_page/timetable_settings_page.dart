@@ -4,16 +4,15 @@ import '../../models/time_interval/time_interval_model.dart';
 import '../../models/user/user_model.dart';
 import '../../styles/build_context_extension.dart';
 import '../../styles/button_style.dart';
-import '../../styles/colors.dart';
-import '../../styles/fonts.dart';
 import '../../styles/text_field_style.dart';
-import '../../styles/widget_styles.dart';
 import 'action_header.dart';
 import 'editor_card.dart';
 import 'labeled_text.dart';
 import 'lesson_interval_picker.dart';
 
 class TimeTableSettingsPage extends StatelessWidget {
+  const TimeTableSettingsPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
@@ -103,9 +102,9 @@ class TimeTableSettingsPage extends StatelessWidget {
                 itemBuilder: (context, index) {
                   return LessonIntervalPicker(
                     index: index,
-                    interval: TimeInterval(
-                      from: DateTime.now(),
-                      to: DateTime.now(),
+                    interval: const TimeInterval(
+                      from: Duration(),
+                      to: Duration(),
                     ),
                   );
                 },

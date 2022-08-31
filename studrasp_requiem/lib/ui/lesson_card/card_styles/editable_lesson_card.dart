@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../../../models/lesson/lesson_model.dart';
 import '../../../models/time_interval/time_interval_model.dart';
 import '../../../styles/build_context_extension.dart';
-import '../../../styles/colors.dart';
 import '../../../styles/widget_styles.dart';
 import '../../widgets/popup_menu_action.dart';
 import '../lesson_body.dart';
@@ -44,8 +43,7 @@ class EditableLessonCard extends StatelessWidget {
       child: Column(
         children: [
           Padding(
-            padding:
-                const EdgeInsets.only(left: 12, right: 6, top: 6, bottom: 0),
+            padding: const EdgeInsets.only(left: 12, right: 6, top: 6, bottom: 0),
             child: LessonHeader(
               index: index,
               interval: interval,
@@ -64,7 +62,10 @@ class EditableLessonCard extends StatelessWidget {
                 },
                 padding: EdgeInsets.zero,
                 shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(12))),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(12),
+                  ),
+                ),
                 position: PopupMenuPosition.under,
                 iconSize: 24,
                 color: colors.backgroundPrimary,
