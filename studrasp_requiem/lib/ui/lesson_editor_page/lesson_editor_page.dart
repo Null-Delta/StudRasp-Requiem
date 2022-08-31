@@ -53,24 +53,25 @@ class LessonEditorPage extends StatelessWidget {
         children: [
           Divider(
             height: 1,
+            thickness: 1,
             color: colors.separator,
           ),
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
-              children: [
+              children: const [
                 LessonPartInput(
                   partName: 'Название предмета',
                 ),
-                const SizedBox(
+                SizedBox(
                   height: 12,
                 ),
                 LessonPartInput(partName: 'Аудитория'),
-                const SizedBox(
+                SizedBox(
                   height: 12,
                 ),
                 LessonPartInput(partName: 'Преподаватель'),
-                const SizedBox(
+                SizedBox(
                   height: 12,
                 ),
                 LessonPartInput(partName: 'Тип'),

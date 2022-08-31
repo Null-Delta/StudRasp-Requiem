@@ -6,16 +6,21 @@ part 'time_interval_model.g.dart';
 @freezed
 class TimeInterval with _$TimeInterval {
   const factory TimeInterval({
-    required DateTime from,
-    required DateTime to,
+    required Duration from,
+    required Duration to,
   }) = _TimeInterval;
 
   const TimeInterval._();
 
-  factory TimeInterval.fromJson(Map<String, dynamic> json) => _$TimeIntervalFromJson(json);
+  factory TimeInterval.fromJson(Map<String, dynamic> json) =>
+      _$TimeIntervalFromJson(json);
 
   bool constains(DateTime time) {
-    return time.millisecondsSinceEpoch >= from.millisecondsSinceEpoch &&
-        time.millisecondsSinceEpoch < to.millisecondsSinceEpoch;
+    return (time.hour >= from.inHours &&
+            time.minute >= from.inMinutes &&
+            time.second >= from.inSeconds) &&
+        (time.hour < to.inHours &&
+            time.minute < to.inMinutes &&
+            time.second < to.inSeconds);
   }
 }

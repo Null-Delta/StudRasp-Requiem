@@ -6,13 +6,27 @@ part 'timetable_config_model.freezed.dart';
 part 'timetable_config_model.g.dart';
 
 @freezed
-class TimeTableConfig with _$TimeTableConfig {
-  const factory TimeTableConfig({
+class TimetableConfig with _$TimetableConfig {
+  const TimetableConfig._();
+
+  const factory TimetableConfig({
     required List<TimeInterval> timeIntervals,
     required List<String> weekTypes,
     required List<String> lessonTypes,
   }) = _TimeTableConfig;
 
-  factory TimeTableConfig.fromJson(Map<String, dynamic> json) =>
-      _$TimeTableConfigFromJson(json);
+  factory TimetableConfig.fromJson(Map<String, dynamic> json) =>
+      _$TimetableConfigFromJson(json);
+
+  static TimetableConfig empty() => TimetableConfig(
+        timeIntervals: [
+          for (int i = 0; i < 8; i++)
+            TimeInterval(
+              from: Duration(hours: 8 + i),
+              to: Duration(hours: 9 + i),
+            ),
+        ],
+        weekTypes: ['Первая', 'Вторая'],
+        lessonTypes: ['Лекция', 'Практика'],
+      );
 }

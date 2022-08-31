@@ -1,5 +1,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
+// ignore_for_file: non_constant_identifier_names
+
 part of 'time_interval_model.dart';
 
 // **************************************************************************
@@ -8,12 +10,12 @@ part of 'time_interval_model.dart';
 
 _$_TimeInterval _$$_TimeIntervalFromJson(Map<String, dynamic> json) =>
     _$_TimeInterval(
-      from: DateTime.parse(json['from'] as String),
-      to: DateTime.parse(json['to'] as String),
+      from: Duration(microseconds: json['from'] as int),
+      to: Duration(microseconds: json['to'] as int),
     );
 
 Map<String, dynamic> _$$_TimeIntervalToJson(_$_TimeInterval instance) =>
     <String, dynamic>{
-      'from': instance.from.toIso8601String(),
-      'to': instance.to.toIso8601String(),
+      'from': instance.from.inMicroseconds,
+      'to': instance.to.inMicroseconds,
     };

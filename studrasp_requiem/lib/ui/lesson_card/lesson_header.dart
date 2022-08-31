@@ -42,7 +42,7 @@ class LessonHeader extends StatelessWidget {
           width: 8,
         ),
         Text(
-          "${interval.from.stringTime} - ${interval.to.stringTime}",
+          "${interval.from.inHours}:${interval.from.inMinutes} - ${interval.to.inHours}:${interval.to.inMinutes}",
           style: TextStyle(
             color: colors.disable,
           ).copyWith(

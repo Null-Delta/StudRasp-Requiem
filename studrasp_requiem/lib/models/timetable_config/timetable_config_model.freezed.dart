@@ -14,27 +14,27 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
-TimeTableConfig _$TimeTableConfigFromJson(Map<String, dynamic> json) {
+TimetableConfig _$TimetableConfigFromJson(Map<String, dynamic> json) {
   return _TimeTableConfig.fromJson(json);
 }
 
 /// @nodoc
-mixin _$TimeTableConfig {
+mixin _$TimetableConfig {
   List<TimeInterval> get timeIntervals => throw _privateConstructorUsedError;
   List<String> get weekTypes => throw _privateConstructorUsedError;
   List<String> get lessonTypes => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $TimeTableConfigCopyWith<TimeTableConfig> get copyWith =>
+  $TimetableConfigCopyWith<TimetableConfig> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $TimeTableConfigCopyWith<$Res> {
-  factory $TimeTableConfigCopyWith(
-          TimeTableConfig value, $Res Function(TimeTableConfig) then) =
-      _$TimeTableConfigCopyWithImpl<$Res>;
+abstract class $TimetableConfigCopyWith<$Res> {
+  factory $TimetableConfigCopyWith(
+          TimetableConfig value, $Res Function(TimetableConfig) then) =
+      _$TimetableConfigCopyWithImpl<$Res>;
   $Res call(
       {List<TimeInterval> timeIntervals,
       List<String> weekTypes,
@@ -42,13 +42,13 @@ abstract class $TimeTableConfigCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$TimeTableConfigCopyWithImpl<$Res>
-    implements $TimeTableConfigCopyWith<$Res> {
-  _$TimeTableConfigCopyWithImpl(this._value, this._then);
+class _$TimetableConfigCopyWithImpl<$Res>
+    implements $TimetableConfigCopyWith<$Res> {
+  _$TimetableConfigCopyWithImpl(this._value, this._then);
 
-  final TimeTableConfig _value;
+  final TimetableConfig _value;
   // ignore: unused_field
-  final $Res Function(TimeTableConfig) _then;
+  final $Res Function(TimetableConfig) _then;
 
   @override
   $Res call({
@@ -75,7 +75,7 @@ class _$TimeTableConfigCopyWithImpl<$Res>
 
 /// @nodoc
 abstract class _$$_TimeTableConfigCopyWith<$Res>
-    implements $TimeTableConfigCopyWith<$Res> {
+    implements $TimetableConfigCopyWith<$Res> {
   factory _$$_TimeTableConfigCopyWith(
           _$_TimeTableConfig value, $Res Function(_$_TimeTableConfig) then) =
       __$$_TimeTableConfigCopyWithImpl<$Res>;
@@ -88,7 +88,7 @@ abstract class _$$_TimeTableConfigCopyWith<$Res>
 
 /// @nodoc
 class __$$_TimeTableConfigCopyWithImpl<$Res>
-    extends _$TimeTableConfigCopyWithImpl<$Res>
+    extends _$TimetableConfigCopyWithImpl<$Res>
     implements _$$_TimeTableConfigCopyWith<$Res> {
   __$$_TimeTableConfigCopyWithImpl(
       _$_TimeTableConfig _value, $Res Function(_$_TimeTableConfig) _then)
@@ -122,14 +122,15 @@ class __$$_TimeTableConfigCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_TimeTableConfig implements _TimeTableConfig {
+class _$_TimeTableConfig extends _TimeTableConfig {
   const _$_TimeTableConfig(
       {required final List<TimeInterval> timeIntervals,
       required final List<String> weekTypes,
       required final List<String> lessonTypes})
       : _timeIntervals = timeIntervals,
         _weekTypes = weekTypes,
-        _lessonTypes = lessonTypes;
+        _lessonTypes = lessonTypes,
+        super._();
 
   factory _$_TimeTableConfig.fromJson(Map<String, dynamic> json) =>
       _$$_TimeTableConfigFromJson(json);
@@ -157,7 +158,7 @@ class _$_TimeTableConfig implements _TimeTableConfig {
 
   @override
   String toString() {
-    return 'TimeTableConfig(timeIntervals: $timeIntervals, weekTypes: $weekTypes, lessonTypes: $lessonTypes)';
+    return 'TimetableConfig(timeIntervals: $timeIntervals, weekTypes: $weekTypes, lessonTypes: $lessonTypes)';
   }
 
   @override
@@ -194,11 +195,12 @@ class _$_TimeTableConfig implements _TimeTableConfig {
   }
 }
 
-abstract class _TimeTableConfig implements TimeTableConfig {
+abstract class _TimeTableConfig extends TimetableConfig {
   const factory _TimeTableConfig(
       {required final List<TimeInterval> timeIntervals,
       required final List<String> weekTypes,
       required final List<String> lessonTypes}) = _$_TimeTableConfig;
+  const _TimeTableConfig._() : super._();
 
   factory _TimeTableConfig.fromJson(Map<String, dynamic> json) =
       _$_TimeTableConfig.fromJson;
