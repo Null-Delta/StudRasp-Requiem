@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../styles/build_context_extension.dart';
-import '../styles/button_style.dart';
-import '../styles/colors.dart';
-import '../styles/fonts.dart';
+import '../../styles/build_context_extension.dart';
 
 enum PopupMenuActionStyle { normal, destructive }
 
@@ -25,7 +22,6 @@ class PopupMenuAction extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
-    ;
     final textStyles = context.textStyles;
 
     return Padding(

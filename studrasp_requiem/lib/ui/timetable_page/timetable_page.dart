@@ -2,15 +2,17 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../lesson_card/card_styles/default_lesson_card.dart';
+import '../lesson_card/card_styles/editable_lesson_card.dart';
+import 'widgets/timetable_header.dart';
 
 import '../../models/lesson/lesson_model.dart';
 import '../../models/time_interval/time_interval_model.dart';
 import '../../styles/build_context_extension.dart';
 import '../../styles/colors.dart';
-import '../lesson_card/card_styles/editable_lesson_card.dart';
+import '../../styles/fonts.dart';
 import '../lesson_card/card_styles/empty_lesson_card.dart';
-import '../lesson_card/card_styles/default_lesson_card.dart';
-import '../popup_menu_action.dart';
+import '../widgets/popup_menu_action.dart';
 
 class TimetablePage extends ConsumerStatefulWidget {
   const TimetablePage({Key? key}) : super(key: key);
@@ -23,9 +25,9 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
-    ;
 
     return Scaffold(
+      appBar: const TimetableHeader(),
       backgroundColor: colors.backgroundPrimary!,
       body: ListView.separated(
         physics: const BouncingScrollPhysics(),
@@ -42,10 +44,8 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
             return EmptyLessonCard(
               index: index % 10,
               interval: TimeInterval(
-                from: DateTime.now(),
-                to: DateTime.now().add(
-                  Duration(minutes: Random().nextInt(100) % 2 == 0 ? 1 : 0),
-                ),
+                from: Duration(hours: index),
+                to: Duration(hours: index + 1),
               ),
               onTap: () {},
             );
@@ -54,16 +54,14 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
               index: index % 10,
               lesson: Lesson.random(),
               interval: TimeInterval(
-                from: DateTime.now(),
-                to: DateTime.now().add(
-                  Duration(minutes: Random().nextInt(100) % 2 == 0 ? 1 : 0),
-                ),
+                from: Duration(hours: index),
+                to: Duration(hours: index + 1),
               ),
             );
           } else {
             return EditableLessonCard(
               index: index % 10,
-              interval: TimeInterval(from: DateTime.now(), to: DateTime.now()),
+              interval: const TimeInterval(from: Duration(), to: Duration()),
               lesson: Lesson.random(),
               actions: [
                 PopupMenuAction(

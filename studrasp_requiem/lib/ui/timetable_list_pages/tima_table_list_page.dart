@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../models/timetable/timetable_model.dart';
+import '../../models/timetable_config/timetable_config_model.dart';
 import '../../models/user/user_model.dart';
 import '../../styles/build_context_extension.dart';
 import '../../styles/button_style.dart';
@@ -26,9 +27,9 @@ class _TimeTableListPageState extends State<TimeTableListPage> {
     ;
     final textStyles = context.textStyles;
 
-    final List<TimeTable> savedTables = List<TimeTable>.generate(
+    final List<Timetable> savedTables = List<Timetable>.generate(
       20,
-      (index) => TimeTable(
+      (index) => Timetable(
         id: "0",
         name: "Шарарам 36/2",
         days: [],
@@ -37,12 +38,13 @@ class _TimeTableListPageState extends State<TimeTableListPage> {
         lastEditor: const User(id: "0", name: "JakeApps", avatarUrl: ""),
         creationDate: DateTime.now(),
         lastUpdateDate: DateTime.now(),
+        config: TimetableConfig.empty(),
       ),
     );
 
-    final List<TimeTable> myTables = List<TimeTable>.generate(
+    final List<Timetable> myTables = List<Timetable>.generate(
       6,
-      (index) => TimeTable(
+      (index) => Timetable(
         id: "0",
         name: "Не шарарам 36/1",
         days: [],
@@ -51,9 +53,9 @@ class _TimeTableListPageState extends State<TimeTableListPage> {
         lastEditor: const User(id: "0", name: "JakeApps", avatarUrl: ""),
         creationDate: DateTime.now(),
         lastUpdateDate: DateTime.now(),
+        config: TimetableConfig.empty(),
       ),
     );
-    ;
 
     return Scaffold(
       backgroundColor: colors.backgroundPrimary,
@@ -95,7 +97,8 @@ class _TimeTableListPageState extends State<TimeTableListPage> {
                 children: [
                   Expanded(
                     child: ElevatedButton(
-                      style: tabButton(colors, listType == TimeTableListType.saved),
+                      style: tabButton(
+                          colors, listType == TimeTableListType.saved),
                       onPressed: () {
                         setState(() {
                           listType = TimeTableListType.saved;
@@ -104,7 +107,9 @@ class _TimeTableListPageState extends State<TimeTableListPage> {
                       child: Text(
                         "Сохраненные",
                         style: textStyles.smallLabel!.copyWith(
-                          color: listType == TimeTableListType.saved ? colors.backgroundPrimary : colors.accentPrimary,
+                          color: listType == TimeTableListType.saved
+                              ? colors.backgroundPrimary
+                              : colors.accentPrimary,
                         ),
                       ),
                     ),
@@ -114,7 +119,8 @@ class _TimeTableListPageState extends State<TimeTableListPage> {
                   ),
                   Expanded(
                     child: ElevatedButton(
-                      style: tabButton(colors, listType == TimeTableListType.owned),
+                      style: tabButton(
+                          colors, listType == TimeTableListType.owned),
                       onPressed: () {
                         setState(() {
                           listType = TimeTableListType.owned;
@@ -123,7 +129,9 @@ class _TimeTableListPageState extends State<TimeTableListPage> {
                       child: Text(
                         "Мои",
                         style: textStyles.smallLabel!.copyWith(
-                          color: listType == TimeTableListType.saved ? colors.accentPrimary : colors.backgroundPrimary,
+                          color: listType == TimeTableListType.saved
+                              ? colors.accentPrimary
+                              : colors.backgroundPrimary,
                         ),
                       ),
                     ),
@@ -143,7 +151,9 @@ class _TimeTableListPageState extends State<TimeTableListPage> {
               child: ListView.separated(
                 itemBuilder: (context, index) {
                   return TimeTableCard(
-                    timeTable: listType == TimeTableListType.saved ? savedTables[index] : myTables[index],
+                    timeTable: listType == TimeTableListType.saved
+                        ? savedTables[index]
+                        : myTables[index],
                     button: Icon(
                       Icons.abc,
                       color: colors.accentPrimary!,
@@ -157,7 +167,9 @@ class _TimeTableListPageState extends State<TimeTableListPage> {
                     color: colors.separator,
                   );
                 },
-                itemCount: listType == TimeTableListType.saved ? savedTables.length : myTables.length,
+                itemCount: listType == TimeTableListType.saved
+                    ? savedTables.length
+                    : myTables.length,
               ),
             ),
           ],

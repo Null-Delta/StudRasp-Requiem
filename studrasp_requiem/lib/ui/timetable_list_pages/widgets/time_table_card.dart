@@ -7,7 +7,7 @@ import '../../../styles/colors.dart';
 import '../../../styles/fonts.dart';
 
 class TimeTableCard extends StatelessWidget {
-  final TimeTable timeTable;
+  final Timetable timeTable;
   final Widget button;
   final bool showOwner;
 

@@ -13,6 +13,10 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
+  final appLightColors = const AppLightColors();
+
+  final appDarkColors = const AppDarkColors();
+
   @override
   Widget build(BuildContext context) {
     const lightColors = AppLightColors();
@@ -21,7 +25,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       themeMode: ThemeMode.system,
-      darkTheme: ThemeData(
+      darkTheme: ThemeData.light().copyWith(
+        iconTheme: ThemeData.dark().iconTheme.copyWith(
+              color: appLightColors.accentPrimary,
+            ),
         textSelectionTheme: TextSelectionThemeData(selectionColor: darkColors.disable!.withOpacity(0.25)),
         splashColor: darkColors.backgroundPrimary,
         hoverColor: darkColors.backgroundPrimary,
@@ -32,7 +39,10 @@ class MyApp extends StatelessWidget {
           AppDefaultTextStyles(darkColors),
         ],
       ),
-      theme: ThemeData(
+      theme: ThemeData.dark().copyWith(
+        iconTheme: ThemeData.dark().iconTheme.copyWith(
+              color: appDarkColors.accentPrimary,
+            ),
         textSelectionTheme: TextSelectionThemeData(selectionColor: lightColors.disable!.withOpacity(0.25)),
         splashColor: lightColors.backgroundPrimary,
         hoverColor: lightColors.backgroundPrimary,

@@ -6,7 +6,7 @@ part of 'timetable_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_TimeTable _$$_TimeTableFromJson(Map<String, dynamic> json) => _$_TimeTable(
+_$_Timetable _$$_TimetableFromJson(Map<String, dynamic> json) => _$_Timetable(
       id: json['id'] as String,
       name: json['name'] as String,
       days: (json['days'] as List<dynamic>)
@@ -19,9 +19,10 @@ _$_TimeTable _$$_TimeTableFromJson(Map<String, dynamic> json) => _$_TimeTable(
       lastEditor: User.fromJson(json['lastEditor'] as Map<String, dynamic>),
       creationDate: DateTime.parse(json['creationDate'] as String),
       lastUpdateDate: DateTime.parse(json['lastUpdateDate'] as String),
+      config: TimetableConfig.fromJson(json['config'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$$_TimeTableToJson(_$_TimeTable instance) =>
+Map<String, dynamic> _$$_TimetableToJson(_$_Timetable instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
@@ -31,4 +32,5 @@ Map<String, dynamic> _$$_TimeTableToJson(_$_TimeTable instance) =>
       'lastEditor': instance.lastEditor,
       'creationDate': instance.creationDate.toIso8601String(),
       'lastUpdateDate': instance.lastUpdateDate.toIso8601String(),
+      'config': instance.config,
     };

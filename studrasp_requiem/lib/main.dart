@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'support/logger.dart';
 
 import 'support/error_handler.dart';
@@ -16,7 +17,11 @@ void main() {
 
       ErrorHandler.init();
 
-      runApp(const MyApp());
+      runApp(
+        const ProviderScope(
+          child: MyApp(),
+        ),
+      );
     },
     ErrorHandler.recordError,
   );
