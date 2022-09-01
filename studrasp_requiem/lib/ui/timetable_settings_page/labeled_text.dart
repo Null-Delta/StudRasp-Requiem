@@ -6,10 +6,13 @@ class LabeledText extends StatelessWidget {
   final String label;
   final String text;
 
+  final double padding;
+
   const LabeledText({
     Key? key,
     required this.label,
     required this.text,
+    this.padding = 16,
   }) : super(key: key);
 
   @override
@@ -20,7 +23,7 @@ class LabeledText extends StatelessWidget {
     return SizedBox(
       height: 42,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
+        padding: EdgeInsets.symmetric(horizontal: padding),
         child: Row(
           children: [
             Text(
