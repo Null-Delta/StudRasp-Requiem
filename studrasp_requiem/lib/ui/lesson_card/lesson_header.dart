@@ -8,12 +8,14 @@ class LessonHeader extends StatelessWidget {
   final int index;
   final TimeInterval interval;
   final Widget rightWidget;
+  final String? customText;
 
   const LessonHeader({
     Key? key,
     required this.index,
     required this.interval,
     required this.rightWidget,
+    this.customText,
   }) : super(key: key);
 
   @override
@@ -40,7 +42,8 @@ class LessonHeader extends StatelessWidget {
           width: 8,
         ),
         Text(
-          "${interval.from.inHours}:${interval.from.inMinutes % 60 >= 10 ? (interval.from.inMinutes % 60).toString() : '${interval.from.inMinutes % 60}0'} - ${interval.to.inHours}:${interval.to.inMinutes % 60 >= 10 ? (interval.to.inMinutes % 60).toString() : '${interval.to.inMinutes % 60}0'}",
+          customText ??
+              "${interval.from.inHours}:${interval.from.inMinutes % 60 >= 10 ? (interval.from.inMinutes % 60).toString() : '${interval.from.inMinutes % 60}0'} - ${interval.to.inHours}:${interval.to.inMinutes % 60 >= 10 ? (interval.to.inMinutes % 60).toString() : '${interval.to.inMinutes % 60}0'}",
           style: TextStyle(
             color: colors.disable,
           ).copyWith(
