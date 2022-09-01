@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../styles/app_theme.dart';
 import '../styles/colors.dart';
-import 'timetable_page/timetable_page.dart';
+import 'timetable_settings_page/timetable_settings_page.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
       themeMode: ThemeMode.system,
       theme: AppTheme.getTheme(lightColors),
       darkTheme: AppTheme.getTheme(darkColors),
-      home: const TimetablePage(),
+      home: const TimeTableSettingsPage(),
     );
   }
 }
