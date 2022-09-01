@@ -8,7 +8,6 @@ import '../../models/lesson/lesson_model.dart';
 import '../../providers/providers.dart';
 import '../../styles/colors.dart';
 import '../../styles/fonts.dart';
-import 'widgets/lesson_part_input.dart';
 
 class LessonEditorPage extends ConsumerStatefulWidget {
   const LessonEditorPage({
@@ -25,39 +24,27 @@ class LessonEditorPage extends ConsumerStatefulWidget {
 }
 
 class _LessonEditorPageState extends ConsumerState<LessonEditorPage> {
-  late TextEditingController nameTextEditingController = TextEditingController()
-    ..text = ref
-        .read(currentEditingTimetable)
-        .days[widget.lessonDay]
-        .lessons[widget.lessonNumber]
-        .name;
-  late TextEditingController audienceTextEditingController =
-      TextEditingController()
-        ..text = ref
-            .read(currentEditingTimetable)
-            .days[widget.lessonDay]
-            .lessons[widget.lessonNumber]
-            .audience;
-  late TextEditingController teacherTextEditingController =
-      TextEditingController()
-        ..text = ref
-            .read(currentEditingTimetable)
-            .days[widget.lessonDay]
-            .lessons[widget.lessonNumber]
-            .teacher;
-  late TextEditingController typeTextEditingController = TextEditingController()
-    ..text = ref
-        .read(currentEditingTimetable)
-        .days[widget.lessonDay]
-        .lessons[widget.lessonNumber]
-        .type;
+  late Lesson lesson = ref
+      .read(currentEditingTimetable)
+      .days[widget.lessonDay]
+      .lessons[widget.lessonNumber];
+
+  late TextEditingController name = TextEditingController(text: lesson.name);
+
+  late TextEditingController audience =
+      TextEditingController(text: lesson.audience);
+
+  late TextEditingController teacher =
+      TextEditingController(text: lesson.teacher);
+
+  late TextEditingController type = TextEditingController(text: lesson.type);
 
   void saveChanges() {
     Lesson newLesson = Lesson(
-      name: nameTextEditingController.text,
-      type: typeTextEditingController.text,
-      teacher: teacherTextEditingController.text,
-      audience: audienceTextEditingController.text,
+      name: name.text,
+      type: type.text,
+      teacher: teacher.text,
+      audience: audience.text,
     );
 
     ref.read(currentEditingTimetable.notifier).update(
@@ -124,31 +111,52 @@ class _LessonEditorPageState extends ConsumerState<LessonEditorPage> {
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  LessonPartInput(
-                    partName: 'Название предмета',
-                    controller: nameTextEditingController,
+                  AppTextField(
+                    label: 'Название предмета',
+                    textField: TextField(
+                      controller: name,
+                      decoration: const InputDecoration(
+                        hintText: 'Дискретная математика',
+                      ),
+                    ),
                   ),
                   const SizedBox(
                     height: 12,
                   ),
-                  LessonPartInput(
-                    partName: 'Аудитория',
-                    controller: audienceTextEditingController,
+                  AppTextField(
+                    label: 'Аудитория',
+                    textField: TextField(
+                      controller: audience,
+                      decoration: const InputDecoration(
+                        hintText: '104',
+                      ),
+                    ),
                   ),
                   const SizedBox(
                     height: 12,
                   ),
-                  LessonPartInput(
-                    partName: 'Преподаватель',
-                    controller: teacherTextEditingController,
+                  AppTextField(
+                    label: 'Преподаватель',
+                    textField: TextField(
+                      controller: teacher,
+                      decoration: const InputDecoration(
+                        hintText: 'Жук А. С.',
+                      ),
+                    ),
                   ),
                   const SizedBox(
                     height: 12,
                   ),
-                  LessonPartInput(
-                    partName: 'Тип',
-                    controller: typeTextEditingController,
+                  AppTextField(
+                    label: 'Тип',
+                    textField: TextField(
+                      controller: type,
+                      decoration: const InputDecoration(
+                        hintText: 'Практика',
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -156,6 +164,35 @@ class _LessonEditorPageState extends ConsumerState<LessonEditorPage> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class AppTextField extends StatelessWidget {
+  const AppTextField({
+    Key? key,
+    required this.textField,
+    required this.label,
+  }) : super(key: key);
+
+  final TextField textField;
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    final textStyles = Theme.of(context).extension<AppTextStyles>()!;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: textStyles.subtitle,
+        ),
+        const SizedBox(
+          height: 4,
+        ),
+        textField
+      ],
     );
   }
 }
