@@ -11,7 +11,6 @@ import '../../providers/providers.dart';
 import '../../styles/build_context_extension.dart';
 import '../../styles/text_field_style.dart';
 import '../search_page/search_page.dart';
-import '../timetable_editor_page/timetable_editor_page.dart';
 import 'action_header.dart';
 import 'editor_card.dart';
 import 'labeled_text.dart';
