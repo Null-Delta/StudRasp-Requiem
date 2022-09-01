@@ -9,9 +9,7 @@ import '../../models/timetable_config/timetable_config_model.dart';
 import '../../models/user/user_model.dart';
 import '../../providers/providers.dart';
 import '../../styles/build_context_extension.dart';
-import '../../styles/text_field_style.dart';
 import '../search_page/search_page.dart';
-import '../timetable_editor_page/timetable_editor_page.dart';
 import 'action_header.dart';
 import 'editor_card.dart';
 import 'labeled_text.dart';
@@ -21,13 +19,16 @@ class TimeTableSettingsPage extends ConsumerStatefulWidget {
   const TimeTableSettingsPage({Key? key}) : super(key: key);
 
   @override
-  ConsumerState<TimeTableSettingsPage> createState() => _TimeTableSettingsPageState();
+  ConsumerState<TimeTableSettingsPage> createState() =>
+      _TimeTableSettingsPageState();
 }
 
 class _TimeTableSettingsPageState extends ConsumerState<TimeTableSettingsPage> {
   final TextEditingController nameFieldController = TextEditingController();
-  final TextEditingController firstWeekFieldController = TextEditingController();
-  final TextEditingController secondWeekFieldController = TextEditingController();
+  final TextEditingController firstWeekFieldController =
+      TextEditingController();
+  final TextEditingController secondWeekFieldController =
+      TextEditingController();
 
   List<LessonIntervalController> lessonControllers = [];
   List<User> editors = [];
@@ -79,7 +80,11 @@ class _TimeTableSettingsPageState extends ConsumerState<TimeTableSettingsPage> {
               int count = Random().nextInt(20);
               return List<User>.generate(
                 count,
-                (index) => User(id: "${Random().nextInt(100)}", name: "user ${Random().nextInt(100)}", avatarUrl: ""),
+                (index) => User(
+                  id: "${Random().nextInt(100)}",
+                  name: "user ${Random().nextInt(100)}",
+                  avatarUrl: "",
+                ),
               );
             },
             itemBuilder: (user) {
@@ -124,7 +129,8 @@ class _TimeTableSettingsPageState extends ConsumerState<TimeTableSettingsPage> {
           onPressed: () {
             saveChanges();
           },
-          icon: Assets.images.circleChevronLeft.svg(color: colors.accentPrimary),
+          icon:
+              Assets.images.circleChevronLeft.svg(color: colors.accentPrimary),
           splashRadius: 24,
         ),
         title: Text(
@@ -148,7 +154,7 @@ class _TimeTableSettingsPageState extends ConsumerState<TimeTableSettingsPage> {
                     controller: nameFieldController,
                     style: textStyles.label,
                     cursorColor: colors.accentPrimary,
-                    decoration: textFieldDecoration(context).copyWith(
+                    decoration: const InputDecoration(
                       hintText: "Название",
                     ),
                   ),
@@ -164,7 +170,7 @@ class _TimeTableSettingsPageState extends ConsumerState<TimeTableSettingsPage> {
                     controller: firstWeekFieldController,
                     style: textStyles.label,
                     cursorColor: colors.accentPrimary,
-                    decoration: textFieldDecoration(context).copyWith(
+                    decoration: const InputDecoration(
                       hintText: "Первая",
                     ),
                   ),
@@ -179,7 +185,7 @@ class _TimeTableSettingsPageState extends ConsumerState<TimeTableSettingsPage> {
                     controller: secondWeekFieldController,
                     style: textStyles.label,
                     cursorColor: colors.accentPrimary,
-                    decoration: textFieldDecoration(context).copyWith(
+                    decoration: const InputDecoration(
                       hintText: "Вторая",
                     ),
                   ),
@@ -193,7 +199,7 @@ class _TimeTableSettingsPageState extends ConsumerState<TimeTableSettingsPage> {
                 itemCount: lessonControllers.length,
                 itemBuilder: (context, index) {
                   return LessonIntervalPicker(
-                    index: index,
+                    index: index + 1,
                     controller: lessonControllers[index],
                   );
                 },
@@ -244,7 +250,11 @@ class _TimeTableSettingsPageState extends ConsumerState<TimeTableSettingsPage> {
                       action: IconButton(
                         onPressed: () {
                           setState(() {
-                            editors = editors.where((element) => element.id != editors[index].id).toList();
+                            editors = editors
+                                .where(
+                                  (element) => element.id != editors[index].id,
+                                )
+                                .toList();
                           });
                         },
                         icon: Assets.images.trashFull.svg(
@@ -267,8 +277,14 @@ class _TimeTableSettingsPageState extends ConsumerState<TimeTableSettingsPage> {
                 ),
               const SizedBox(height: 12),
               const ActionHeader(title: "Информация"),
-              LabeledText(label: "Дата создания", text: DateFormat('d MMMM').format(creationDate)),
-              LabeledText(label: "Последнее изменение", text: DateFormat('d MMMM').format(lastUpdateDate)),
+              LabeledText(
+                label: "Дата создания",
+                text: DateFormat('d MMM hh:mm').format(creationDate),
+              ),
+              LabeledText(
+                label: "Последнее изменение",
+                text: DateFormat('d MMM hh:mm').format(lastUpdateDate),
+              ),
             ],
           ),
         ),
