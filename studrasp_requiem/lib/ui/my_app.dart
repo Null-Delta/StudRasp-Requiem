@@ -64,39 +64,7 @@ class MyApp extends StatelessWidget {
           AppDefaultTextStyles(darkColors),
         ],
       ),
-      home: const TimeTableSettingsPage(),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  @override
-  Widget build(BuildContext context) {
-    final colors = context.colors;
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      backgroundColor: colors.backgroundPrimary!,
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [],
-          ),
-        ),
-      ),
+      home: TimetableEditorPage(),
     );
   }
 }
