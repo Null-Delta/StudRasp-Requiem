@@ -3,6 +3,7 @@ import '../styles/build_context_extension.dart';
 import '../styles/fonts.dart';
 import '../styles/time_picker_theme.dart';
 import '../styles/colors.dart';
+import 'auth_page/auth_page.dart';
 import 'timetable_editor_page/timetable_editor_page.dart';
 import 'timetable_page/timetable_page.dart';
 import 'timetable_settings_page/timetable_settings_page.dart';
@@ -33,11 +34,13 @@ class MyApp extends StatelessWidget {
         iconTheme: ThemeData.light().iconTheme.copyWith(
               color: appLightColors.accentPrimary,
             ),
-        textSelectionTheme: TextSelectionThemeData(selectionColor: lightColors.disable!.withOpacity(0.25)),
+        textSelectionTheme: TextSelectionThemeData(
+            selectionColor: lightColors.disable!.withOpacity(0.25)),
         splashColor: lightColors.separator,
         hoverColor: lightColors.separator,
         highlightColor: lightColors.backgroundSecondary,
-        timePickerTheme: appPickerTheme(lightColors, AppDefaultTextStyles(lightColors)),
+        timePickerTheme:
+            appPickerTheme(lightColors, AppDefaultTextStyles(lightColors)),
         extensions: [
           lightColors,
           AppDefaultTextStyles(lightColors),
@@ -54,17 +57,19 @@ class MyApp extends StatelessWidget {
         iconTheme: ThemeData.dark().iconTheme.copyWith(
               color: appDarkColors.accentPrimary,
             ),
-        textSelectionTheme: TextSelectionThemeData(selectionColor: darkColors.disable!.withOpacity(0.25)),
+        textSelectionTheme: TextSelectionThemeData(
+            selectionColor: darkColors.disable!.withOpacity(0.25)),
         splashColor: darkColors.separator,
         hoverColor: darkColors.separator,
         highlightColor: darkColors.backgroundSecondary,
-        timePickerTheme: appPickerTheme(darkColors, AppDefaultTextStyles(darkColors)),
+        timePickerTheme:
+            appPickerTheme(darkColors, AppDefaultTextStyles(darkColors)),
         extensions: [
           darkColors,
           AppDefaultTextStyles(darkColors),
         ],
       ),
-      home: TimetableEditorPage(),
+      home: const AuthPage(),
     );
   }
 }
