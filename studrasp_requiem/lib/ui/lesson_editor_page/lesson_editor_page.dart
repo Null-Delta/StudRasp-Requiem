@@ -30,31 +30,13 @@ class LessonEditorPage extends ConsumerStatefulWidget {
 
 class _LessonEditorPageState extends ConsumerState<LessonEditorPage> {
   late TextEditingController nameTextEditingController = TextEditingController()
-    ..text = ref
-        .read(currentEditingTimetable)
-        .days[widget.lessonDay]
-        .lessons[widget.lessonNumber]
-        .name;
-  late TextEditingController audienceTextEditingController =
-      TextEditingController()
-        ..text = ref
-            .read(currentEditingTimetable)
-            .days[widget.lessonDay]
-            .lessons[widget.lessonNumber]
-            .audience;
-  late TextEditingController teacherTextEditingController =
-      TextEditingController()
-        ..text = ref
-            .read(currentEditingTimetable)
-            .days[widget.lessonDay]
-            .lessons[widget.lessonNumber]
-            .teacher;
+    ..text = ref.read(currentEditingTimetable).days[widget.lessonDay].lessons[widget.lessonNumber].name;
+  late TextEditingController audienceTextEditingController = TextEditingController()
+    ..text = ref.read(currentEditingTimetable).days[widget.lessonDay].lessons[widget.lessonNumber].audience;
+  late TextEditingController teacherTextEditingController = TextEditingController()
+    ..text = ref.read(currentEditingTimetable).days[widget.lessonDay].lessons[widget.lessonNumber].teacher;
   late TextEditingController typeTextEditingController = TextEditingController()
-    ..text = ref
-        .read(currentEditingTimetable)
-        .days[widget.lessonDay]
-        .lessons[widget.lessonNumber]
-        .type;
+    ..text = ref.read(currentEditingTimetable).days[widget.lessonDay].lessons[widget.lessonNumber].type;
 
   void saveChanges() {
     Lesson newLesson = Lesson(
@@ -68,8 +50,7 @@ class _LessonEditorPageState extends ConsumerState<LessonEditorPage> {
       (state) {
         List<Day> newDays = List<Day>.from(state.days)
           ..[widget.lessonDay] = Day(
-            lessons: List<Lesson>.from(state.days[widget.lessonDay].lessons)
-              ..[widget.lessonNumber] = newLesson,
+            lessons: List<Lesson>.from(state.days[widget.lessonDay].lessons)..[widget.lessonNumber] = newLesson,
           );
         return state.copyWith(
           days: newDays,
@@ -100,36 +81,21 @@ class _LessonEditorPageState extends ConsumerState<LessonEditorPage> {
         appBar: AppBar(
           elevation: 0,
           backgroundColor: colors.backgroundPrimary,
-          title: Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                width: 42,
-                height: 42,
-                padding: const EdgeInsets.only(left: 16),
-                child: IconButton(
-                  padding: EdgeInsets.zero,
-                  onPressed: () {
-                    // переход назад и сохранение
-                    saveChanges();
-                  },
-                  icon: SvgPicture.asset(
-                    Assets.images.circleChevronLeft.path,
-                    color: colors.accentPrimary,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-              Text(
-                'Пара',
-                style: textStyles.title,
-              ),
-              const SizedBox(
-                width: 42,
-                height: 42,
-              ),
-            ],
+          leading: IconButton(
+            padding: EdgeInsets.zero,
+            onPressed: () {
+              // переход назад и сохранение
+              saveChanges();
+            },
+            icon: SvgPicture.asset(
+              Assets.images.circleChevronLeft.path,
+              color: colors.accentPrimary,
+            ),
+            splashRadius: 24,
+          ),
+          title: Text(
+            'Пара',
+            style: textStyles.title,
           ),
         ),
         body: ListView(

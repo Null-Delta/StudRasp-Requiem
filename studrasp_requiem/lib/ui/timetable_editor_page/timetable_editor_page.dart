@@ -37,8 +37,7 @@ class TimetableEditorPage extends ConsumerStatefulWidget {
   final Timetable? timeTable;
 
   @override
-  ConsumerState<TimetableEditorPage> createState() =>
-      _TimetableEditorPageState();
+  ConsumerState<TimetableEditorPage> createState() => _TimetableEditorPageState();
 }
 
 class _TimetableEditorPageState extends ConsumerState<TimetableEditorPage> {
@@ -48,8 +47,7 @@ class _TimetableEditorPageState extends ConsumerState<TimetableEditorPage> {
         List<Day> newDays = List<Day>.from(state.days)
           ..[lessonDay] = Day(
             lessons: List<Lesson>.from(state.days[lessonDay].lessons)
-              ..[lessonNumber] =
-                  const Lesson(name: '', type: '', teacher: '', audience: ''),
+              ..[lessonNumber] = const Lesson(name: '', type: '', teacher: '', audience: ''),
           );
         return state.copyWith(
           days: newDays,
@@ -63,12 +61,9 @@ class _TimetableEditorPageState extends ConsumerState<TimetableEditorPage> {
     final colors = Theme.of(context).extension<AppColors>()!;
     final textStyles = Theme.of(context).extension<AppTextStyles>()!;
 
-    final config =
-        ref.watch(currentEditingTimetable.select((value) => value.config));
-    final name =
-        ref.watch(currentEditingTimetable.select((value) => value.name));
-    final days =
-        ref.watch(currentEditingTimetable.select((value) => value.days));
+    final config = ref.watch(currentEditingTimetable.select((value) => value.config));
+    final name = ref.watch(currentEditingTimetable.select((value) => value.name));
+    final days = ref.watch(currentEditingTimetable.select((value) => value.days));
 
     final editingDay = ref.watch(selectedDay);
 
@@ -83,54 +78,41 @@ class _TimetableEditorPageState extends ConsumerState<TimetableEditorPage> {
         appBar: AppBar(
           elevation: 0,
           backgroundColor: colors.backgroundPrimary,
-          title: Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                width: 42,
-                height: 42,
-                padding: const EdgeInsets.only(left: 16),
-                child: IconButton(
-                  padding: EdgeInsets.zero,
-                  onPressed: () {
-                    // переход назад временно
-                    Navigator.of(context).pop();
-                  },
-                  icon: SvgPicture.asset(
-                    Assets.images.circleChevronLeft.path,
-                    color: colors.accentPrimary,
-                    fit: BoxFit.cover,
+          leading: IconButton(
+            padding: EdgeInsets.zero,
+            onPressed: () {
+              // переход назад временно
+              Navigator.of(context).pop();
+            },
+            icon: SvgPicture.asset(
+              Assets.images.circleChevronLeft.path,
+              color: colors.accentPrimary,
+            ),
+            splashRadius: 24,
+          ),
+          actions: [
+            IconButton(
+              padding: EdgeInsets.zero,
+              onPressed: () {
+                // временно переход в настройки
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return const TimeTableSettingsPage();
+                    },
                   ),
-                ),
+                );
+              },
+              icon: SvgPicture.asset(
+                Assets.images.settings.path,
+                color: colors.accentPrimary,
               ),
-              Text(
-                name,
-                style: textStyles.title,
-              ),
-              Container(
-                width: 42,
-                height: 42,
-                padding: const EdgeInsets.only(right: 16),
-                child: IconButton(
-                  padding: EdgeInsets.zero,
-                  onPressed: () {
-                    // временно переход в настройки
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return const TimeTableSettingsPage();
-                        },
-                      ),
-                    );
-                  },
-                  icon: SvgPicture.asset(
-                    Assets.images.settings.path,
-                    color: colors.accentPrimary,
-                  ),
-                ),
-              ),
-            ],
+              splashRadius: 24,
+            ),
+          ],
+          title: Text(
+            name,
+            style: textStyles.title,
           ),
         ),
         body: Column(
@@ -146,9 +128,6 @@ class _TimetableEditorPageState extends ConsumerState<TimetableEditorPage> {
             LabeledText(
               label: 'Неделя',
               text: config.weekTypes[editingDay ~/ 7],
-            ),
-            const SizedBox(
-              height: 12,
             ),
             Expanded(
               child: Padding(
@@ -200,8 +179,7 @@ class _TimetableEditorPageState extends ConsumerState<TimetableEditorPage> {
                           // реализовать действия
                           PopupMenuAction(
                             text: "Изменить",
-                            icon: Assets.images.iconEditOutline
-                                .svg(color: colors.accentPrimary),
+                            icon: Assets.images.iconEditOutline.svg(color: colors.accentPrimary),
                             action: () {
                               Navigator.of(context).push(
                                 MaterialPageRoute(
@@ -217,14 +195,12 @@ class _TimetableEditorPageState extends ConsumerState<TimetableEditorPage> {
                           ),
                           PopupMenuAction(
                             text: "Копировать пару",
-                            icon: Assets.images.command
-                                .svg(color: colors.accentPrimary),
+                            icon: Assets.images.command.svg(color: colors.accentPrimary),
                             action: () {},
                           ),
                           PopupMenuAction(
                             text: "Удалить",
-                            icon: Assets.images.trashFull
-                                .svg(color: colors.accentPrimary),
+                            icon: Assets.images.trashFull.svg(color: colors.accentPrimary),
                             action: () {
                               deleteLesson(editingDay, index);
                             },

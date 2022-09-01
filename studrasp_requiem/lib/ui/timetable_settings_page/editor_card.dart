@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../gen/assets.gen.dart';
 import '../../models/user/user_model.dart';
 import '../../styles/build_context_extension.dart';
 import '../../styles/button_style.dart';
@@ -50,17 +51,16 @@ class EditorCard extends StatelessWidget {
               style: textStyle.label,
             ),
             const Spacer(),
-            ElevatedButton(
-              style: plainButton(colors, size: const Size(42, 42)),
-              onPressed: () {
-                // TODO: delete editor
-              },
-              child: Icon(
-                Icons.delete_outline_rounded,
+            IconButton(
+              onPressed: () {},
+              icon: Assets.images.trashFull.svg(
                 color: colors.destructive,
-                size: 24,
+                width: 20,
+                height: 20,
               ),
-            )
+              iconSize: 24,
+              splashRadius: 24,
+            ),
           ],
         ),
       ),

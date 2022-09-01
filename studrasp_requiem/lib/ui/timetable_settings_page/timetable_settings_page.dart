@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../gen/assets.gen.dart';
 import '../../models/time_interval/time_interval_model.dart';
 import '../../models/user/user_model.dart';
 import '../../styles/build_context_extension.dart';
@@ -30,10 +31,12 @@ class TimeTableSettingsPage extends StatelessWidget {
         ),
         backgroundColor: Colors.transparent,
         shadowColor: Colors.transparent,
-        leading: ElevatedButton(
-          onPressed: () {},
-          style: plainButton(colors, size: const Size(42, 42)),
-          child: const Icon(Icons.arrow_back),
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Assets.images.circleChevronLeft.svg(color: colors.accentPrimary),
+          splashRadius: 24,
         ),
         title: Text(
           "Параметры",
@@ -118,16 +121,15 @@ class TimeTableSettingsPage extends StatelessWidget {
               const SizedBox(height: 12),
               ActionHeader(
                 title: "Редакторы",
-                action: ElevatedButton(
-                  style: plainButton(colors, size: const Size(42, 42)),
-                  onPressed: () {
-                    // TODO: add editor
-                  },
-                  child: Icon(
-                    Icons.add,
+                action: IconButton(
+                  onPressed: () {},
+                  icon: Assets.images.iconPlusOutline.svg(
                     color: colors.accentPrimary,
-                    size: 24,
+                    width: 24,
+                    height: 24,
                   ),
+                  iconSize: 24,
+                  splashRadius: 24,
                 ),
               ),
               ListView.separated(
