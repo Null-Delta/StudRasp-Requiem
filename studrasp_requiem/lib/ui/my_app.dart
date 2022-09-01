@@ -30,11 +30,13 @@ class MyApp extends StatelessWidget {
         iconTheme: ThemeData.light().iconTheme.copyWith(
               color: appLightColors.accentPrimary,
             ),
-        textSelectionTheme: TextSelectionThemeData(selectionColor: lightColors.disable!.withOpacity(0.25)),
+        textSelectionTheme: TextSelectionThemeData(
+            selectionColor: lightColors.disable!.withOpacity(0.25)),
         splashColor: lightColors.separator,
         hoverColor: lightColors.separator,
         highlightColor: lightColors.backgroundSecondary,
-        timePickerTheme: appPickerTheme(lightColors, AppDefaultTextStyles(lightColors)),
+        timePickerTheme:
+            appPickerTheme(lightColors, AppDefaultTextStyles(lightColors)),
         extensions: [
           lightColors,
           AppDefaultTextStyles(lightColors),
@@ -49,49 +51,19 @@ class MyApp extends StatelessWidget {
         iconTheme: ThemeData.dark().iconTheme.copyWith(
               color: appDarkColors.accentPrimary,
             ),
-        textSelectionTheme: TextSelectionThemeData(selectionColor: darkColors.disable!.withOpacity(0.25)),
+        textSelectionTheme: TextSelectionThemeData(
+            selectionColor: darkColors.disable!.withOpacity(0.25)),
         splashColor: darkColors.separator,
         hoverColor: darkColors.separator,
         highlightColor: darkColors.backgroundSecondary,
-        timePickerTheme: appPickerTheme(darkColors, AppDefaultTextStyles(darkColors)),
+        timePickerTheme:
+            appPickerTheme(darkColors, AppDefaultTextStyles(darkColors)),
         extensions: [
           darkColors,
           AppDefaultTextStyles(darkColors),
         ],
       ),
-      home: const TimetablePage(),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  @override
-  Widget build(BuildContext context) {
-    final colors = context.colors;
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      backgroundColor: colors.backgroundPrimary!,
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [],
-          ),
-        ),
-      ),
+      home: TimetableEditorPage(),
     );
   }
 }

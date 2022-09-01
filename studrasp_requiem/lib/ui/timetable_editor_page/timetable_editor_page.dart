@@ -10,6 +10,7 @@ import '../lesson_card/card_styles/editable_lesson_card.dart';
 import '../lesson_card/card_styles/empty_lesson_card.dart';
 import '../timetable_settings_page/labeled_text.dart';
 import '../widgets/popup_menu_action.dart';
+import '../widgets/week_timeline.dart';
 
 class TimetableEditorPage extends StatelessWidget {
   TimetableEditorPage({Key? key, Timetable? editingTimetable})
@@ -28,55 +29,51 @@ class TimetableEditorPage extends StatelessWidget {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: colors.backgroundPrimary,
-        title: Column(
+        title: Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Row(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  width: 42,
-                  height: 42,
-                  padding: const EdgeInsets.only(left: 16),
-                  child: IconButton(
-                    padding: EdgeInsets.zero,
-                    onPressed: () {
-                      // переход назад
-                    },
-                    icon: SvgPicture.asset(
-                      Assets.images.circleChevronLeft.path,
-                      color: colors.accentPrimary,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
+            Container(
+              width: 42,
+              height: 42,
+              padding: const EdgeInsets.only(left: 16),
+              child: IconButton(
+                padding: EdgeInsets.zero,
+                onPressed: () {
+                  // переход назад
+                },
+                icon: SvgPicture.asset(
+                  Assets.images.circleChevronLeft.path,
+                  color: colors.accentPrimary,
+                  fit: BoxFit.cover,
                 ),
-                Text(
-                  timeTable.name,
-                  style: textStyles.title,
-                ),
-                Container(
-                  width: 42,
-                  height: 42,
-                  padding: const EdgeInsets.only(right: 16),
-                  child: IconButton(
-                    padding: EdgeInsets.zero,
-                    onPressed: () {
-                      // переход назад
-                    },
-                    icon: SvgPicture.asset(
-                      Assets.images.settings.path,
-                      color: colors.accentPrimary,
-                    ),
-                  ),
-                ),
-              ],
+              ),
             ),
-            // тут должна быть штука серёги
+            Text(
+              timeTable.name,
+              style: textStyles.title,
+            ),
+            Container(
+              width: 42,
+              height: 42,
+              padding: const EdgeInsets.only(right: 16),
+              child: IconButton(
+                padding: EdgeInsets.zero,
+                onPressed: () {
+                  // переход назад
+                },
+                icon: SvgPicture.asset(
+                  Assets.images.settings.path,
+                  color: colors.accentPrimary,
+                ),
+              ),
+            ),
           ],
         ),
       ),
       body: Column(
         children: [
+          const WeekTimeline(),
           Divider(
             height: 1,
             thickness: 1,
@@ -103,7 +100,7 @@ class TimetableEditorPage extends StatelessWidget {
                 itemBuilder: (context, index) {
                   if (timeTable.days[0].lessons[index].isEmpty) {
                     return EmptyLessonCard(
-                      index: index,
+                      index: index + 1,
                       // взять из заданного времени
                       interval: TimeInterval(
                         from: timeTable.config.timeIntervals[index].from,
@@ -115,7 +112,7 @@ class TimetableEditorPage extends StatelessWidget {
                     );
                   } else {
                     return EditableLessonCard(
-                      index: index,
+                      index: index + 1,
                       // взять из заданного времени
                       interval: TimeInterval(
                         from: timeTable.config.timeIntervals[index].from,
@@ -126,17 +123,20 @@ class TimetableEditorPage extends StatelessWidget {
                         // реализовать действия
                         PopupMenuAction(
                           text: "Изменить",
-                          icon: Assets.images.iconEditOutline.svg(color: colors.accentPrimary),
+                          icon: Assets.images.iconEditOutline
+                              .svg(color: colors.accentPrimary),
                           action: () {},
                         ),
                         PopupMenuAction(
                           text: "Копировать пару",
-                          icon: Assets.images.command.svg(color: colors.accentPrimary),
+                          icon: Assets.images.command
+                              .svg(color: colors.accentPrimary),
                           action: () {},
                         ),
                         PopupMenuAction(
                           text: "Удалить",
-                          icon: Assets.images.trashFull.svg(color: colors.accentPrimary),
+                          icon: Assets.images.trashFull
+                              .svg(color: colors.accentPrimary),
                           action: () {},
                           style: PopupMenuActionStyle.destructive,
                         ),
