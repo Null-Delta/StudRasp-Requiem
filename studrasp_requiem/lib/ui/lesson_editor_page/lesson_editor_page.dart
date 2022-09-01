@@ -58,10 +58,11 @@ class _LessonEditorPageState extends ConsumerState<LessonEditorPage> {
 
   void saveChanges() {
     Lesson newLesson = Lesson(
-        name: nameTextEditingController.text,
-        type: typeTextEditingController.text,
-        teacher: teacherTextEditingController.text,
-        audience: audienceTextEditingController.text);
+      name: nameTextEditingController.text,
+      type: typeTextEditingController.text,
+      teacher: teacherTextEditingController.text,
+      audience: audienceTextEditingController.text,
+    );
 
     ref.read(currentEditingTimetable.notifier).update(
       (state) {
@@ -70,7 +71,6 @@ class _LessonEditorPageState extends ConsumerState<LessonEditorPage> {
             lessons: List<Lesson>.from(state.days[widget.lessonDay].lessons)
               ..[widget.lessonNumber] = newLesson,
           );
-
         return state.copyWith(
           days: newDays,
         );

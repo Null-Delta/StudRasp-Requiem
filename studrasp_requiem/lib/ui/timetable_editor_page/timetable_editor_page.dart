@@ -3,8 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../gen/assets.gen.dart';
+import '../../models/day/day_model.dart';
+import '../../models/lesson/lesson_model.dart';
 import '../../models/time_interval/time_interval_model.dart';
 import '../../models/timetable/timetable_model.dart';
+import '../../providers/providers.dart';
 import '../../styles/colors.dart';
 import '../../styles/fonts.dart';
 import '../lesson_card/card_styles/editable_lesson_card.dart';
@@ -19,13 +22,35 @@ final currentEditingTimetable = StateProvider<Timetable>((ref) {
   return Timetable.empty();
 });
 
-class TimetableEditorPage extends ConsumerWidget {
+class TimetableEditorPage extends ConsumerStatefulWidget {
   const TimetableEditorPage({Key? key, this.timeTable}) : super(key: key);
 
   final Timetable? timeTable;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<TimetableEditorPage> createState() =>
+      _TimetableEditorPageState();
+}
+
+class _TimetableEditorPageState extends ConsumerState<TimetableEditorPage> {
+  void deleteLesson(int lessonDay, int lessonNumber) {
+    ref.read(currentEditingTimetable.notifier).update(
+      (state) {
+        List<Day> newDays = List<Day>.from(state.days)
+          ..[lessonDay] = Day(
+            lessons: List<Lesson>.from(state.days[lessonDay].lessons)
+              ..[lessonNumber] =
+                  const Lesson(name: '', type: '', teacher: '', audience: ''),
+          );
+        return state.copyWith(
+          days: newDays,
+        );
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final colors = Theme.of(context).extension<AppColors>()!;
     final textStyles = Theme.of(context).extension<AppTextStyles>()!;
 
@@ -40,8 +65,9 @@ class TimetableEditorPage extends ConsumerWidget {
 
     return ProviderScope(
       overrides: [
-        currentEditingTimetable
-            .overrideWithValue(StateController(timeTable ?? Timetable.empty()))
+        currentEditingTimetable.overrideWithValue(
+          StateController(widget.timeTable ?? Timetable.empty()),
+        ),
       ],
       child: Scaffold(
         backgroundColor: colors.backgroundPrimary,
@@ -100,13 +126,18 @@ class TimetableEditorPage extends ConsumerWidget {
         ),
         body: Column(
           children: [
-            const WeekTimeline(),
+            const WeekTimeline(
+              weekCount: 2,
+            ),
             Divider(
               height: 1,
               thickness: 1,
               color: colors.separator,
             ),
-            LabeledText(label: 'Неделя', text: config.weekTypes[0]),
+            LabeledText(
+              label: 'Неделя',
+              text: config.weekTypes[selectedDay ~/ 7],
+            ),
             const SizedBox(
               height: 12,
             ),
@@ -185,7 +216,9 @@ class TimetableEditorPage extends ConsumerWidget {
                             text: "Удалить",
                             icon: Assets.images.trashFull
                                 .svg(color: colors.accentPrimary),
-                            action: () {},
+                            action: () {
+                              deleteLesson(selectedDay, index);
+                            },
                             style: PopupMenuActionStyle.destructive,
                           ),
                         ],

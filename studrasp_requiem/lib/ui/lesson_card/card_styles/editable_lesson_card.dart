@@ -43,18 +43,26 @@ class EditableLessonCard extends StatelessWidget {
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.only(left: 12, right: 6, top: 6, bottom: 0),
+            padding:
+                const EdgeInsets.only(left: 12, right: 6, top: 6, bottom: 0),
             child: LessonHeader(
               index: index,
               interval: interval,
               rightWidget: PopupMenuButton<String>(
+                onSelected: (name) {
+                  for (var action in actions) {
+                    if (action.text == name) {
+                      action.action();
+                      return;
+                    }
+                  }
+                },
                 itemBuilder: (context) {
                   return actions
                       .map(
                         (action) => PopupMenuItem(
                           value: action.text,
                           height: 48,
-                          onTap: action.action,
                           child: action,
                         ),
                       )
@@ -71,7 +79,8 @@ class EditableLessonCard extends StatelessWidget {
                 color: colors.backgroundPrimary,
                 elevation: 16,
                 splashRadius: 1,
-                icon: Assets.images.moreHorizontal.svg(color: colors.accentPrimary),
+                icon: Assets.images.moreHorizontal
+                    .svg(color: colors.accentPrimary),
                 constraints: const BoxConstraints(minWidth: 256),
               ),
             ),
