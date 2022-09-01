@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -8,6 +10,8 @@ import '../../models/user/user_model.dart';
 import '../../providers/providers.dart';
 import '../../styles/build_context_extension.dart';
 import '../../styles/text_field_style.dart';
+import '../search_page/search_page.dart';
+import '../timetable_editor_page/timetable_editor_page.dart';
 import 'action_header.dart';
 import 'editor_card.dart';
 import 'labeled_text.dart';
@@ -17,16 +21,13 @@ class TimeTableSettingsPage extends ConsumerStatefulWidget {
   const TimeTableSettingsPage({Key? key}) : super(key: key);
 
   @override
-  ConsumerState<TimeTableSettingsPage> createState() =>
-      _TimeTableSettingsPageState();
+  ConsumerState<TimeTableSettingsPage> createState() => _TimeTableSettingsPageState();
 }
 
 class _TimeTableSettingsPageState extends ConsumerState<TimeTableSettingsPage> {
   final TextEditingController nameFieldController = TextEditingController();
-  final TextEditingController firstWeekFieldController =
-      TextEditingController();
-  final TextEditingController secondWeekFieldController =
-      TextEditingController();
+  final TextEditingController firstWeekFieldController = TextEditingController();
+  final TextEditingController secondWeekFieldController = TextEditingController();
 
   List<LessonIntervalController> lessonControllers = [];
   List<User> editors = [];
@@ -37,6 +38,7 @@ class _TimeTableSettingsPageState extends ConsumerState<TimeTableSettingsPage> {
         return state.copyWith(
           name: nameFieldController.text,
           lastUpdateDate: DateTime.now(),
+          editors: editors,
           config: TimetableConfig(
             timeIntervals: lessonControllers.map((e) => e.interval).toList(),
             weekTypes: [
@@ -68,6 +70,36 @@ class _TimeTableSettingsPageState extends ConsumerState<TimeTableSettingsPage> {
     editors = timetable.editors;
   }
 
+  void openEditorSearch() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) {
+          return SearchPage<User>(
+            filter: (name) {
+              int count = Random().nextInt(20);
+              return List<User>.generate(
+                count,
+                (index) => User(id: "${Random().nextInt(100)}", name: "user ${Random().nextInt(100)}", avatarUrl: ""),
+              );
+            },
+            itemBuilder: (user) {
+              return EditorCard(
+                user: user,
+                onTap: () {
+                  setState(() {
+                    editors = [...editors, user];
+                  });
+
+                  Navigator.pop(context);
+                },
+              );
+            },
+          );
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
@@ -92,8 +124,7 @@ class _TimeTableSettingsPageState extends ConsumerState<TimeTableSettingsPage> {
           onPressed: () {
             saveChanges();
           },
-          icon:
-              Assets.images.circleChevronLeft.svg(color: colors.accentPrimary),
+          icon: Assets.images.circleChevronLeft.svg(color: colors.accentPrimary),
           splashRadius: 24,
         ),
         title: Text(
@@ -178,7 +209,9 @@ class _TimeTableSettingsPageState extends ConsumerState<TimeTableSettingsPage> {
               ActionHeader(
                 title: "Редакторы",
                 action: IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    openEditorSearch();
+                  },
                   icon: Assets.images.iconPlusOutline.svg(
                     color: colors.accentPrimary,
                     width: 24,
@@ -188,31 +221,54 @@ class _TimeTableSettingsPageState extends ConsumerState<TimeTableSettingsPage> {
                   splashRadius: 24,
                 ),
               ),
-              ListView.separated(
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: editors.length,
-                itemBuilder: (context, index) {
-                  return EditorCard(
-                    user: editors[index],
-                  );
-                },
-                separatorBuilder: (context, index) {
-                  return Divider(
-                    height: 1,
-                    thickness: 1,
-                    color: colors.separator,
-                  );
-                },
-              ),
+              if (editors.isEmpty)
+                Container(
+                  alignment: Alignment.center,
+                  height: 64,
+                  child: Text(
+                    "Список пуст",
+                    style: textStyles.label!.copyWith(
+                      color: colors.disable,
+                    ),
+                  ),
+                )
+              else
+                ListView.separated(
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: editors.length,
+                  itemBuilder: (context, index) {
+                    return EditorCard(
+                      user: editors[index],
+                      onTap: () {},
+                      action: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            editors = editors.where((element) => element.id != editors[index].id).toList();
+                          });
+                        },
+                        icon: Assets.images.trashFull.svg(
+                          color: colors.destructive,
+                          width: 20,
+                          height: 20,
+                        ),
+                        iconSize: 24,
+                        splashRadius: 24,
+                      ),
+                    );
+                  },
+                  separatorBuilder: (context, index) {
+                    return Divider(
+                      height: 1,
+                      thickness: 1,
+                      color: colors.separator,
+                    );
+                  },
+                ),
               const SizedBox(height: 12),
               const ActionHeader(title: "Информация"),
-              LabeledText(
-                  label: "Дата создания",
-                  text: DateFormat('d MMMM').format(creationDate)),
-              LabeledText(
-                  label: "Последнее изменение",
-                  text: DateFormat('d MMMM').format(lastUpdateDate)),
+              LabeledText(label: "Дата создания", text: DateFormat('d MMMM').format(creationDate)),
+              LabeledText(label: "Последнее изменение", text: DateFormat('d MMMM').format(lastUpdateDate)),
             ],
           ),
         ),
