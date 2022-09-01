@@ -20,19 +20,6 @@ import '../timetable_settings_page/timetable_settings_page.dart';
 import '../widgets/popup_menu_action.dart';
 import '../widgets/week_timeline.dart';
 
-final currentEditingTimetable = StateProvider<Timetable>((ref) {
-  return Timetable.empty();
-});
-
-final selectedDay = Provider<int>((ref) {
-  final currentDay = ref.watch(currentDate);
-  int weekValue = ref.watch(selectedDuration).inDays + currentDay.weekday - 1;
-  if (weekValue >= 14) {
-    weekValue = currentDay.weekday - 1;
-  }
-  return weekValue;
-});
-
 class TimetableEditorPage extends ConsumerStatefulWidget {
   const TimetableEditorPage({Key? key, this.timeTable}) : super(key: key);
 

@@ -5,14 +5,10 @@ import 'package:flutter_svg/svg.dart';
 import '../../gen/assets.gen.dart';
 import '../../models/day/day_model.dart';
 import '../../models/lesson/lesson_model.dart';
+import '../../providers/providers.dart';
 import '../../styles/colors.dart';
 import '../../styles/fonts.dart';
-import '../timetable_editor_page/timetable_editor_page.dart';
 import 'widgets/lesson_part_input.dart';
-
-final currentEditingLesson = StateProvider<Lesson>((ref) {
-  return const Lesson(name: '', type: '', teacher: '', audience: '');
-});
 
 class LessonEditorPage extends ConsumerStatefulWidget {
   const LessonEditorPage({
@@ -30,13 +26,31 @@ class LessonEditorPage extends ConsumerStatefulWidget {
 
 class _LessonEditorPageState extends ConsumerState<LessonEditorPage> {
   late TextEditingController nameTextEditingController = TextEditingController()
-    ..text = ref.read(currentEditingTimetable).days[widget.lessonDay].lessons[widget.lessonNumber].name;
-  late TextEditingController audienceTextEditingController = TextEditingController()
-    ..text = ref.read(currentEditingTimetable).days[widget.lessonDay].lessons[widget.lessonNumber].audience;
-  late TextEditingController teacherTextEditingController = TextEditingController()
-    ..text = ref.read(currentEditingTimetable).days[widget.lessonDay].lessons[widget.lessonNumber].teacher;
+    ..text = ref
+        .read(currentEditingTimetable)
+        .days[widget.lessonDay]
+        .lessons[widget.lessonNumber]
+        .name;
+  late TextEditingController audienceTextEditingController =
+      TextEditingController()
+        ..text = ref
+            .read(currentEditingTimetable)
+            .days[widget.lessonDay]
+            .lessons[widget.lessonNumber]
+            .audience;
+  late TextEditingController teacherTextEditingController =
+      TextEditingController()
+        ..text = ref
+            .read(currentEditingTimetable)
+            .days[widget.lessonDay]
+            .lessons[widget.lessonNumber]
+            .teacher;
   late TextEditingController typeTextEditingController = TextEditingController()
-    ..text = ref.read(currentEditingTimetable).days[widget.lessonDay].lessons[widget.lessonNumber].type;
+    ..text = ref
+        .read(currentEditingTimetable)
+        .days[widget.lessonDay]
+        .lessons[widget.lessonNumber]
+        .type;
 
   void saveChanges() {
     Lesson newLesson = Lesson(
@@ -50,7 +64,8 @@ class _LessonEditorPageState extends ConsumerState<LessonEditorPage> {
       (state) {
         List<Day> newDays = List<Day>.from(state.days)
           ..[widget.lessonDay] = Day(
-            lessons: List<Lesson>.from(state.days[widget.lessonDay].lessons)..[widget.lessonNumber] = newLesson,
+            lessons: List<Lesson>.from(state.days[widget.lessonDay].lessons)
+              ..[widget.lessonNumber] = newLesson,
           );
         return state.copyWith(
           days: newDays,

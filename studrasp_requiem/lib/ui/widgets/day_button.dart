@@ -9,24 +9,6 @@ import '../../styles/widget_styles.dart';
 
 enum DayButtonStyle { defalut, highlighted, selected }
 
-final dayButtonStyleProvider = Provider.family.autoDispose<DayButtonStyle, Duration>((ref, duration) {
-  if (duration.inDays == ref.watch(selectedDuration).inDays) {
-    return DayButtonStyle.selected;
-  }
-
-  final now = DateTime.now().millisecondsSinceEpoch;
-
-  final buttonDays = Duration(milliseconds: now + duration.inMilliseconds).inDays;
-
-  final currentdays = Duration(milliseconds: now).inDays;
-
-  if (buttonDays == currentdays) {
-    return DayButtonStyle.highlighted;
-  }
-
-  return DayButtonStyle.defalut;
-});
-
 class DayButton extends ConsumerStatefulWidget {
   final Duration diration;
 
@@ -105,7 +87,8 @@ class _DayButtonState extends ConsumerState<DayButton> {
                 ),
               ),
               Text(
-                DateFormat('EEE').format(ref.watch(currentDate).add(widget.diration)),
+                DateFormat('EEE')
+                    .format(ref.watch(currentDate).add(widget.diration)),
                 style: const TextStyle(fontFamily: "Roboto").copyWith(
                   color: colors.disable,
                   fontSize: 10,

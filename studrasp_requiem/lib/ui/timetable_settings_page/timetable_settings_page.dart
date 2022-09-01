@@ -5,9 +5,9 @@ import 'package:intl/intl.dart';
 import '../../gen/assets.gen.dart';
 import '../../models/timetable_config/timetable_config_model.dart';
 import '../../models/user/user_model.dart';
+import '../../providers/providers.dart';
 import '../../styles/build_context_extension.dart';
 import '../../styles/text_field_style.dart';
-import '../timetable_editor_page/timetable_editor_page.dart';
 import 'action_header.dart';
 import 'editor_card.dart';
 import 'labeled_text.dart';
@@ -17,13 +17,16 @@ class TimeTableSettingsPage extends ConsumerStatefulWidget {
   const TimeTableSettingsPage({Key? key}) : super(key: key);
 
   @override
-  ConsumerState<TimeTableSettingsPage> createState() => _TimeTableSettingsPageState();
+  ConsumerState<TimeTableSettingsPage> createState() =>
+      _TimeTableSettingsPageState();
 }
 
 class _TimeTableSettingsPageState extends ConsumerState<TimeTableSettingsPage> {
   final TextEditingController nameFieldController = TextEditingController();
-  final TextEditingController firstWeekFieldController = TextEditingController();
-  final TextEditingController secondWeekFieldController = TextEditingController();
+  final TextEditingController firstWeekFieldController =
+      TextEditingController();
+  final TextEditingController secondWeekFieldController =
+      TextEditingController();
 
   List<LessonIntervalController> lessonControllers = [];
   List<User> editors = [];
@@ -89,7 +92,8 @@ class _TimeTableSettingsPageState extends ConsumerState<TimeTableSettingsPage> {
           onPressed: () {
             saveChanges();
           },
-          icon: Assets.images.circleChevronLeft.svg(color: colors.accentPrimary),
+          icon:
+              Assets.images.circleChevronLeft.svg(color: colors.accentPrimary),
           splashRadius: 24,
         ),
         title: Text(
@@ -203,8 +207,12 @@ class _TimeTableSettingsPageState extends ConsumerState<TimeTableSettingsPage> {
               ),
               const SizedBox(height: 12),
               const ActionHeader(title: "Информация"),
-              LabeledText(label: "Дата создания", text: DateFormat('d MMMM').format(creationDate)),
-              LabeledText(label: "Последнее изменение", text: DateFormat('d MMMM').format(lastUpdateDate)),
+              LabeledText(
+                  label: "Дата создания",
+                  text: DateFormat('d MMMM').format(creationDate)),
+              LabeledText(
+                  label: "Последнее изменение",
+                  text: DateFormat('d MMMM').format(lastUpdateDate)),
             ],
           ),
         ),
