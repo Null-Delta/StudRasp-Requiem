@@ -71,6 +71,10 @@ class $AssetsImagesGen {
   /// File path: assets/images/settings.svg
   SvgGenImage get settings => const SvgGenImage('assets/images/settings.svg');
 
+  /// File path: assets/images/stud_rasp_icon.svg
+  SvgGenImage get studRaspIcon =>
+      const SvgGenImage('assets/images/stud_rasp_icon.svg');
+
   /// File path: assets/images/transfer.svg
   SvgGenImage get transfer => const SvgGenImage('assets/images/transfer.svg');
 
