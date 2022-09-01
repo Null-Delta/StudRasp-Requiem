@@ -22,6 +22,8 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       themeMode: ThemeMode.system,
       theme: ThemeData.light().copyWith(
+        backgroundColor: lightColors.backgroundPrimary,
+        scaffoldBackgroundColor: lightColors.backgroundPrimary,
         appBarTheme: ThemeData.light().appBarTheme.copyWith(
               backgroundColor: appLightColors.backgroundPrimary,
               foregroundColor: appLightColors.accentPrimary,
@@ -41,6 +43,8 @@ class MyApp extends StatelessWidget {
         ],
       ),
       darkTheme: ThemeData.dark().copyWith(
+        backgroundColor: darkColors.backgroundPrimary,
+        scaffoldBackgroundColor: darkColors.backgroundPrimary,
         appBarTheme: ThemeData.dark().appBarTheme.copyWith(
               backgroundColor: appDarkColors.backgroundPrimary,
               foregroundColor: appDarkColors.accentPrimary,

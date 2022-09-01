@@ -138,6 +138,7 @@ class _TimeTableListPageState extends State<TimeTableListPage> {
                           icon: Assets.images.moreHorizontal.svg(),
                           splashRadius: 24,
                         ),
+                        onTap: () {},
                       );
                     },
                     separatorBuilder: (context, index) {
@@ -159,6 +160,7 @@ class _TimeTableListPageState extends State<TimeTableListPage> {
                           icon: Assets.images.moreHorizontal.svg(),
                           splashRadius: 24,
                         ),
+                        onTap: () {},
                       );
                     },
                     separatorBuilder: (context, index) {

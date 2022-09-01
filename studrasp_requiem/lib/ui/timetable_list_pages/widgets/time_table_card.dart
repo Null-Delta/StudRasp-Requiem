@@ -8,11 +8,13 @@ class TimeTableCard extends StatelessWidget {
   final Timetable timeTable;
   final Widget button;
   final bool showOwner;
+  final Function() onTap;
 
   const TimeTableCard({
     Key? key,
     required this.timeTable,
     required this.button,
+    required this.onTap,
     this.showOwner = true,
   }) : super(key: key);
 
@@ -27,39 +29,44 @@ class TimeTableCard extends StatelessWidget {
     final colors = context.colors;
     final textStyles = context.textStyles;
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      child: Row(
-        children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                timeTable.name,
-                style: textStyles.subtitle,
-              ),
-              const SizedBox(
-                height: 4,
-              ),
-              Text(
-                'Обновлено ${getDate()}',
-                style: textStyles.smallLabel!.copyWith(color: colors.disable),
-              ),
-              if (showOwner)
+    return GestureDetector(
+      onTap: () {
+        onTap();
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        child: Row(
+          children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
                 Text(
-                  'Владелец ${timeTable.owner.name}',
+                  timeTable.name,
+                  style: textStyles.subtitle,
+                ),
+                const SizedBox(
+                  height: 4,
+                ),
+                Text(
+                  'Обновлено ${getDate()}',
                   style: textStyles.smallLabel!.copyWith(color: colors.disable),
                 ),
-            ],
-          ),
-          const Spacer(),
-          SizedBox(
-            width: 42,
-            height: 42,
-            child: button,
-          ),
-        ],
+                if (showOwner)
+                  Text(
+                    'Владелец ${timeTable.owner.name}',
+                    style: textStyles.smallLabel!.copyWith(color: colors.disable),
+                  ),
+              ],
+            ),
+            const Spacer(),
+            SizedBox(
+              width: 42,
+              height: 42,
+              child: button,
+            ),
+          ],
+        ),
       ),
     );
   }
