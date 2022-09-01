@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../../styles/colors.dart';
 import '../../../styles/fonts.dart';
 
-class LessonPartInput extends StatelessWidget {
-  const LessonPartInput({Key? key, required this.partName}) : super(key: key);
+class LessonPartInput extends ConsumerWidget {
+  const LessonPartInput({
+    Key? key,
+    required this.partName,
+    required this.controller,
+  }) : super(key: key);
   final String partName;
+  final TextEditingController controller;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final colors = Theme.of(context).extension<AppColors>()!;
     final textStyles = Theme.of(context).extension<AppTextStyles>()!;
 
@@ -35,16 +41,21 @@ class LessonPartInput extends StatelessWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Container(
-                padding: const EdgeInsets.only(left: 12, right: 10),
-                child: Text(
-                  'Название',
-                  style:
-                      textStyles.label!.copyWith(color: colors.accentSecondary),
-                  maxLines: null,
+              Expanded(
+                child: Container(
+                  padding: const EdgeInsets.only(left: 12, right: 10),
+                  child: TextField(
+                    controller: controller,
+                    minLines: 1,
+                    style: textStyles.label!
+                        .copyWith(color: colors.accentSecondary),
+                    decoration: const InputDecoration(
+                      contentPadding: EdgeInsets.zero,
+                      border: InputBorder.none,
+                    ),
+                  ),
                 ),
               ),
-              const Spacer(),
               SizedBox(
                 width: 42,
                 height: 42,

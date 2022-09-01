@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../models/timetable/timetable_model.dart';
+import '../models/user/user_model.dart';
 
 final currentDate = StateProvider<DateTime>((ref) {
   return DateTime.now();
@@ -12,4 +13,8 @@ final selectedDuration = StateProvider<Duration>((ref) {
 
 final currentTimetable = StateProvider<Timetable>((ref) {
   return Timetable.empty();
+});
+
+final currentUser = StateProvider<User>((ref) {
+  return const User(id: '', name: '', avatarUrl: '');
 });
