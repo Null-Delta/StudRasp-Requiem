@@ -8,6 +8,7 @@ import '../../models/lesson/lesson_model.dart';
 import '../../providers/providers.dart';
 import '../../styles/colors.dart';
 import '../../styles/fonts.dart';
+import '../widgets/app_text_field.dart';
 
 class LessonEditorPage extends ConsumerStatefulWidget {
   const LessonEditorPage({
@@ -114,49 +115,37 @@ class _LessonEditorPageState extends ConsumerState<LessonEditorPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   AppTextField(
+                    controller: name,
                     label: 'Название предмета',
-                    textField: TextField(
-                      controller: name,
-                      decoration: const InputDecoration(
-                        hintText: 'Дискретная математика',
-                      ),
-                    ),
+                    hint: 'Дискретная математика',
+                    onTap: () {},
                   ),
                   const SizedBox(
                     height: 12,
                   ),
                   AppTextField(
+                    controller: audience,
                     label: 'Аудитория',
-                    textField: TextField(
-                      controller: audience,
-                      decoration: const InputDecoration(
-                        hintText: '104',
-                      ),
-                    ),
+                    hint: '104',
+                    onTap: () {},
                   ),
                   const SizedBox(
                     height: 12,
                   ),
                   AppTextField(
+                    controller: teacher,
                     label: 'Преподаватель',
-                    textField: TextField(
-                      controller: teacher,
-                      decoration: const InputDecoration(
-                        hintText: 'Жук А. С.',
-                      ),
-                    ),
+                    hint: 'Жук А. С.',
+                    onTap: () {},
                   ),
                   const SizedBox(
                     height: 12,
                   ),
                   AppTextField(
+                    controller: type,
                     label: 'Тип',
-                    textField: TextField(
-                      controller: type,
-                      decoration: const InputDecoration(
-                        hintText: 'Практика',
-                      ),
-                    ),
+                    hint: 'Практика',
+                    onTap: () {},
                   ),
                 ],
               ),
@@ -164,35 +153,6 @@ class _LessonEditorPageState extends ConsumerState<LessonEditorPage> {
           ],
         ),
       ),
-    );
-  }
-}
-
-class AppTextField extends StatelessWidget {
-  const AppTextField({
-    Key? key,
-    required this.textField,
-    required this.label,
-  }) : super(key: key);
-
-  final TextField textField;
-  final String label;
-
-  @override
-  Widget build(BuildContext context) {
-    final textStyles = Theme.of(context).extension<AppTextStyles>()!;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label,
-          style: textStyles.subtitle,
-        ),
-        const SizedBox(
-          height: 4,
-        ),
-        textField
-      ],
     );
   }
 }
