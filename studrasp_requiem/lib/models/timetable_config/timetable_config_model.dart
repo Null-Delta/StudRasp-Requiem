@@ -18,15 +18,17 @@ class TimetableConfig with _$TimetableConfig {
   factory TimetableConfig.fromJson(Map<String, dynamic> json) =>
       _$TimetableConfigFromJson(json);
 
-  factory TimetableConfig.empty() => TimetableConfig(
-        timeIntervals: [
-          for (int i = 0; i < 8; i++)
-            TimeInterval(
-              from: Duration(hours: 8 + i),
-              to: Duration(hours: 9 + i),
-            ),
-        ],
-        weekTypes: ['Первая', 'Вторая'],
-        lessonTypes: ['Лекция', 'Практика'],
-      );
+  factory TimetableConfig.empty() {
+    return TimetableConfig(
+      timeIntervals: [
+        for (int i = 0; i < 8; i++)
+          TimeInterval(
+            from: Duration(hours: 8 + i),
+            to: Duration(hours: 9 + i),
+          ),
+      ],
+      weekTypes: ['Первая', 'Вторая'],
+      lessonTypes: ['Лекция', 'Практика'],
+    );
+  }
 }

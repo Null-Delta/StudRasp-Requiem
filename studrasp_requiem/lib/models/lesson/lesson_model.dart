@@ -19,8 +19,9 @@ class Lesson with _$Lesson {
 
   factory Lesson.fromJson(Map<String, Object?> json) => _$LessonFromJson(json);
 
-  factory Lesson.empty() =>
-      const Lesson(name: '', type: '', teacher: '', audience: '');
+  factory Lesson.empty() {
+    return const Lesson(name: '', type: '', teacher: '', audience: '');
+  }
 
   factory Lesson.random() {
     final random = Random();
