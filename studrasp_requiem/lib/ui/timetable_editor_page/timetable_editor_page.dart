@@ -22,6 +22,15 @@ final currentEditingTimetable = StateProvider<Timetable>((ref) {
   return Timetable.empty();
 });
 
+final selectedDay = Provider<int>((ref) {
+  final currentDay = ref.watch(currentDate);
+  int weekValue = ref.watch(selectedDuration).inDays + currentDay.weekday - 1;
+  if (weekValue >= 14) {
+    weekValue = currentDay.weekday - 1;
+  }
+  return weekValue;
+});
+
 class TimetableEditorPage extends ConsumerStatefulWidget {
   const TimetableEditorPage({Key? key, this.timeTable}) : super(key: key);
 
@@ -61,7 +70,7 @@ class _TimetableEditorPageState extends ConsumerState<TimetableEditorPage> {
     final days =
         ref.watch(currentEditingTimetable.select((value) => value.days));
 
-    final selectedDay = 0;
+    final editingDay = ref.watch(selectedDay);
 
     return ProviderScope(
       overrides: [
@@ -136,7 +145,7 @@ class _TimetableEditorPageState extends ConsumerState<TimetableEditorPage> {
             ),
             LabeledText(
               label: 'Неделя',
-              text: config.weekTypes[selectedDay ~/ 7],
+              text: config.weekTypes[editingDay ~/ 7],
             ),
             const SizedBox(
               height: 12,
@@ -149,14 +158,14 @@ class _TimetableEditorPageState extends ConsumerState<TimetableEditorPage> {
                 ),
                 child: ListView.separated(
                   physics: const BouncingScrollPhysics(),
-                  itemCount: days[selectedDay].lessons.length,
+                  itemCount: days[editingDay].lessons.length,
                   separatorBuilder: (context, index) {
                     return const SizedBox(
                       height: 12,
                     );
                   },
                   itemBuilder: (context, index) {
-                    if (days[selectedDay].lessons[index].isEmpty) {
+                    if (days[editingDay].lessons[index].isEmpty) {
                       return EmptyLessonCard(
                         index: index + 1,
                         // взять из заданного времени
@@ -170,7 +179,7 @@ class _TimetableEditorPageState extends ConsumerState<TimetableEditorPage> {
                             MaterialPageRoute(
                               builder: (context) {
                                 return LessonEditorPage(
-                                  lessonDay: selectedDay,
+                                  lessonDay: editingDay,
                                   lessonNumber: index,
                                 );
                               },
@@ -186,7 +195,7 @@ class _TimetableEditorPageState extends ConsumerState<TimetableEditorPage> {
                           from: config.timeIntervals[index].from,
                           to: config.timeIntervals[index].to,
                         ),
-                        lesson: days[selectedDay].lessons[index],
+                        lesson: days[editingDay].lessons[index],
                         actions: [
                           // реализовать действия
                           PopupMenuAction(
@@ -198,7 +207,7 @@ class _TimetableEditorPageState extends ConsumerState<TimetableEditorPage> {
                                 MaterialPageRoute(
                                   builder: (context) {
                                     return LessonEditorPage(
-                                      lessonDay: selectedDay,
+                                      lessonDay: editingDay,
                                       lessonNumber: index,
                                     );
                                   },
@@ -217,7 +226,7 @@ class _TimetableEditorPageState extends ConsumerState<TimetableEditorPage> {
                             icon: Assets.images.trashFull
                                 .svg(color: colors.accentPrimary),
                             action: () {
-                              deleteLesson(selectedDay, index);
+                              deleteLesson(editingDay, index);
                             },
                             style: PopupMenuActionStyle.destructive,
                           ),

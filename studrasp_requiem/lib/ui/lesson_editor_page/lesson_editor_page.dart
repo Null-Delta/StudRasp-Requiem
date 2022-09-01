@@ -132,7 +132,8 @@ class _LessonEditorPageState extends ConsumerState<LessonEditorPage> {
             ],
           ),
         ),
-        body: Column(
+        body: ListView(
+          shrinkWrap: true,
           children: [
             Divider(
               height: 1,
