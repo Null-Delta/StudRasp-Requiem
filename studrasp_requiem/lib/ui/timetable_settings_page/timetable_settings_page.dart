@@ -37,6 +37,7 @@ class _TimeTableSettingsPageState extends ConsumerState<TimeTableSettingsPage> {
         return state.copyWith(
           name: nameFieldController.text,
           lastUpdateDate: DateTime.now(),
+          editors: editors,
           config: TimetableConfig(
             timeIntervals: lessonControllers.map((e) => e.interval).toList(),
             weekTypes: [
@@ -81,7 +82,16 @@ class _TimeTableSettingsPageState extends ConsumerState<TimeTableSettingsPage> {
               );
             },
             itemBuilder: (user) {
-              return EditorCard(user: user);
+              return EditorCard(
+                user: user,
+                onTap: () {
+                  setState(() {
+                    editors = [...editors, user];
+                  });
+
+                  Navigator.pop(context);
+                },
+              );
             },
           );
         },
@@ -210,23 +220,50 @@ class _TimeTableSettingsPageState extends ConsumerState<TimeTableSettingsPage> {
                   splashRadius: 24,
                 ),
               ),
-              ListView.separated(
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: editors.length,
-                itemBuilder: (context, index) {
-                  return EditorCard(
-                    user: editors[index],
-                  );
-                },
-                separatorBuilder: (context, index) {
-                  return Divider(
-                    height: 1,
-                    thickness: 1,
-                    color: colors.separator,
-                  );
-                },
-              ),
+              if (editors.isEmpty)
+                Container(
+                  alignment: Alignment.center,
+                  height: 64,
+                  child: Text(
+                    "Список пуст",
+                    style: textStyles.label!.copyWith(
+                      color: colors.disable,
+                    ),
+                  ),
+                )
+              else
+                ListView.separated(
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: editors.length,
+                  itemBuilder: (context, index) {
+                    return EditorCard(
+                      user: editors[index],
+                      onTap: () {},
+                      action: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            editors = editors.where((element) => element.id != editors[index].id).toList();
+                          });
+                        },
+                        icon: Assets.images.trashFull.svg(
+                          color: colors.destructive,
+                          width: 20,
+                          height: 20,
+                        ),
+                        iconSize: 24,
+                        splashRadius: 24,
+                      ),
+                    );
+                  },
+                  separatorBuilder: (context, index) {
+                    return Divider(
+                      height: 1,
+                      thickness: 1,
+                      color: colors.separator,
+                    );
+                  },
+                ),
               const SizedBox(height: 12),
               const ActionHeader(title: "Информация"),
               LabeledText(label: "Дата создания", text: DateFormat('d MMMM').format(creationDate)),
