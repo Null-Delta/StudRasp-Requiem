@@ -7,16 +7,27 @@ import '../../styles/build_context_extension.dart';
 import '../../styles/button_style.dart';
 import '../../support/date_time_converter.dart';
 
-class LessonIntervalPicker extends StatelessWidget {
+class LessonIntervalController extends ValueNotifier<TimeInterval> {
+  LessonIntervalController(super.state);
+
+  TimeInterval get interval => value;
+}
+
+class LessonIntervalPicker extends StatefulWidget {
   final int index;
-  final TimeInterval interval;
+  final LessonIntervalController controller;
 
   const LessonIntervalPicker({
     Key? key,
     required this.index,
-    required this.interval,
+    required this.controller,
   }) : super(key: key);
 
+  @override
+  State<LessonIntervalPicker> createState() => _LessonIntervalPickerState();
+}
+
+class _LessonIntervalPickerState extends State<LessonIntervalPicker> {
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
@@ -29,7 +40,7 @@ class LessonIntervalPicker extends StatelessWidget {
         child: Row(
           children: [
             Text(
-              "$index пара",
+              "${widget.index} пара",
               style: textStyles.label,
             ),
             const Spacer(),
@@ -39,7 +50,10 @@ class LessonIntervalPicker extends StatelessWidget {
               onPressed: () {
                 Navigator.of(context).push(
                   showPicker(
-                    value: TimeOfDay(hour: interval.from.inHours, minute: interval.from.inMinutes % 60),
+                    value: TimeOfDay(
+                      hour: widget.controller.interval.from.inHours,
+                      minute: widget.controller.interval.from.inMinutes % 60,
+                    ),
                     hourLabel: "",
                     minuteLabel: "",
                     ltrMode: true,
@@ -55,7 +69,12 @@ class LessonIntervalPicker extends StatelessWidget {
                     okStyle: textStyles.subtitle!,
                     cancelStyle: textStyles.subtitle!,
                     buttonStyle: plainButton(colors, size: const Size(80, 36)),
-                    onChange: (time) {},
+                    onChange: (time) {
+                      setState(() {
+                        widget.controller.value =
+                            widget.controller.interval.copyWith(from: Duration(hours: time.hour, minutes: time.minute));
+                      });
+                    },
                     minuteInterval: MinuteInterval.FIVE,
                   ),
                 );
@@ -65,8 +84,8 @@ class LessonIntervalPicker extends StatelessWidget {
                 backgroundColor: MaterialStateProperty.all(colors.backgroundSecondary),
               ),
               child: Text(
-                interval.from.stringTime,
-                style: textStyles.smallLabel,
+                widget.controller.interval.from.stringTime,
+                style: textStyles.smallLabel!.copyWith(fontWeight: FontWeight.bold),
               ),
             ),
             const SizedBox(width: 8),
@@ -76,7 +95,10 @@ class LessonIntervalPicker extends StatelessWidget {
               onPressed: () {
                 Navigator.of(context).push(
                   showPicker(
-                    value: TimeOfDay(hour: interval.to.inHours, minute: interval.to.inMinutes % 60),
+                    value: TimeOfDay(
+                      hour: widget.controller.interval.to.inHours,
+                      minute: widget.controller.interval.to.inMinutes % 60,
+                    ),
                     hourLabel: "",
                     minuteLabel: "",
                     ltrMode: true,
@@ -92,7 +114,12 @@ class LessonIntervalPicker extends StatelessWidget {
                     okStyle: textStyles.subtitle!,
                     cancelStyle: textStyles.subtitle!,
                     buttonStyle: plainButton(colors, size: const Size(80, 36)),
-                    onChange: (time) {},
+                    onChange: (time) {
+                      setState(() {
+                        widget.controller.value =
+                            widget.controller.interval.copyWith(to: Duration(hours: time.hour, minutes: time.minute));
+                      });
+                    },
                     minuteInterval: MinuteInterval.FIVE,
                   ),
                 );
@@ -102,8 +129,8 @@ class LessonIntervalPicker extends StatelessWidget {
                 backgroundColor: MaterialStateProperty.all(colors.backgroundSecondary),
               ),
               child: Text(
-                interval.to.stringTime,
-                style: textStyles.smallLabel,
+                widget.controller.interval.to.stringTime,
+                style: textStyles.smallLabel!.copyWith(fontWeight: FontWeight.bold),
               ),
             ),
           ],
