@@ -10,6 +10,7 @@ import '../../models/timetable/timetable_model.dart';
 import '../../providers/providers.dart';
 import '../../styles/colors.dart';
 import '../../styles/fonts.dart';
+import '../../support/firebase.dart';
 import '../lesson_card/card_styles/editable_lesson_card.dart';
 import '../lesson_card/card_styles/empty_lesson_card.dart';
 import '../lesson_editor_page/lesson_editor_page.dart';
@@ -219,14 +220,17 @@ class _TimetableEditorPageState extends ConsumerState<TimetableEditorPage> {
                             text: "Копировать пару",
                             icon: Assets.images.command
                                 .svg(color: colors.accentPrimary),
-                            action: () {},
+                            action: () {
+                              emailRegister('', 'girya', '');
+                            },
                           ),
                           PopupMenuAction(
                             text: "Удалить",
                             icon: Assets.images.trashFull
                                 .svg(color: colors.accentPrimary),
                             action: () {
-                              deleteLesson(editingDay, index);
+                              singIn('', '');
+                              // deleteLesson(editingDay, index);
                             },
                             style: PopupMenuActionStyle.destructive,
                           ),

@@ -24,6 +24,12 @@ dependencies:
   json_annotation: ^4.6.0
   flutter_riverpod: ^2.0.0-dev.9
 
+
+  firebase_core: ^1.20.0
+  firebase_auth: ^3.0.0
+  cloud_firestore: ^3.0.0
+  firebase_messaging: ^11.0.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
