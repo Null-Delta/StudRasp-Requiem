@@ -101,9 +101,9 @@ class TimeTableSettingsPage extends StatelessWidget {
                 itemBuilder: (context, index) {
                   return LessonIntervalPicker(
                     index: index,
-                    interval: const TimeInterval(
-                      from: Duration(),
-                      to: Duration(),
+                    interval: TimeInterval(
+                      from: Duration(hours: DateTime.now().hour, minutes: DateTime.now().minute),
+                      to: Duration(hours: DateTime.now().hour, minutes: DateTime.now().minute + 10),
                     ),
                   );
                 },

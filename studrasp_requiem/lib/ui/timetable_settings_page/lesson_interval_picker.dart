@@ -1,3 +1,5 @@
+import 'package:day_night_time_picker/day_night_time_picker.dart';
+import 'package:day_night_time_picker/lib/constants.dart';
 import 'package:flutter/material.dart';
 
 import '../../models/time_interval/time_interval_model.dart';
@@ -35,16 +37,28 @@ class LessonIntervalPicker extends StatelessWidget {
             const SizedBox(width: 8),
             ElevatedButton(
               onPressed: () {
-                showTimePicker(
-                  context: context,
-                  initialEntryMode: TimePickerEntryMode.dial,
-                  initialTime: const TimeOfDay(
-                    hour: 0,
-                    minute: 0,
+                Navigator.of(context).push(
+                  showPicker(
+                    value: TimeOfDay(hour: interval.from.inHours, minute: interval.from.inMinutes % 60),
+                    hourLabel: "",
+                    minuteLabel: "",
+                    ltrMode: true,
+                    accentColor: colors.accentPrimary,
+                    unselectedColor: colors.disable,
+                    blurredBackground: false,
+                    displayHeader: true,
+                    elevation: 128,
+                    borderRadius: 12,
+                    iosStylePicker: false,
+                    is24HrFormat: true,
+                    context: context,
+                    okStyle: textStyles.subtitle!,
+                    cancelStyle: textStyles.subtitle!,
+                    buttonStyle: plainButton(colors, size: const Size(80, 36)),
+                    onChange: (time) {},
+                    minuteInterval: MinuteInterval.FIVE,
                   ),
-                ).then((value) {
-                  // TODO: set new time
-                });
+                );
               },
               style: plainButton(colors, size: const Size(54, 32)).copyWith(
                 side: MaterialStateProperty.all(BorderSide(color: colors.separator!, width: 1)),
@@ -60,13 +74,28 @@ class LessonIntervalPicker extends StatelessWidget {
             const SizedBox(width: 8),
             ElevatedButton(
               onPressed: () {
-                showTimePicker(
-                  context: context,
-                  initialTime: const TimeOfDay(hour: 0, minute: 0),
-                  initialEntryMode: TimePickerEntryMode.dial,
-                ).then((value) {
-                  // TODO: set new time
-                });
+                Navigator.of(context).push(
+                  showPicker(
+                    value: TimeOfDay(hour: interval.to.inHours, minute: interval.to.inMinutes % 60),
+                    hourLabel: "",
+                    minuteLabel: "",
+                    ltrMode: true,
+                    accentColor: colors.accentPrimary,
+                    unselectedColor: colors.disable,
+                    blurredBackground: false,
+                    displayHeader: true,
+                    elevation: 128,
+                    borderRadius: 12,
+                    iosStylePicker: false,
+                    is24HrFormat: true,
+                    context: context,
+                    okStyle: textStyles.subtitle!,
+                    cancelStyle: textStyles.subtitle!,
+                    buttonStyle: plainButton(colors, size: const Size(80, 36)),
+                    onChange: (time) {},
+                    minuteInterval: MinuteInterval.FIVE,
+                  ),
+                );
               },
               style: plainButton(colors, size: const Size(54, 32)).copyWith(
                 side: MaterialStateProperty.all(BorderSide(color: colors.separator!, width: 1)),
