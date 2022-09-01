@@ -3,9 +3,15 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../gen/assets.gen.dart';
+import '../../models/timetable/timetable_model.dart';
+import '../../models/timetable_config/timetable_config_model.dart';
+import '../../models/user/user_model.dart';
 import '../../providers/providers.dart';
 import '../lesson_card/card_styles/default_lesson_card.dart';
 import '../lesson_card/card_styles/editable_lesson_card.dart';
+import '../search_page/search_page.dart';
+import '../timetable_list_pages/tima_table_list_page.dart';
+import '../timetable_list_pages/widgets/time_table_card.dart';
 import '../widgets/week_timeline.dart';
 
 import '../../models/lesson/lesson_model.dart';
@@ -40,7 +46,16 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
           IconButton(
             icon: Assets.images.iconDocOutline.svg(color: colors.accentPrimary),
             splashRadius: 24,
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return const TimeTableListPage();
+                  },
+                ),
+              );
+            },
           ),
           const SizedBox(
             width: 8,
@@ -48,7 +63,47 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
           IconButton(
             icon: Assets.images.search.svg(color: colors.accentPrimary),
             splashRadius: 24,
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return SearchPage<Timetable>(
+                      filter: (name) {
+                        int count = Random().nextInt(20);
+                        return List<Timetable>.generate(
+                          count,
+                          (index) => Timetable(
+                            id: "0",
+                            name: "${Random().nextInt(100)}",
+                            days: [],
+                            owner: const User(id: "0", name: "JakeApps", avatarUrl: ""),
+                            editors: [],
+                            lastEditor: const User(id: "0", name: "JakeApps", avatarUrl: ""),
+                            creationDate: DateTime.now(),
+                            lastUpdateDate: DateTime.now(),
+                            config: TimetableConfig.empty(),
+                          ),
+                        );
+                      },
+                      itemBuilder: (table) {
+                        return TimeTableCard(
+                          timeTable: table,
+                          button: IconButton(
+                            onPressed: () {},
+                            icon: Assets.images.iconSaveOutline.svg(
+                              color: colors.accentPrimary,
+                            ),
+                            splashRadius: 24,
+                          ),
+                          onTap: () {},
+                        );
+                      },
+                    );
+                  },
+                ),
+              );
+            },
           ),
           const SizedBox(
             width: 16,

@@ -6,6 +6,7 @@ import '../../models/timetable_config/timetable_config_model.dart';
 import '../../models/user/user_model.dart';
 import '../../styles/build_context_extension.dart';
 import '../../styles/widget_styles.dart';
+import '../timetable_editor_page/timetable_editor_page.dart';
 import 'widgets/time_table_card.dart';
 
 enum TimeTableListType { saved, owned }
@@ -65,7 +66,9 @@ class _TimeTableListPageState extends State<TimeTableListPage> {
           leading: Padding(
             padding: const EdgeInsets.only(left: 16),
             child: IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pop(context);
+              },
               icon: Assets.images.circleChevronLeft.svg(),
               splashRadius: 24,
             ),
@@ -160,7 +163,16 @@ class _TimeTableListPageState extends State<TimeTableListPage> {
                           icon: Assets.images.moreHorizontal.svg(),
                           splashRadius: 24,
                         ),
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return const TimetableEditorPage();
+                              },
+                            ),
+                          );
+                        },
                       );
                     },
                     separatorBuilder: (context, index) {

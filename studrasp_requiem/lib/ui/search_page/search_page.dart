@@ -1,39 +1,22 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 
 import '../../gen/assets.gen.dart';
-import '../../models/timetable/timetable_model.dart';
-import '../../models/timetable_config/timetable_config_model.dart';
-import '../../models/user/user_model.dart';
 import '../../styles/build_context_extension.dart';
 import '../../styles/text_field_style.dart';
-import '../timetable_list_pages/widgets/time_table_card.dart';
 
-class SearchPage extends StatefulWidget {
-  const SearchPage({Key? key}) : super(key: key);
+class SearchPage<T> extends StatefulWidget {
+  final List<T> Function(String name) filter;
+  final Widget Function(T) itemBuilder;
+
+  const SearchPage({Key? key, required this.filter, required this.itemBuilder}) : super(key: key);
 
   @override
-  State<SearchPage> createState() => _SearchPageState();
+  State<SearchPage> createState() => _SearchPageState<T>();
 }
 
-class _SearchPageState extends State<SearchPage> {
+class _SearchPageState<T> extends State<SearchPage<T>> {
   final searchFieldFocus = FocusNode();
-
-  List<Timetable> findedTables = List<Timetable>.generate(
-    20,
-    (index) => Timetable(
-      id: "0",
-      name: "${Random().nextInt(100)}",
-      days: [],
-      owner: const User(id: "0", name: "JakeApps", avatarUrl: ""),
-      editors: [],
-      lastEditor: const User(id: "0", name: "JakeApps", avatarUrl: ""),
-      creationDate: DateTime.now(),
-      lastUpdateDate: DateTime.now(),
-      config: TimetableConfig.empty(),
-    ),
-  );
+  List<T> searchResult = [];
 
   @override
   Widget build(BuildContext context) {
@@ -45,8 +28,10 @@ class _SearchPageState extends State<SearchPage> {
         leading: Padding(
           padding: const EdgeInsets.only(left: 16),
           child: IconButton(
-            onPressed: () {},
-            icon: Assets.images.circleChevronLeft.svg(),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Assets.images.circleChevronLeft.svg(color: colors.accentPrimary),
             splashRadius: 24,
           ),
         ),
@@ -64,25 +49,9 @@ class _SearchPageState extends State<SearchPage> {
               child: TextField(
                 focusNode: searchFieldFocus,
                 onEditingComplete: () {
-                  final tablesCount = Random().nextInt(10);
-                  setState(
-                    () {
-                      findedTables = List<Timetable>.generate(
-                        tablesCount,
-                        (index) => Timetable(
-                          id: "0",
-                          name: "${Random().nextInt(100)}",
-                          days: [],
-                          owner: const User(id: "0", name: "JakeApps", avatarUrl: ""),
-                          editors: [],
-                          lastEditor: const User(id: "0", name: "JakeApps", avatarUrl: ""),
-                          creationDate: DateTime.now(),
-                          lastUpdateDate: DateTime.now(),
-                          config: TimetableConfig.empty(),
-                        ),
-                      );
-                    },
-                  );
+                  setState(() {
+                    searchResult = widget.filter("");
+                  });
                   searchFieldFocus.unfocus();
                 },
                 style: textStyles.label,
@@ -102,15 +71,7 @@ class _SearchPageState extends State<SearchPage> {
           Expanded(
             child: ListView.separated(
               itemBuilder: (context, index) {
-                return TimeTableCard(
-                  timeTable: findedTables[index],
-                  button: IconButton(
-                    onPressed: () {},
-                    icon: Assets.images.iconSaveOutline.svg(),
-                    splashRadius: 24,
-                  ),
-                  onTap: () {},
-                );
+                return widget.itemBuilder(searchResult[index]);
               },
               separatorBuilder: (context, index) {
                 return Divider(
@@ -119,7 +80,7 @@ class _SearchPageState extends State<SearchPage> {
                   color: colors.separator,
                 );
               },
-              itemCount: findedTables.length,
+              itemCount: searchResult.length,
             ),
           ),
         ],

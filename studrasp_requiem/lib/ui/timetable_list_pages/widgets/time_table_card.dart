@@ -33,39 +33,38 @@ class TimeTableCard extends StatelessWidget {
       onTap: () {
         onTap();
       },
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        child: Row(
-          children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  timeTable.name,
-                  style: textStyles.subtitle,
-                ),
-                const SizedBox(
-                  height: 4,
-                ),
-                Text(
-                  'Обновлено ${getDate()}',
-                  style: textStyles.smallLabel!.copyWith(color: colors.disable),
-                ),
-                if (showOwner)
+      child: ColoredBox(
+        color: colors.backgroundPrimary!,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          child: Row(
+            children: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
                   Text(
-                    'Владелец ${timeTable.owner.name}',
+                    timeTable.name,
+                    style: textStyles.subtitle,
+                  ),
+                  const SizedBox(
+                    height: 4,
+                  ),
+                  Text(
+                    'Обновлено ${getDate()}',
                     style: textStyles.smallLabel!.copyWith(color: colors.disable),
                   ),
-              ],
-            ),
-            const Spacer(),
-            SizedBox(
-              width: 42,
-              height: 42,
-              child: button,
-            ),
-          ],
+                  if (showOwner)
+                    Text(
+                      'Владелец ${timeTable.owner.name}',
+                      style: textStyles.smallLabel!.copyWith(color: colors.disable),
+                    ),
+                ],
+              ),
+              const Spacer(),
+              button,
+            ],
+          ),
         ),
       ),
     );

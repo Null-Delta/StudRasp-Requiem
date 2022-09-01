@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -7,6 +9,7 @@ import '../../models/timetable_config/timetable_config_model.dart';
 import '../../models/user/user_model.dart';
 import '../../styles/build_context_extension.dart';
 import '../../styles/text_field_style.dart';
+import '../search_page/search_page.dart';
 import '../timetable_editor_page/timetable_editor_page.dart';
 import 'action_header.dart';
 import 'editor_card.dart';
@@ -63,6 +66,27 @@ class _TimeTableSettingsPageState extends ConsumerState<TimeTableSettingsPage> {
     }).toList();
 
     editors = timetable.editors;
+  }
+
+  void openEditorSearch() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) {
+          return SearchPage<User>(
+            filter: (name) {
+              int count = Random().nextInt(20);
+              return List<User>.generate(
+                count,
+                (index) => User(id: "${Random().nextInt(100)}", name: "user ${Random().nextInt(100)}", avatarUrl: ""),
+              );
+            },
+            itemBuilder: (user) {
+              return EditorCard(user: user);
+            },
+          );
+        },
+      ),
+    );
   }
 
   @override
@@ -174,7 +198,9 @@ class _TimeTableSettingsPageState extends ConsumerState<TimeTableSettingsPage> {
               ActionHeader(
                 title: "Редакторы",
                 action: IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    openEditorSearch();
+                  },
                   icon: Assets.images.iconPlusOutline.svg(
                     color: colors.accentPrimary,
                     width: 24,

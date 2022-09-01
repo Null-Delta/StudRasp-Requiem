@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../../../gen/assets.gen.dart';
 import '../../../models/time_interval/time_interval_model.dart';
 import '../../../styles/build_context_extension.dart';
-import '../../../styles/button_style.dart';
 import '../../../styles/widget_styles.dart';
 import '../lesson_header.dart';
 
