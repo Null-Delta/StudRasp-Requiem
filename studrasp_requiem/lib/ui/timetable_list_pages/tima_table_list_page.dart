@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
+import '../../gen/assets.gen.dart';
 import '../../models/timetable/timetable_model.dart';
 import '../../models/timetable_config/timetable_config_model.dart';
 import '../../models/user/user_model.dart';
 import '../../styles/build_context_extension.dart';
-import '../../styles/button_style.dart';
+import '../../styles/widget_styles.dart';
 import 'widgets/time_table_card.dart';
 
 enum TimeTableListType { saved, owned }
@@ -17,7 +18,8 @@ class TimeTableListPage extends StatefulWidget {
 }
 
 class _TimeTableListPageState extends State<TimeTableListPage> {
-  TimeTableListType listType = TimeTableListType.saved;
+  ScrollController savedTimeTablesContoller = ScrollController();
+  ScrollController myTimeTablesContoller = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -55,30 +57,24 @@ class _TimeTableListPageState extends State<TimeTableListPage> {
       ),
     );
 
-    return Scaffold(
-      backgroundColor: colors.backgroundPrimary,
-      body: SafeArea(
-        bottom: false,
-        child: Column(
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        backgroundColor: colors.backgroundPrimary,
+        appBar: AppBar(
+          leading: Padding(
+            padding: const EdgeInsets.only(left: 16),
+            child: IconButton(
+              onPressed: () {},
+              icon: Assets.images.circleChevronLeft.svg(),
+              splashRadius: 24,
+            ),
+          ),
+        ),
+        body: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Row(
-                children: [
-                  ElevatedButton(
-                    style: plainButton(colors, size: const Size(42, 42)),
-                    onPressed: () {},
-                    child: const Icon(Icons.arrow_back_sharp),
-                  ),
-                  const Spacer(),
-                ],
-              ),
-            ),
-            const SizedBox(
-              height: 12,
-            ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Text(
@@ -91,76 +87,90 @@ class _TimeTableListPageState extends State<TimeTableListPage> {
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: ElevatedButton(
-                      style: tabButton(colors, listType == TimeTableListType.saved),
-                      onPressed: () {
-                        setState(() {
-                          listType = TimeTableListType.saved;
-                        });
-                      },
-                      child: Text(
-                        "Сохраненные",
-                        style: textStyles.smallLabel!.copyWith(
-                          color: listType == TimeTableListType.saved ? colors.backgroundPrimary : colors.accentPrimary,
-                        ),
-                      ),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: colors.backgroundSecondary,
+                  borderRadius: BurderRadiusStyles.large,
+                  border: Border.all(color: colors.separator!, width: 1),
+                ),
+                padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+                child: TabBar(
+                  labelColor: colors.backgroundPrimary,
+                  labelStyle: textStyles.smallLabel,
+                  unselectedLabelStyle: textStyles.smallLabel!.copyWith(color: colors.accentPrimary),
+                  unselectedLabelColor: colors.accentPrimary,
+                  indicatorWeight: 0,
+                  indicator: BoxDecoration(
+                    color: colors.accentPrimary,
+                    borderRadius: BurderRadiusStyles.normal,
+                  ),
+                  tabs: [
+                    Container(
+                      alignment: Alignment.center,
+                      height: 36,
+                      child: const Text("Сохраненные"),
                     ),
-                  ),
-                  const SizedBox(
-                    width: 12,
-                  ),
-                  Expanded(
-                    child: ElevatedButton(
-                      style: tabButton(
-                        colors,
-                        listType == TimeTableListType.owned,
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          listType = TimeTableListType.owned;
-                        });
-                      },
-                      child: Text(
-                        "Мои",
-                        style: textStyles.smallLabel!.copyWith(
-                          color: listType == TimeTableListType.saved ? colors.accentPrimary : colors.backgroundPrimary,
-                        ),
-                      ),
+                    Container(
+                      alignment: Alignment.center,
+                      height: 36,
+                      child: const Text("Мои"),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-            const SizedBox(
-              height: 16,
-            ),
+            const SizedBox(height: 16),
             Divider(
               height: 1,
               thickness: 1,
               color: colors.separator,
             ),
             Expanded(
-              child: ListView.separated(
-                itemBuilder: (context, index) {
-                  return TimeTableCard(
-                    timeTable: listType == TimeTableListType.saved ? savedTables[index] : myTables[index],
-                    button: Icon(
-                      Icons.abc,
-                      color: colors.accentPrimary!,
-                    ),
-                  );
-                },
-                separatorBuilder: (context, index) {
-                  return Divider(
-                    height: 1,
-                    thickness: 1,
-                    color: colors.separator,
-                  );
-                },
-                itemCount: listType == TimeTableListType.saved ? savedTables.length : myTables.length,
+              child: TabBarView(
+                children: [
+                  ListView.separated(
+                    controller: savedTimeTablesContoller,
+                    itemBuilder: (context, index) {
+                      return TimeTableCard(
+                        timeTable: savedTables[index],
+                        button: IconButton(
+                          onPressed: () {},
+                          icon: Assets.images.moreHorizontal.svg(),
+                          splashRadius: 24,
+                        ),
+                      );
+                    },
+                    separatorBuilder: (context, index) {
+                      return Divider(
+                        height: 1,
+                        thickness: 1,
+                        color: colors.separator,
+                      );
+                    },
+                    itemCount: savedTables.length,
+                  ),
+                  ListView.separated(
+                    controller: myTimeTablesContoller,
+                    itemBuilder: (context, index) {
+                      return TimeTableCard(
+                        timeTable: myTables[index],
+                        button: IconButton(
+                          onPressed: () {},
+                          icon: Assets.images.moreHorizontal.svg(),
+                          splashRadius: 24,
+                        ),
+                      );
+                    },
+                    separatorBuilder: (context, index) {
+                      return Divider(
+                        height: 1,
+                        thickness: 1,
+                        color: colors.separator,
+                      );
+                    },
+                    itemCount: myTables.length,
+                  ),
+                ],
               ),
             ),
           ],
