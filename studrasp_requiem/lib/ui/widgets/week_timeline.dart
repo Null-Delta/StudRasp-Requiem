@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../providers/providers.dart';
+import '../../support/fast_swipe_physics.dart';
 import 'day_button.dart';
 
 class WeekTimeline extends ConsumerStatefulWidget {
@@ -32,22 +33,27 @@ class _WeekTimelineState extends ConsumerState<WeekTimeline> {
       selectedDuration,
       (previous, next) {
         var offsetDay = Duration(
-          days: next.inDays + weekDay + 1,
+          days: next.inDays + weekDay,
         ).inDays;
 
-        if (offsetDay > 0) {
+        if (offsetDay >= 0) {
           offsetDay = offsetDay ~/ 7;
         } else {
-          offsetDay = offsetDay ~/ 7 - 1;
+          offsetDay = (offsetDay + 1) ~/ 7 - 1;
         }
 
-        controller.jumpToPage(controller.initialPage + offsetDay);
+        controller.animateToPage(
+          controller.initialPage + offsetDay,
+          duration: const Duration(milliseconds: 500),
+          curve: Curves.easeInOut,
+        );
       },
     );
 
     return SizedBox(
       height: 76,
       child: PageView.builder(
+        physics: const CustomPageViewScrollPhysics(),
         controller: controller,
         itemCount: widget.weekCount,
         itemBuilder: (BuildContext context, int index) {
