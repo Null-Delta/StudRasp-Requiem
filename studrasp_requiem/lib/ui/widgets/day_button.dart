@@ -67,6 +67,7 @@ class _DayButtonState extends ConsumerState<DayButton> {
       child: GestureDetector(
         onTap: () {
           ref.read(selectedDuration.notifier).state = widget.diration;
+          ref.read(needSwipeDays.notifier).state = true;
         },
         child: DecoratedBox(
           decoration: BoxDecoration(

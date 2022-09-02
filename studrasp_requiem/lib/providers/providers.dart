@@ -13,6 +13,14 @@ final selectedDuration = StateProvider<Duration>((ref) {
   return const Duration(milliseconds: 0);
 });
 
+final needSwipeDays = StateProvider<bool>((ref) {
+  return false;
+});
+
+final daysSwiping = StateProvider<bool>((ref) {
+  return false;
+});
+
 final currentTimetable = StateProvider<Timetable>((ref) {
   return Timetable.empty();
 });

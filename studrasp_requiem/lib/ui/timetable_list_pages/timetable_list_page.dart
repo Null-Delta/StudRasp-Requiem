@@ -136,7 +136,7 @@ class _TimetableListPageState extends State<TimetableListPage> {
                         timeTable: savedTables[index],
                         button: IconButton(
                           onPressed: () {},
-                          icon: Assets.images.moreHorizontal.svg(),
+                          icon: Assets.images.moreHorizontal.svg(color: colors.accentPrimary),
                           splashRadius: 24,
                         ),
                         onTap: () {},
@@ -158,7 +158,7 @@ class _TimetableListPageState extends State<TimetableListPage> {
                         timeTable: myTables[index],
                         button: IconButton(
                           onPressed: () {},
-                          icon: Assets.images.moreHorizontal.svg(),
+                          icon: Assets.images.moreHorizontal.svg(color: colors.accentPrimary),
                           splashRadius: 24,
                         ),
                         onTap: () {
