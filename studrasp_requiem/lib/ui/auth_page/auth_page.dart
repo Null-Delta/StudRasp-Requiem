@@ -33,6 +33,11 @@ class _AuthPageState extends ConsumerState<AuthPage> {
         child: Column(
           children: [
             AppTextField(
+              controller: name,
+              hint: 'Имя',
+            ),
+            const SizedBox(height: 16),
+            AppTextField(
               controller: email,
               hint: 'Email',
             ),
@@ -42,11 +47,34 @@ class _AuthPageState extends ConsumerState<AuthPage> {
               hint: 'Пароль',
               isPassword: true,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 32),
             ElevatedButton(
               onPressed: () {},
+              style: ElevatedButton.styleFrom(
+                textStyle: textStyles.subtitle,
+                minimumSize: const Size(double.infinity, 42),
+              ),
               child: const Text('Войти'),
-            )
+            ),
+            const SizedBox(height: 6),
+            Text(
+              'Или',
+              style: textStyles.smallLabel,
+            ),
+            const SizedBox(height: 6),
+            ElevatedButton(
+              onPressed: () {},
+              style: ElevatedButton.styleFrom(
+                textStyle: textStyles.subtitle,
+                primary: colors.backgroundPrimary,
+                onPrimary: colors.accentPrimary,
+                side: BorderSide(
+                  color: colors.separator!,
+                ),
+                minimumSize: const Size(double.infinity, 42),
+              ),
+              child: const Text('Зарегистрироваться'),
+            ),
           ],
         ),
       ),
