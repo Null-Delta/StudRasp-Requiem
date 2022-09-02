@@ -70,6 +70,7 @@ class _AppTextFieldState extends ConsumerState<AppTextField> {
                           obscure
                               ? Icons.visibility_outlined
                               : Icons.visibility_off_outlined,
+                          color: colors.accentPrimary,
                         ),
                       ),
                     )

@@ -71,9 +71,13 @@ class $AssetsImagesGen {
   /// File path: assets/images/settings.svg
   SvgGenImage get settings => const SvgGenImage('assets/images/settings.svg');
 
-  /// File path: assets/images/stud_rasp_icon.svg
-  SvgGenImage get studRaspIcon =>
-      const SvgGenImage('assets/images/stud_rasp_icon.svg');
+  /// File path: assets/images/stud_rasp_dark_icon.png
+  AssetGenImage get studRaspDarkIcon =>
+      const AssetGenImage('assets/images/stud_rasp_dark_icon.png');
+
+  /// File path: assets/images/stud_rasp_light_icon.png
+  AssetGenImage get studRaspLightIcon =>
+      const AssetGenImage('assets/images/stud_rasp_light_icon.png');
 
   /// File path: assets/images/transfer.svg
   SvgGenImage get transfer => const SvgGenImage('assets/images/transfer.svg');
