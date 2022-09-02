@@ -88,7 +88,7 @@ class _TimetableEditorPageState extends ConsumerState<TimetableEditorPage> {
     return ProviderScope(
       overrides: [
         currentEditingTimetable.overrideWithValue(
-          StateController(widget.timeTable ?? Timetable.empty(User.empty())),
+          StateController(widget.timeTable ?? Timetable.empty(AppUser.empty())),
         ),
       ],
       child: Scaffold(

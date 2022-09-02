@@ -14,11 +14,11 @@ final selectedDuration = StateProvider<Duration>((ref) {
 });
 
 final currentTimetable = StateProvider<Timetable>((ref) {
-  return Timetable.empty(User.empty());
+  return Timetable.empty(AppUser.empty());
 });
 
-final currentUser = StateProvider<User>((ref) {
-  return User.empty();
+final currentUser = StateProvider<AppUser>((ref) {
+  return AppUser.empty();
 });
 
 final currentEditingLesson = StateProvider<Lesson>((ref) {
@@ -30,7 +30,7 @@ final editorCopiedLesson = StateProvider<Lesson?>((ref) {
 });
 
 final currentEditingTimetable = StateProvider<Timetable>((ref) {
-  return Timetable.empty(User.empty());
+  return Timetable.empty(AppUser.empty());
 });
 
 final selectedDay = Provider<int>((ref) {

@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
-User _$UserFromJson(Map<String, dynamic> json) {
+AppUser _$UserFromJson(Map<String, dynamic> json) {
   return _User.fromJson(json);
 }
 
@@ -28,12 +28,12 @@ mixin _$User {
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $UserCopyWith<User> get copyWith => throw _privateConstructorUsedError;
+  $UserCopyWith<AppUser> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class $UserCopyWith<$Res> {
-  factory $UserCopyWith(User value, $Res Function(User) then) =
+  factory $UserCopyWith(AppUser value, $Res Function(AppUser) then) =
       _$UserCopyWithImpl<$Res>;
   $Res call(
       {String id,
@@ -47,9 +47,9 @@ abstract class $UserCopyWith<$Res> {
 class _$UserCopyWithImpl<$Res> implements $UserCopyWith<$Res> {
   _$UserCopyWithImpl(this._value, this._then);
 
-  final User _value;
+  final AppUser _value;
   // ignore: unused_field
-  final $Res Function(User) _then;
+  final $Res Function(AppUser) _then;
 
   @override
   $Res call({
@@ -203,7 +203,7 @@ class _$_User implements _User {
   }
 }
 
-abstract class _User implements User {
+abstract class _User implements AppUser {
   const factory _User(
       {required final String id,
       required final String name,

@@ -100,14 +100,14 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
                             id: "0",
                             name: "${Random().nextInt(100)}",
                             days: [],
-                            owner: const User(
+                            owner: const AppUser(
                               id: "0",
                               name: "JakeApps",
                               email: '',
                               isVerified: false,
                             ),
                             editors: [],
-                            lastEditor: const User(
+                            lastEditor: const AppUser(
                               id: "0",
                               name: "JakeApps",
                               email: '',

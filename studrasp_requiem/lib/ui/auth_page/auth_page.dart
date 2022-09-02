@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../gen/assets.gen.dart';
+import '../../providers/user_auth.dart';
 import '../../styles/colors.dart';
 import '../../styles/fonts.dart';
-import '../../support/logger.dart';
 import '../widgets/app_text_field.dart';
-
-import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthPage extends ConsumerStatefulWidget {
   const AuthPage({Key? key}) : super(key: key);
@@ -66,15 +64,9 @@ class _AuthPageState extends ConsumerState<AuthPage> {
               const SizedBox(height: 32),
               ElevatedButton(
                 onPressed: () async {
-                  final res =
-                      await FirebaseAuth.instance.signInWithEmailAndPassword(
-                    email: email.text,
-                    password: password.text,
-                  );
-
-                  logger.info(res.toString());
-                  logger.info(res.user.toString());
-                  logger.info(res.additionalUserInfo.toString());
+                  ref
+                      .read(userAuth.notifier)
+                      .auth(email: email.text, password: password.text);
                 },
                 style: ElevatedButton.styleFrom(
                   textStyle: textStyles.subtitle,
@@ -90,21 +82,11 @@ class _AuthPageState extends ConsumerState<AuthPage> {
               const SizedBox(height: 6),
               ElevatedButton(
                 onPressed: () async {
-                  final res = await FirebaseAuth.instance
-                      .createUserWithEmailAndPassword(
-                    email: email.text,
-                    password: password.text,
-                  );
-                  if (res.user != null) {
-                    await Future.wait([
-                      res.user!.sendEmailVerification(),
-                      res.user!.updateDisplayName(name.text),
-                    ]);
-                  }
-
-                  logger.info(res.toString());
-                  logger.info(res.user.toString());
-                  logger.info(res.additionalUserInfo.toString());
+                  ref.read(userAuth.notifier).reg(
+                        name: name.text,
+                        email: email.text,
+                        password: password.text,
+                      );
                 },
                 style: ElevatedButton.styleFrom(
                   textStyle: textStyles.subtitle,

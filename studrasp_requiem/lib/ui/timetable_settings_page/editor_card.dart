@@ -5,7 +5,7 @@ import '../../models/user/user_model.dart';
 import '../../styles/build_context_extension.dart';
 
 class EditorCard extends StatelessWidget {
-  final User user;
+  final AppUser user;
   final Widget? action;
   final Function() onTap;
 

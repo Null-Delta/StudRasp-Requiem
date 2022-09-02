@@ -31,7 +31,7 @@ class _TimeTableSettingsPageState extends ConsumerState<TimetableSettingsPage> {
       TextEditingController();
 
   List<LessonIntervalController> lessonControllers = [];
-  List<User> editors = [];
+  List<AppUser> editors = [];
 
   void saveChanges() {
     ref.read(currentEditingTimetable.notifier).update(
@@ -75,12 +75,12 @@ class _TimeTableSettingsPageState extends ConsumerState<TimetableSettingsPage> {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) {
-          return SearchPage<User>(
+          return SearchPage<AppUser>(
             filter: (name) {
               int count = Random().nextInt(20);
-              return List<User>.generate(
+              return List<AppUser>.generate(
                 count,
-                (index) => User(
+                (index) => AppUser(
                   id: "${Random().nextInt(100)}",
                   name: "user ${Random().nextInt(100)}",
                   email: '',
