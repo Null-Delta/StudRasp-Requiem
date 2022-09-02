@@ -9,16 +9,16 @@ import '../../styles/widget_styles.dart';
 import '../timetable_editor_page/timetable_editor_page.dart';
 import 'widgets/time_table_card.dart';
 
-enum TimeTableListType { saved, owned }
+enum TimetableListType { saved, owned }
 
-class TimeTableListPage extends StatefulWidget {
-  const TimeTableListPage({Key? key}) : super(key: key);
+class TimetableListPage extends StatefulWidget {
+  const TimetableListPage({Key? key}) : super(key: key);
 
   @override
-  State<TimeTableListPage> createState() => _TimeTableListPageState();
+  State<TimetableListPage> createState() => _TimetableListPageState();
 }
 
-class _TimeTableListPageState extends State<TimeTableListPage> {
+class _TimetableListPageState extends State<TimetableListPage> {
   ScrollController savedTimeTablesContoller = ScrollController();
   ScrollController myTimeTablesContoller = ScrollController();
 
@@ -99,8 +99,9 @@ class _TimeTableListPageState extends State<TimeTableListPage> {
                 padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
                 child: TabBar(
                   labelColor: colors.backgroundPrimary,
-                  labelStyle: textStyles.smallLabel,
-                  unselectedLabelStyle: textStyles.smallLabel!.copyWith(color: colors.accentPrimary),
+                  labelStyle: textStyles.label!,
+                  unselectedLabelStyle:
+                      textStyles.label!.copyWith(color: colors.accentPrimary),
                   unselectedLabelColor: colors.accentPrimary,
                   indicatorWeight: 0,
                   indicator: BoxDecoration(
@@ -134,7 +135,7 @@ class _TimeTableListPageState extends State<TimeTableListPage> {
                   ListView.separated(
                     controller: savedTimeTablesContoller,
                     itemBuilder: (context, index) {
-                      return TimeTableCard(
+                      return TimetableCard(
                         timeTable: savedTables[index],
                         button: IconButton(
                           onPressed: () {},
@@ -156,7 +157,7 @@ class _TimeTableListPageState extends State<TimeTableListPage> {
                   ListView.separated(
                     controller: myTimeTablesContoller,
                     itemBuilder: (context, index) {
-                      return TimeTableCard(
+                      return TimetableCard(
                         timeTable: myTables[index],
                         button: IconButton(
                           onPressed: () {},

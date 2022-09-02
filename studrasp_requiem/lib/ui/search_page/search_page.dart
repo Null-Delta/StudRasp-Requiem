@@ -8,7 +8,8 @@ class SearchPage<T> extends StatefulWidget {
   final List<T> Function(String name) filter;
   final Widget Function(T) itemBuilder;
 
-  const SearchPage({Key? key, required this.filter, required this.itemBuilder}) : super(key: key);
+  const SearchPage({Key? key, required this.filter, required this.itemBuilder})
+      : super(key: key);
 
   @override
   State<SearchPage> createState() => _SearchPageState<T>();
@@ -25,19 +26,20 @@ class _SearchPageState<T> extends State<SearchPage<T>> {
 
     return Scaffold(
       appBar: AppBar(
+        title: Text(
+          "Поиск",
+          style: textStyles.title,
+        ),
         leading: Padding(
           padding: const EdgeInsets.only(left: 16),
           child: IconButton(
             onPressed: () {
               Navigator.pop(context);
             },
-            icon: Assets.images.circleChevronLeft.svg(color: colors.accentPrimary),
+            icon: Assets.images.circleChevronLeft
+                .svg(color: colors.accentPrimary),
             splashRadius: 24,
           ),
-        ),
-        title: Text(
-          "Поиск",
-          style: textStyles.title,
         ),
       ),
       body: Column(

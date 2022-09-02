@@ -7,10 +7,10 @@ import '../../models/timetable/timetable_model.dart';
 import '../../models/timetable_config/timetable_config_model.dart';
 import '../../models/user/user_model.dart';
 import '../../providers/providers.dart';
-import '../lesson_card/card_styles/default_lesson_card.dart';
-import '../lesson_card/card_styles/editable_lesson_card.dart';
+import '../lesson_card/card_styles/lesson_card.dart';
 import '../search_page/search_page.dart';
-import '../timetable_list_pages/tima_table_list_page.dart';
+import '../timetable_editor_page/timetable_editor_page.dart';
+import '../timetable_list_pages/timetable_list_page.dart';
 import '../timetable_list_pages/widgets/time_table_card.dart';
 import '../widgets/week_timeline.dart';
 
@@ -18,7 +18,6 @@ import '../../models/lesson/lesson_model.dart';
 import '../../models/time_interval/time_interval_model.dart';
 import '../../styles/build_context_extension.dart';
 import '../lesson_card/card_styles/empty_lesson_card.dart';
-import '../widgets/popup_menu_action.dart';
 
 class TimetablePage extends ConsumerStatefulWidget {
   const TimetablePage({Key? key}) : super(key: key);
@@ -38,20 +37,20 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
       appBar: AppBar(
         backgroundColor: colors.backgroundPrimary,
         leading: IconButton(
-          icon: Assets.images.calendar.svg(color: colors.accentPrimary),
+          icon: const Icon(Icons.calendar_month_outlined),
           splashRadius: 24,
           onPressed: () {},
         ),
         actions: [
           IconButton(
-            icon: Assets.images.iconDocOutline.svg(color: colors.accentPrimary),
+            icon: const Icon(Icons.list_alt),
             splashRadius: 24,
             onPressed: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) {
-                    return const TimeTableListPage();
+                    return const TimetableListPage();
                   },
                 ),
               );
@@ -61,7 +60,7 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
             width: 8,
           ),
           IconButton(
-            icon: Assets.images.search.svg(color: colors.accentPrimary),
+            icon: const Icon(Icons.search),
             splashRadius: 24,
             onPressed: () {
               Navigator.push(
@@ -77,9 +76,17 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
                             id: "0",
                             name: "${Random().nextInt(100)}",
                             days: [],
-                            owner: const User(id: "0", name: "JakeApps", avatarUrl: ""),
+                            owner: const User(
+                              id: "0",
+                              name: "JakeApps",
+                              avatarUrl: "",
+                            ),
                             editors: [],
-                            lastEditor: const User(id: "0", name: "JakeApps", avatarUrl: ""),
+                            lastEditor: const User(
+                              id: "0",
+                              name: "JakeApps",
+                              avatarUrl: "",
+                            ),
                             creationDate: DateTime.now(),
                             lastUpdateDate: DateTime.now(),
                             config: TimetableConfig.empty(),
@@ -87,7 +94,7 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
                         );
                       },
                       itemBuilder: (table) {
-                        return TimeTableCard(
+                        return TimetableCard(
                           timeTable: table,
                           button: IconButton(
                             onPressed: () {},
@@ -114,14 +121,28 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Text(
-              ref.watch(currentTimetable.select((value) => value.name)),
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              style: textStyles.largeTitle,
-              textAlign: TextAlign.start,
+          InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return TimetableEditorPage(
+                      timeTable: ref.watch(currentTimetable),
+                    );
+                  },
+                ),
+              );
+            },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Text(
+                ref.watch(currentTimetable.select((value) => value.name)),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: textStyles.largeTitle,
+                textAlign: TextAlign.start,
+              ),
             ),
           ),
           const WeekTimeline(),
@@ -141,7 +162,7 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
                 );
               },
               itemBuilder: (context, index) {
-                final type = Random().nextInt(100) % 3;
+                final type = Random().nextInt(100) % 2;
                 if (type == 0) {
                   return EmptyLessonCard(
                     index: index % 10,
@@ -149,9 +170,8 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
                       from: Duration(hours: index),
                       to: Duration(hours: index + 1),
                     ),
-                    onTap: () {},
                   );
-                } else if (type == 1) {
+                } else {
                   return LessonCard(
                     index: index % 10,
                     lesson: Lesson.random(),
@@ -159,30 +179,6 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
                       from: Duration(hours: index),
                       to: Duration(hours: index + 1),
                     ),
-                  );
-                } else {
-                  return EditableLessonCard(
-                    index: index % 10,
-                    interval: const TimeInterval(from: Duration(), to: Duration()),
-                    lesson: Lesson.random(),
-                    actions: [
-                      PopupMenuAction(
-                        text: "Изменить",
-                        icon: Assets.images.iconEditOutline.svg(color: colors.accentPrimary),
-                        action: () {},
-                      ),
-                      PopupMenuAction(
-                        text: "Копировать пару",
-                        icon: Assets.images.calendar.svg(color: colors.accentPrimary),
-                        action: () {},
-                      ),
-                      PopupMenuAction(
-                        text: "Удалить",
-                        icon: Assets.images.trashFull.svg(color: colors.destructive),
-                        action: () {},
-                        style: PopupMenuActionStyle.destructive,
-                      ),
-                    ],
                   );
                 }
               },

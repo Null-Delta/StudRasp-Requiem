@@ -9,24 +9,25 @@ import '../lesson_header.dart';
 class EmptyLessonCard extends StatelessWidget {
   final int index;
   final TimeInterval interval;
-  final Function onTap;
+  final Function? onTap;
   final String? text;
 
   const EmptyLessonCard({
     Key? key,
     required this.index,
     required this.interval,
-    required this.onTap,
+    this.onTap,
     this.text,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
+    final textStyles = context.textStyles;
 
     return GestureDetector(
       onTap: () {
-        onTap();
+        onTap?.call();
       },
       child: DecoratedBox(
         decoration: BoxDecoration(
@@ -34,23 +35,27 @@ class EmptyLessonCard extends StatelessWidget {
           borderRadius: BurderRadiusStyles.large,
         ),
         child: Padding(
-          padding: const EdgeInsets.only(left: 12, right: 6, top: 6, bottom: 6),
+          padding:
+              const EdgeInsets.only(left: 12, right: 12, top: 6, bottom: 6),
           child: LessonHeader(
             index: index,
             interval: interval,
-            rightWidget: SizedBox(
-              width: 36,
-              height: 36,
-              child: IconButton(
-                onPressed: () {
-                  onTap();
-                },
-                splashRadius: 24,
-                iconSize: 24,
-                icon: Assets.images.iconPlusOutline.svg(color: colors.accentPrimary),
-              ),
-            ),
-            customText: text,
+            suffix: onTap != null
+                ? text != null
+                    ? Text(
+                        text!,
+                        style: textStyles.smallLabel!.copyWith(
+                          color: colors.disable,
+                        ),
+                      )
+                    : Container(
+                        child: Assets.images.iconPlusOutline.svg(
+                          color: colors.accentPrimary,
+                          height: 24,
+                          width: 24,
+                        ),
+                      )
+                : null,
           ),
         ),
       ),

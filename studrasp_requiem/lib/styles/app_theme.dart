@@ -20,6 +20,7 @@ class AppTheme {
         backgroundColor: colors.backgroundPrimary,
         foregroundColor: colors.accentPrimary,
         elevation: 0,
+        centerTitle: true,
       ),
       iconTheme: theme.iconTheme.copyWith(
         color: colors.accentPrimary,

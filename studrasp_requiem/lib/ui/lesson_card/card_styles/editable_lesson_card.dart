@@ -48,7 +48,7 @@ class EditableLessonCard extends StatelessWidget {
             child: LessonHeader(
               index: index,
               interval: interval,
-              rightWidget: PopupMenuButton<String>(
+              suffix: PopupMenuButton<String>(
                 onSelected: (name) {
                   for (var action in actions) {
                     if (action.text == name) {

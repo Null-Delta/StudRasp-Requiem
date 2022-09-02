@@ -4,13 +4,13 @@ import 'package:intl/intl.dart';
 import '../../../models/timetable/timetable_model.dart';
 import '../../../styles/build_context_extension.dart';
 
-class TimeTableCard extends StatelessWidget {
+class TimetableCard extends StatelessWidget {
   final Timetable timeTable;
   final Widget button;
   final bool showOwner;
   final Function() onTap;
 
-  const TimeTableCard({
+  const TimetableCard({
     Key? key,
     required this.timeTable,
     required this.button,
@@ -52,12 +52,14 @@ class TimeTableCard extends StatelessWidget {
                   ),
                   Text(
                     'Обновлено ${getDate()}',
-                    style: textStyles.smallLabel!.copyWith(color: colors.disable),
+                    style:
+                        textStyles.smallLabel!.copyWith(color: colors.disable),
                   ),
                   if (showOwner)
                     Text(
                       'Владелец ${timeTable.owner.name}',
-                      style: textStyles.smallLabel!.copyWith(color: colors.disable),
+                      style: textStyles.smallLabel!
+                          .copyWith(color: colors.disable),
                     ),
                 ],
               ),

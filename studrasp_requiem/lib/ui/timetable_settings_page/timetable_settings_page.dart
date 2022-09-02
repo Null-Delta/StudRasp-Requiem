@@ -15,15 +15,15 @@ import 'editor_card.dart';
 import 'labeled_text.dart';
 import 'lesson_interval_picker.dart';
 
-class TimeTableSettingsPage extends ConsumerStatefulWidget {
-  const TimeTableSettingsPage({Key? key}) : super(key: key);
+class TimetableSettingsPage extends ConsumerStatefulWidget {
+  const TimetableSettingsPage({Key? key}) : super(key: key);
 
   @override
-  ConsumerState<TimeTableSettingsPage> createState() =>
+  ConsumerState<TimetableSettingsPage> createState() =>
       _TimeTableSettingsPageState();
 }
 
-class _TimeTableSettingsPageState extends ConsumerState<TimeTableSettingsPage> {
+class _TimeTableSettingsPageState extends ConsumerState<TimetableSettingsPage> {
   final TextEditingController nameFieldController = TextEditingController();
   final TextEditingController firstWeekFieldController =
       TextEditingController();

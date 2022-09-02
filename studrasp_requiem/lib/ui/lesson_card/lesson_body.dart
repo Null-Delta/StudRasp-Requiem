@@ -28,36 +28,46 @@ class LessonBody extends StatelessWidget {
                 child: Text(
                   lesson.name,
                   textAlign: TextAlign.left,
-                  style:
-                      textStyles.subtitle!.copyWith(color: isCurrent ? colors.backgroundPrimary : colors.accentPrimary),
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
+                  style: textStyles.subtitle!.copyWith(
+                    color: isCurrent
+                        ? colors.backgroundPrimary
+                        : colors.accentPrimary,
+                  ),
                 ),
               ),
             ],
           ),
-          const SizedBox(
-            height: 8,
-          ),
-          Row(
-            children: [
-              Text(
-                "${lesson.audience} • ${lesson.type}",
-                maxLines: 1,
-                textAlign: TextAlign.left,
-                style: textStyles.smallLabel!.copyWith(
-                  color: colors.disable,
-                ),
+          if (lesson.audience != '' ||
+              lesson.type != '' ||
+              lesson.teacher != '')
+            Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: Row(
+                children: [
+                  if (lesson.audience != '' || lesson.type != '')
+                    Text(
+                      '${lesson.audience} ${lesson.audience != '' && lesson.type != '' ? '•' : ''} ${lesson.type}',
+                      maxLines: 1,
+                      textAlign: TextAlign.left,
+                      style: textStyles.smallLabel!.copyWith(
+                        color: colors.disable,
+                      ),
+                    ),
+                  const Spacer(),
+                  if (lesson.teacher != '')
+                    Text(
+                      lesson.teacher,
+                      maxLines: 1,
+                      textAlign: TextAlign.left,
+                      style: textStyles.smallLabel!.copyWith(
+                        color: colors.disable,
+                      ),
+                    ),
+                ],
               ),
-              const Spacer(),
-              Text(
-                lesson.teacher,
-                maxLines: 1,
-                textAlign: TextAlign.left,
-                style: textStyles.smallLabel!.copyWith(
-                  color: colors.disable,
-                ),
-              ),
-            ],
-          )
+            )
         ],
       ),
     );

@@ -80,10 +80,11 @@ class _LessonEditorPageState extends ConsumerState<LessonEditorPage> {
         currentEditingLesson.overrideWithValue(StateController(lesson)),
       ],
       child: Scaffold(
-        backgroundColor: colors.backgroundPrimary,
         appBar: AppBar(
-          elevation: 0,
-          backgroundColor: colors.backgroundPrimary,
+          title: Text(
+            'Пара',
+            style: textStyles.title,
+          ),
           leading: IconButton(
             padding: EdgeInsets.zero,
             onPressed: () {
@@ -95,10 +96,6 @@ class _LessonEditorPageState extends ConsumerState<LessonEditorPage> {
               color: colors.accentPrimary,
             ),
             splashRadius: 24,
-          ),
-          title: Text(
-            'Пара',
-            style: textStyles.title,
           ),
         ),
         body: ListView(
