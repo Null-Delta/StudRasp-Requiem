@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../lesson_editor_page/widgets/lesson_part_input.dart';
+import '../widgets/app_text_field.dart';
 
 class AuthPage extends ConsumerStatefulWidget {
   const AuthPage({Key? key}) : super(key: key);
@@ -23,19 +23,20 @@ class _AuthPageState extends ConsumerState<AuthPage> {
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
           children: [
-            LessonPartInput(
-              partName: 'Email',
+            AppTextField(
               controller: email,
+              label: 'Email',
             ),
             const SizedBox(height: 12),
-            LessonPartInput(
-              partName: 'Имя',
-              controller: email,
+            AppTextField(
+              controller: name,
+              label: 'Имя',
             ),
             const SizedBox(height: 12),
-            LessonPartInput(
-              partName: 'Пароль',
-              controller: email,
+            AppTextField(
+              controller: password,
+              label: 'Пароль',
+              isPassword: true,
             ),
           ],
         ),

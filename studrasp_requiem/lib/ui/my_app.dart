@@ -44,6 +44,7 @@ class HomePage extends ConsumerWidget {
     final colors = Theme.of(context).extension<AppColors>()!;
     return Scaffold(
       body: pages.elementAt(ref.watch(indexInBottomNavigationBar)),
+      // ignore: use_decorated_box
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
           border: Border(

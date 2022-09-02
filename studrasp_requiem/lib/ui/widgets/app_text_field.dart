@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../gen/assets.gen.dart';
 import '../../styles/colors.dart';
 import '../../styles/fonts.dart';
 
-class AppTextField extends StatelessWidget {
+class AppTextField extends ConsumerStatefulWidget {
   const AppTextField({
     Key? key,
     required this.controller,
     this.label,
     this.hint,
     this.onTap,
+    this.isPassword = false,
   }) : super(key: key);
 
   final TextEditingController controller;
@@ -19,40 +21,71 @@ class AppTextField extends StatelessWidget {
 
   final VoidCallback? onTap;
 
+  final bool isPassword;
+
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() => _AppTextFieldState();
+}
+
+class _AppTextFieldState extends ConsumerState<AppTextField> {
+  late final obscureText = StateProvider<bool>((ref) {
+    return widget.isPassword;
+  });
   @override
   Widget build(BuildContext context) {
     final textStyles = Theme.of(context).extension<AppTextStyles>()!;
     final colors = Theme.of(context).extension<AppColors>()!;
+
+    final obscure = ref.watch(obscureText);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (label != null)
+        if (widget.label != null)
           Padding(
             padding: const EdgeInsets.only(bottom: 8),
             child: Text(
-              label!,
+              widget.label!,
               style: textStyles.label,
             ),
           ),
         SizedBox(
           height: 42,
           child: TextField(
-            controller: controller,
+            controller: widget.controller,
+            obscureText: obscure,
             decoration: InputDecoration(
-              hintText: hint,
-              suffixIcon: onTap != null
+              hintText: widget.hint,
+              suffixIcon: widget.isPassword
                   ? Material(
                       color: Colors.transparent,
                       child: IconButton(
                         padding: EdgeInsets.zero,
                         splashRadius: 22,
-                        onPressed: onTap,
-                        icon: Assets.images.command.svg(
-                          color: colors.accentPrimary,
+                        onPressed: () {
+                          ref
+                              .read(obscureText.notifier)
+                              .update((state) => !state);
+                        },
+                        icon: Icon(
+                          obscure
+                              ? Icons.visibility_outlined
+                              : Icons.visibility_off_outlined,
                         ),
                       ),
                     )
-                  : null,
+                  : widget.onTap != null
+                      ? Material(
+                          color: Colors.transparent,
+                          child: IconButton(
+                            padding: EdgeInsets.zero,
+                            splashRadius: 22,
+                            onPressed: widget.onTap,
+                            icon: Assets.images.command.svg(
+                              color: colors.accentPrimary,
+                            ),
+                          ),
+                        )
+                      : null,
             ),
           ),
         )
