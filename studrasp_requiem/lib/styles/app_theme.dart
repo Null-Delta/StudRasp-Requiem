@@ -57,6 +57,12 @@ class AppTheme {
           borderRadius: BurderRadiusStyles.normal,
         ),
       ),
+      bottomNavigationBarTheme: theme.bottomNavigationBarTheme.copyWith(
+        backgroundColor: colors.backgroundPrimary,
+        elevation: 0,
+        selectedItemColor: colors.accentPrimary,
+        unselectedItemColor: colors.disable,
+      ),
       splashColor: colors.separator,
       hoverColor: colors.separator,
       highlightColor: colors.backgroundSecondary,
