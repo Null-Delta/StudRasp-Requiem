@@ -45,7 +45,7 @@ class _PasteBarState extends ConsumerState<PasteBar> {
                   style: textStyles.label!.copyWith(color: colors.disable),
                 ),
                 const Spacer(),
-                ElevatedButton(
+                TextButton(
                   style: plainButton(colors, size: const Size(80, 36)).copyWith(
                     backgroundColor: MaterialStateProperty.all(
                       colors.accentPrimary,

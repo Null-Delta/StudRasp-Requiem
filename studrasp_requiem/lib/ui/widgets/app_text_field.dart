@@ -28,29 +28,32 @@ class AppTextField extends StatelessWidget {
       children: [
         if (label != null)
           Padding(
-            padding: const EdgeInsets.only(bottom: 4),
+            padding: const EdgeInsets.only(bottom: 8),
             child: Text(
               label!,
-              style: textStyles.subtitle,
+              style: textStyles.label,
             ),
           ),
-        TextField(
-          controller: controller,
-          decoration: InputDecoration(
-            hintText: hint,
-            suffixIcon: onTap != null
-                ? Material(
-                    color: Colors.transparent,
-                    child: IconButton(
-                      padding: EdgeInsets.zero,
-                      splashRadius: 22,
-                      onPressed: onTap,
-                      icon: Assets.images.command.svg(
-                        color: colors.accentPrimary,
+        SizedBox(
+          height: 42,
+          child: TextField(
+            controller: controller,
+            decoration: InputDecoration(
+              hintText: hint,
+              suffixIcon: onTap != null
+                  ? Material(
+                      color: Colors.transparent,
+                      child: IconButton(
+                        padding: EdgeInsets.zero,
+                        splashRadius: 22,
+                        onPressed: onTap,
+                        icon: Assets.images.command.svg(
+                          color: colors.accentPrimary,
+                        ),
                       ),
-                    ),
-                  )
-                : null,
+                    )
+                  : null,
+            ),
           ),
         )
       ],

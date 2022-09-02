@@ -14,7 +14,7 @@ ButtonStyle plainButton(AppColors colors, {Size size = const Size(36, 36)}) => E
       fixedSize: size,
       padding: const EdgeInsets.all(0),
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(6)),
+        borderRadius: BorderRadius.all(Radius.circular(8)),
       ),
     );
 

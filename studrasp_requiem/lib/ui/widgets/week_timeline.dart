@@ -24,14 +24,14 @@ class WeekTimeline extends ConsumerWidget {
         itemCount: weekCount,
         itemBuilder: (BuildContext context, int index) {
           return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12),
+            padding: const EdgeInsets.symmetric(horizontal: 14),
             child: Row(
               children: [
                 for (int i = 0; i < 7; i++)
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
-                        horizontal: 4,
+                        horizontal: 2,
                         vertical: 12,
                       ),
                       child: DayButton(
