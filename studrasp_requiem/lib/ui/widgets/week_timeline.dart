@@ -32,7 +32,7 @@ class _WeekTimelineState extends ConsumerState<WeekTimeline> {
       selectedDuration,
       (previous, next) {
         var offsetDay = Duration(
-          days: next.inDays + weekDay,
+          days: next.inDays + weekDay + 1,
         ).inDays;
 
         if (offsetDay > 0) {
