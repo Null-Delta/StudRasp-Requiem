@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 
 import '../../models/time_interval/time_interval_model.dart';
 import '../../styles/build_context_extension.dart';
-import '../../styles/button_style.dart';
 import '../../support/date_time_converter.dart';
 
 class LessonIntervalController extends ValueNotifier<TimeInterval> {
@@ -44,7 +43,10 @@ class _LessonIntervalPickerState extends State<LessonIntervalPicker> {
               style: textStyles.label,
             ),
             const Spacer(),
-            Text("от", style: textStyles.smallLabel!.copyWith(color: colors.disable)),
+            Text(
+              "от",
+              style: textStyles.smallLabel!.copyWith(color: colors.disable),
+            ),
             const SizedBox(width: 8),
             ElevatedButton(
               onPressed: () {
@@ -68,28 +70,40 @@ class _LessonIntervalPickerState extends State<LessonIntervalPicker> {
                     context: context,
                     okStyle: textStyles.subtitle!,
                     cancelStyle: textStyles.subtitle!,
-                    buttonStyle: plainButton(colors, size: const Size(80, 36)),
+                    buttonStyle: ElevatedButton.styleFrom(
+                      fixedSize: const Size(80, 36),
+                    ),
                     onChange: (time) {
                       setState(() {
                         widget.controller.value =
-                            widget.controller.interval.copyWith(from: Duration(hours: time.hour, minutes: time.minute));
+                            widget.controller.interval.copyWith(
+                          from: Duration(
+                            hours: time.hour,
+                            minutes: time.minute,
+                          ),
+                        );
                       });
                     },
                     minuteInterval: MinuteInterval.FIVE,
                   ),
                 );
               },
-              style: plainButton(colors, size: const Size(54, 32)).copyWith(
-                side: MaterialStateProperty.all(BorderSide(color: colors.separator!, width: 1)),
-                backgroundColor: MaterialStateProperty.all(colors.backgroundSecondary),
+              style: ElevatedButton.styleFrom(
+                minimumSize: const Size(54, 32),
+                side: BorderSide(color: colors.separator!, width: 1),
+                primary: colors.backgroundSecondary,
               ),
               child: Text(
                 widget.controller.interval.from.stringTime,
-                style: textStyles.smallLabel!.copyWith(fontWeight: FontWeight.bold),
+                style: textStyles.smallLabel!
+                    .copyWith(fontWeight: FontWeight.bold),
               ),
             ),
             const SizedBox(width: 8),
-            Text("до", style: textStyles.smallLabel!.copyWith(color: colors.disable)),
+            Text(
+              "до",
+              style: textStyles.smallLabel!.copyWith(color: colors.disable),
+            ),
             const SizedBox(width: 8),
             ElevatedButton(
               onPressed: () {
@@ -113,24 +127,33 @@ class _LessonIntervalPickerState extends State<LessonIntervalPicker> {
                     context: context,
                     okStyle: textStyles.subtitle!,
                     cancelStyle: textStyles.subtitle!,
-                    buttonStyle: plainButton(colors, size: const Size(80, 36)),
+                    buttonStyle: ElevatedButton.styleFrom(
+                      fixedSize: const Size(80, 36),
+                    ),
                     onChange: (time) {
                       setState(() {
                         widget.controller.value =
-                            widget.controller.interval.copyWith(to: Duration(hours: time.hour, minutes: time.minute));
+                            widget.controller.interval.copyWith(
+                          to: Duration(
+                            hours: time.hour,
+                            minutes: time.minute,
+                          ),
+                        );
                       });
                     },
                     minuteInterval: MinuteInterval.FIVE,
                   ),
                 );
               },
-              style: plainButton(colors, size: const Size(54, 32)).copyWith(
-                side: MaterialStateProperty.all(BorderSide(color: colors.separator!, width: 1)),
-                backgroundColor: MaterialStateProperty.all(colors.backgroundSecondary),
+              style: ElevatedButton.styleFrom(
+                minimumSize: const Size(54, 32),
+                side: BorderSide(color: colors.separator!, width: 1),
+                primary: colors.backgroundSecondary,
               ),
               child: Text(
                 widget.controller.interval.to.stringTime,
-                style: textStyles.smallLabel!.copyWith(fontWeight: FontWeight.bold),
+                style: textStyles.smallLabel!
+                    .copyWith(fontWeight: FontWeight.bold),
               ),
             ),
           ],

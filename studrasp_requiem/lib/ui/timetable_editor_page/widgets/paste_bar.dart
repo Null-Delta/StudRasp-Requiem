@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../providers/providers.dart';
 import '../../../styles/build_context_extension.dart';
-import '../../../styles/button_style.dart';
 import '../../lesson_card/lesson_body.dart';
 
 class PasteBar extends ConsumerStatefulWidget {
@@ -35,7 +34,8 @@ class _PasteBarState extends ConsumerState<PasteBar> {
           color: colors.separator,
         ),
         Padding(
-          padding: const EdgeInsets.only(top: 16, left: 16, right: 16, bottom: 8),
+          padding:
+              const EdgeInsets.only(top: 16, left: 16, right: 16, bottom: 8),
           child: SizedBox(
             height: 36,
             child: Row(
@@ -45,20 +45,15 @@ class _PasteBarState extends ConsumerState<PasteBar> {
                   style: textStyles.label!.copyWith(color: colors.disable),
                 ),
                 const Spacer(),
-                TextButton(
-                  style: plainButton(colors, size: const Size(80, 36)).copyWith(
-                    backgroundColor: MaterialStateProperty.all(
-                      colors.accentPrimary,
-                    ),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size(80, 32),
                   ),
                   onPressed: () {
                     clearCopiedLesson();
                   },
-                  child: Text(
+                  child: const Text(
                     "Готово",
-                    style: textStyles.subtitle!.copyWith(
-                      color: colors.backgroundPrimary,
-                    ),
                   ),
                 )
               ],

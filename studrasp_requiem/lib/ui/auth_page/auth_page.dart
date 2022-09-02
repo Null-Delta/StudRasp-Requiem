@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../styles/colors.dart';
+import '../../styles/fonts.dart';
 import '../widgets/app_text_field.dart';
 
 class AuthPage extends ConsumerStatefulWidget {
@@ -17,27 +19,34 @@ class _AuthPageState extends ConsumerState<AuthPage> {
 
   @override
   Widget build(BuildContext context) {
+    final colors = Theme.of(context).extension<AppColors>()!;
+    final textStyles = Theme.of(context).extension<AppTextStyles>()!;
+
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: const Text(
+          'Авторизация',
+        ),
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
           children: [
             AppTextField(
               controller: email,
-              label: 'Email',
+              hint: 'Email',
             ),
-            const SizedBox(height: 12),
-            AppTextField(
-              controller: name,
-              label: 'Имя',
-            ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 16),
             AppTextField(
               controller: password,
-              label: 'Пароль',
+              hint: 'Пароль',
               isPassword: true,
             ),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () {},
+              child: const Text('Войти'),
+            )
           ],
         ),
       ),

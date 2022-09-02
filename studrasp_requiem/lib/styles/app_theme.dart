@@ -8,7 +8,8 @@ import 'colors.dart';
 class AppTheme {
   AppTheme._();
   static ThemeData getTheme(AppColors colors) {
-    final theme = colors is AppLightColors ? ThemeData.light() : ThemeData.dark();
+    final theme =
+        colors is AppLightColors ? ThemeData.light() : ThemeData.dark();
 
     final textStyles = AppDefaultTextStyles(colors);
 
@@ -31,6 +32,7 @@ class AppTheme {
         backgroundColor: colors.backgroundPrimary,
         foregroundColor: colors.accentPrimary,
         elevation: 0,
+        titleTextStyle: textStyles.title,
         centerTitle: true,
       ),
       iconTheme: theme.iconTheme.copyWith(
@@ -38,6 +40,20 @@ class AppTheme {
       ),
       textSelectionTheme: TextSelectionThemeData(
         selectionColor: colors.disable!.withOpacity(0.25),
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          primary: colors.accentPrimary,
+          onPrimary: colors.backgroundPrimary,
+          shadowColor: Colors.transparent,
+          onSurface: colors.backgroundPrimary,
+          surfaceTintColor: colors.backgroundPrimary,
+          elevation: 0,
+          padding: const EdgeInsets.all(0),
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(8)),
+          ),
+        ),
       ),
       inputDecorationTheme: theme.inputDecorationTheme.copyWith(
         hintStyle: textStyles.label!.copyWith(color: colors.disable),
