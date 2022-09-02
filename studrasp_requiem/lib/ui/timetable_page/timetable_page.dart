@@ -39,7 +39,26 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
         leading: IconButton(
           icon: const Icon(Icons.calendar_month_outlined),
           splashRadius: 24,
-          onPressed: () {},
+          onPressed: () {
+            final selectedDate = DateTime.fromMillisecondsSinceEpoch(
+                ref.read(currentDate).millisecondsSinceEpoch + ref.read(selectedDuration).inMilliseconds);
+            showDatePicker(
+              context: context,
+              initialDate: selectedDate,
+              firstDate: selectedDate.subtract(const Duration(days: 365)),
+              lastDate: selectedDate.add(const Duration(days: 365)),
+            ).then((date) {
+              if (date != null) {
+                final now = Duration(milliseconds: ref.read(currentDate).millisecondsSinceEpoch).inDays;
+                final selected = Duration(milliseconds: date.millisecondsSinceEpoch).inDays;
+                ref.read(selectedDuration.notifier).update(
+                  (state) {
+                    return Duration(days: selected - now + 1);
+                  },
+                );
+              }
+            });
+          },
         ),
         actions: [
           IconButton(

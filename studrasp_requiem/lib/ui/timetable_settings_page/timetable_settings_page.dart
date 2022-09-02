@@ -19,16 +19,13 @@ class TimetableSettingsPage extends ConsumerStatefulWidget {
   const TimetableSettingsPage({Key? key}) : super(key: key);
 
   @override
-  ConsumerState<TimetableSettingsPage> createState() =>
-      _TimeTableSettingsPageState();
+  ConsumerState<TimetableSettingsPage> createState() => _TimeTableSettingsPageState();
 }
 
 class _TimeTableSettingsPageState extends ConsumerState<TimetableSettingsPage> {
   final TextEditingController nameFieldController = TextEditingController();
-  final TextEditingController firstWeekFieldController =
-      TextEditingController();
-  final TextEditingController secondWeekFieldController =
-      TextEditingController();
+  final TextEditingController firstWeekFieldController = TextEditingController();
+  final TextEditingController secondWeekFieldController = TextEditingController();
 
   List<LessonIntervalController> lessonControllers = [];
   List<User> editors = [];
@@ -123,14 +120,12 @@ class _TimeTableSettingsPageState extends ConsumerState<TimetableSettingsPage> {
             height: 1.0,
           ),
         ),
-        backgroundColor: Colors.transparent,
         shadowColor: Colors.transparent,
         leading: IconButton(
           onPressed: () {
             saveChanges();
           },
-          icon:
-              Assets.images.circleChevronLeft.svg(color: colors.accentPrimary),
+          icon: Assets.images.circleChevronLeft.svg(color: colors.accentPrimary),
           splashRadius: 24,
         ),
         title: Text(

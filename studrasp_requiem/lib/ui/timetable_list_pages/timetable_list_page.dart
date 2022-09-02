@@ -9,8 +9,6 @@ import '../../styles/widget_styles.dart';
 import '../timetable_editor_page/timetable_editor_page.dart';
 import 'widgets/time_table_card.dart';
 
-enum TimetableListType { saved, owned }
-
 class TimetableListPage extends StatefulWidget {
   const TimetableListPage({Key? key}) : super(key: key);
 
@@ -69,7 +67,7 @@ class _TimetableListPageState extends State<TimetableListPage> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              icon: Assets.images.circleChevronLeft.svg(),
+              icon: Assets.images.circleChevronLeft.svg(color: colors.accentPrimary),
               splashRadius: 24,
             ),
           ),
@@ -100,8 +98,7 @@ class _TimetableListPageState extends State<TimetableListPage> {
                 child: TabBar(
                   labelColor: colors.backgroundPrimary,
                   labelStyle: textStyles.label!,
-                  unselectedLabelStyle:
-                      textStyles.label!.copyWith(color: colors.accentPrimary),
+                  unselectedLabelStyle: textStyles.label!.copyWith(color: colors.accentPrimary),
                   unselectedLabelColor: colors.accentPrimary,
                   indicatorWeight: 0,
                   indicator: BoxDecoration(

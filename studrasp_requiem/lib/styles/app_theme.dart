@@ -8,12 +8,23 @@ import 'colors.dart';
 class AppTheme {
   AppTheme._();
   static ThemeData getTheme(AppColors colors) {
-    final theme =
-        colors is AppLightColors ? ThemeData.light() : ThemeData.dark();
+    final theme = colors is AppLightColors ? ThemeData.light() : ThemeData.dark();
 
     final textStyles = AppDefaultTextStyles(colors);
 
     return theme.copyWith(
+      dialogTheme: DialogTheme(
+        backgroundColor: colors.backgroundPrimary,
+        shape: RoundedRectangleBorder(borderRadius: BurderRadiusStyles.large),
+        contentTextStyle: textStyles.label,
+      ),
+      colorScheme: ColorScheme.light(
+        primary: colors.accentSecondary!,
+        onPrimary: colors.backgroundPrimary!,
+        onSurface: colors.accentPrimary!,
+      ),
+      cardColor: colors.backgroundSecondary,
+      primaryColor: colors.backgroundPrimary,
       backgroundColor: colors.backgroundPrimary,
       scaffoldBackgroundColor: colors.backgroundPrimary,
       appBarTheme: theme.appBarTheme.copyWith(

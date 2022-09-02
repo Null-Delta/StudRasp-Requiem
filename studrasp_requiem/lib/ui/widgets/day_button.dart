@@ -66,7 +66,6 @@ class _DayButtonState extends ConsumerState<DayButton> {
       height: 48,
       child: GestureDetector(
         onTap: () {
-          // log(ref.read(dayButtonStyleProvider(const Duration())).toString());
           ref.read(selectedDuration.notifier).state = widget.diration;
         },
         child: DecoratedBox(
@@ -87,8 +86,7 @@ class _DayButtonState extends ConsumerState<DayButton> {
                 ),
               ),
               Text(
-                DateFormat('EEE')
-                    .format(ref.watch(currentDate).add(widget.diration)),
+                DateFormat('EEE').format(ref.watch(currentDate).add(widget.diration)),
                 style: const TextStyle(fontFamily: "Roboto").copyWith(
                   color: colors.disable,
                   fontSize: 10,

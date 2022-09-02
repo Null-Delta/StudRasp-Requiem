@@ -10,7 +10,7 @@ final currentDate = StateProvider<DateTime>((ref) {
 });
 
 final selectedDuration = StateProvider<Duration>((ref) {
-  return Duration(milliseconds: DateTime.now().millisecondsSinceEpoch);
+  return const Duration(milliseconds: 0);
 });
 
 final currentTimetable = StateProvider<Timetable>((ref) {

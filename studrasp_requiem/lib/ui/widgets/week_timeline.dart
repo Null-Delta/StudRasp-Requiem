@@ -4,24 +4,52 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../providers/providers.dart';
 import 'day_button.dart';
 
-class WeekTimeline extends ConsumerWidget {
-  const WeekTimeline({Key? key, this.weekCount}) : super(key: key);
-
+class WeekTimeline extends ConsumerStatefulWidget {
   final int? weekCount;
 
+  const WeekTimeline({Key? key, this.weekCount}) : super(key: key);
+
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() => _WeekTimelineState();
+}
+
+class _WeekTimelineState extends ConsumerState<WeekTimeline> {
+  var controller = PageController(initialPage: 0);
+
+  @override
+  void initState() {
+    super.initState();
+
+    final initialPage = widget.weekCount != null ? 0 : 1000;
+    controller = PageController(initialPage: initialPage);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final weekDay = ref.watch(currentDate).weekday - 1;
 
-    final initialPage = weekCount != null ? 0 : 1000;
+    ref.listen<Duration>(
+      selectedDuration,
+      (previous, next) {
+        var offsetDay = Duration(
+          days: next.inDays + weekDay,
+        ).inDays;
+
+        if (offsetDay > 0) {
+          offsetDay = offsetDay ~/ 7;
+        } else {
+          offsetDay = offsetDay ~/ 7 - 1;
+        }
+
+        controller.jumpToPage(controller.initialPage + offsetDay);
+      },
+    );
 
     return SizedBox(
       height: 76,
       child: PageView.builder(
-        controller: PageController(
-          initialPage: initialPage,
-        ),
-        itemCount: weekCount,
+        controller: controller,
+        itemCount: widget.weekCount,
         itemBuilder: (BuildContext context, int index) {
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 14),
@@ -36,7 +64,7 @@ class WeekTimeline extends ConsumerWidget {
                       ),
                       child: DayButton(
                         diration: Duration(
-                          days: 7 * (index - initialPage) + (i - weekDay),
+                          days: 7 * (index - controller.initialPage) + (i - weekDay),
                         ),
                       ),
                     ),
