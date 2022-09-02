@@ -4,7 +4,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../gen/assets.gen.dart';
 import '../../styles/colors.dart';
 import '../../styles/fonts.dart';
+import '../../support/logger.dart';
 import '../widgets/app_text_field.dart';
+
+import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthPage extends ConsumerStatefulWidget {
   const AuthPage({Key? key}) : super(key: key);
@@ -62,7 +65,17 @@ class _AuthPageState extends ConsumerState<AuthPage> {
               ),
               const SizedBox(height: 32),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () async {
+                  final res =
+                      await FirebaseAuth.instance.signInWithEmailAndPassword(
+                    email: email.text,
+                    password: password.text,
+                  );
+
+                  logger.info(res.toString());
+                  logger.info(res.user.toString());
+                  logger.info(res.additionalUserInfo.toString());
+                },
                 style: ElevatedButton.styleFrom(
                   textStyle: textStyles.subtitle,
                   minimumSize: const Size(double.infinity, 42),
@@ -76,7 +89,23 @@ class _AuthPageState extends ConsumerState<AuthPage> {
               ),
               const SizedBox(height: 6),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () async {
+                  final res = await FirebaseAuth.instance
+                      .createUserWithEmailAndPassword(
+                    email: email.text,
+                    password: password.text,
+                  );
+                  if (res.user != null) {
+                    await Future.wait([
+                      res.user!.sendEmailVerification(),
+                      res.user!.updateDisplayName(name.text),
+                    ]);
+                  }
+
+                  logger.info(res.toString());
+                  logger.info(res.user.toString());
+                  logger.info(res.additionalUserInfo.toString());
+                },
                 style: ElevatedButton.styleFrom(
                   textStyle: textStyles.subtitle,
                   primary: colors.backgroundPrimary,

@@ -42,14 +42,16 @@ final selectedDay = Provider<int>((ref) {
   return weekValue;
 });
 
-final dayButtonStyleProvider = Provider.family.autoDispose<DayButtonStyle, Duration>((ref, duration) {
+final dayButtonStyleProvider =
+    Provider.family.autoDispose<DayButtonStyle, Duration>((ref, duration) {
   if (duration.inDays == ref.watch(selectedDuration).inDays) {
     return DayButtonStyle.selected;
   }
 
   final now = DateTime.now().millisecondsSinceEpoch;
 
-  final buttonDays = Duration(milliseconds: now + duration.inMilliseconds).inDays;
+  final buttonDays =
+      Duration(milliseconds: now + duration.inMilliseconds).inDays;
 
   final currentdays = Duration(milliseconds: now).inDays;
 
