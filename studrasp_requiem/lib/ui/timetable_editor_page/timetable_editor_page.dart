@@ -9,6 +9,7 @@ import '../../models/day/day_model.dart';
 import '../../models/lesson/lesson_model.dart';
 import '../../models/time_interval/time_interval_model.dart';
 import '../../models/timetable/timetable_model.dart';
+import '../../models/user/user_model.dart';
 import '../../providers/providers.dart';
 import '../../styles/colors.dart';
 import '../../styles/fonts.dart';
@@ -87,7 +88,7 @@ class _TimetableEditorPageState extends ConsumerState<TimetableEditorPage> {
     return ProviderScope(
       overrides: [
         currentEditingTimetable.overrideWithValue(
-          StateController(widget.timeTable ?? Timetable.empty()),
+          StateController(widget.timeTable ?? Timetable.empty(User.empty())),
         ),
       ],
       child: Scaffold(

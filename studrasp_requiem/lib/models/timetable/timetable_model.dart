@@ -27,14 +27,14 @@ class Timetable with _$Timetable {
       _$TimetableFromJson(json);
 
   //нужно получение данного пользователя
-  factory Timetable.empty() {
+  factory Timetable.empty(User user) {
     return Timetable(
       id: '',
       name: 'Новое расписание',
       days: [for (int i = 0; i < 14; i++) Day.empty()],
-      owner: const User(id: '', name: '', avatarUrl: ''),
+      owner: user,
       editors: [],
-      lastEditor: const User(id: '', name: '', avatarUrl: ''),
+      lastEditor: user,
       creationDate: DateTime.now(),
       lastUpdateDate: DateTime.now(),
       config: TimetableConfig.empty(),

@@ -32,9 +32,9 @@ class _TimetableListPageState extends State<TimetableListPage> {
         id: "0",
         name: "Шарарам 36/2",
         days: [],
-        owner: const User(id: "0", name: "JakeApps", avatarUrl: ""),
+        owner: User.empty(),
         editors: [],
-        lastEditor: const User(id: "0", name: "JakeApps", avatarUrl: ""),
+        lastEditor: User.empty(),
         creationDate: DateTime.now(),
         lastUpdateDate: DateTime.now(),
         config: TimetableConfig.empty(),
@@ -47,9 +47,9 @@ class _TimetableListPageState extends State<TimetableListPage> {
         id: "0",
         name: "Не шарарам 36/1",
         days: [],
-        owner: const User(id: "0", name: "JakeApps", avatarUrl: ""),
+        owner: User.empty(),
         editors: [],
-        lastEditor: const User(id: "0", name: "JakeApps", avatarUrl: ""),
+        lastEditor: User.empty(),
         creationDate: DateTime.now(),
         lastUpdateDate: DateTime.now(),
         config: TimetableConfig.empty(),
@@ -67,7 +67,8 @@ class _TimetableListPageState extends State<TimetableListPage> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              icon: Assets.images.circleChevronLeft.svg(color: colors.accentPrimary),
+              icon: Assets.images.circleChevronLeft
+                  .svg(color: colors.accentPrimary),
               splashRadius: 24,
             ),
           ),
@@ -98,7 +99,8 @@ class _TimetableListPageState extends State<TimetableListPage> {
                 child: TabBar(
                   labelColor: colors.backgroundPrimary,
                   labelStyle: textStyles.label!,
-                  unselectedLabelStyle: textStyles.label!.copyWith(color: colors.accentPrimary),
+                  unselectedLabelStyle:
+                      textStyles.label!.copyWith(color: colors.accentPrimary),
                   unselectedLabelColor: colors.accentPrimary,
                   indicatorWeight: 0,
                   indicator: BoxDecoration(

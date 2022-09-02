@@ -41,7 +41,9 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
           splashRadius: 24,
           onPressed: () {
             final selectedDate = DateTime.fromMillisecondsSinceEpoch(
-                ref.read(currentDate).millisecondsSinceEpoch + ref.read(selectedDuration).inMilliseconds);
+              ref.read(currentDate).millisecondsSinceEpoch +
+                  ref.read(selectedDuration).inMilliseconds,
+            );
             showDatePicker(
               context: context,
               initialDate: selectedDate,
@@ -49,8 +51,11 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
               lastDate: selectedDate.add(const Duration(days: 365)),
             ).then((date) {
               if (date != null) {
-                final now = Duration(milliseconds: ref.read(currentDate).millisecondsSinceEpoch).inDays;
-                final selected = Duration(milliseconds: date.millisecondsSinceEpoch).inDays;
+                final now = Duration(
+                  milliseconds: ref.read(currentDate).millisecondsSinceEpoch,
+                ).inDays;
+                final selected =
+                    Duration(milliseconds: date.millisecondsSinceEpoch).inDays;
                 ref.read(selectedDuration.notifier).update(
                   (state) {
                     return Duration(days: selected - now + 1);
@@ -98,13 +103,15 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
                             owner: const User(
                               id: "0",
                               name: "JakeApps",
-                              avatarUrl: "",
+                              email: '',
+                              isVerified: false,
                             ),
                             editors: [],
                             lastEditor: const User(
                               id: "0",
                               name: "JakeApps",
-                              avatarUrl: "",
+                              email: '',
+                              isVerified: false,
                             ),
                             creationDate: DateTime.now(),
                             lastUpdateDate: DateTime.now(),

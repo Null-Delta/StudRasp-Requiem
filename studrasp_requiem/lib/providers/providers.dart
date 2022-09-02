@@ -14,11 +14,11 @@ final selectedDuration = StateProvider<Duration>((ref) {
 });
 
 final currentTimetable = StateProvider<Timetable>((ref) {
-  return Timetable.empty();
+  return Timetable.empty(User.empty());
 });
 
 final currentUser = StateProvider<User>((ref) {
-  return const User(id: '', name: '', avatarUrl: '');
+  return User.empty();
 });
 
 final currentEditingLesson = StateProvider<Lesson>((ref) {
@@ -30,7 +30,7 @@ final editorCopiedLesson = StateProvider<Lesson?>((ref) {
 });
 
 final currentEditingTimetable = StateProvider<Timetable>((ref) {
-  return Timetable.empty();
+  return Timetable.empty(User.empty());
 });
 
 final selectedDay = Provider<int>((ref) {
