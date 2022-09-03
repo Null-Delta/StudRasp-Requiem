@@ -46,6 +46,7 @@ class UserAuthNotifier extends StateNotifier<AppUser> {
         isVerified: user.emailVerified,
         photoURL: user.photoURL,
       );
+      logger.info(state);
     }
   }
 
@@ -71,6 +72,7 @@ class UserAuthNotifier extends StateNotifier<AppUser> {
         isVerified: user.emailVerified,
         photoURL: user.photoURL,
       );
+      logger.info(state);
     }
   }
 }

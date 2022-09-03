@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../gen/assets.gen.dart';
-import '../../providers/user_auth.dart';
 import '../../styles/colors.dart';
 import '../../styles/fonts.dart';
 import '../widgets/app_text_field.dart';
@@ -18,6 +17,10 @@ class _AuthPageState extends ConsumerState<AuthPage> {
   final email = TextEditingController();
   final name = TextEditingController();
   final password = TextEditingController();
+
+  final activeValidator = StateProvider<bool>((ref) {
+    return false;
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -46,27 +49,51 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                 ),
               ),
               const SizedBox(height: 32),
-              AppTextField(
-                controller: name,
-                hint: 'Имя',
-              ),
-              const SizedBox(height: 12),
-              AppTextField(
-                controller: email,
-                hint: 'Email',
-              ),
-              const SizedBox(height: 12),
-              AppTextField(
-                controller: password,
-                hint: 'Пароль',
-                isPassword: true,
+              Consumer(
+                builder: (_, ref, __) {
+                  final active = ref.watch(activeValidator);
+                  return Column(
+                    children: [
+                      AppTextField(
+                        controller: name,
+                        hint: 'Имя',
+                        activeValidator: active,
+                        validator: RegExp(r'^[а-яА-ЯёЁa-zA-Z0-9 ]{2,}$'),
+                        errorText:
+                            'Имя должно быть длинее 2-х символов и собержать только буквы и цифры.',
+                      ),
+                      const SizedBox(height: 12),
+                      AppTextField(
+                        controller: email,
+                        hint: 'Email',
+                        activeValidator: active,
+                        validator: RegExp(
+                          r'^[-\w.]+@([A-z0-9][-A-z0-9]+\.)+[A-z]{2,4}$',
+                        ),
+                        errorText: 'Некорректный Email.',
+                      ),
+                      const SizedBox(height: 12),
+                      AppTextField(
+                        controller: password,
+                        hint: 'Пароль',
+                        obscureText: true,
+                        activeValidator: active,
+                        validator: RegExp(
+                          r'^[0-9a-zA-Z!@#$%^&*]{5,}$',
+                        ),
+                        errorText: 'Пароль должен быть длиннее 4-х символов.',
+                      ),
+                    ],
+                  );
+                },
               ),
               const SizedBox(height: 32),
               ElevatedButton(
                 onPressed: () async {
-                  ref
-                      .read(userAuth.notifier)
-                      .auth(email: email.text, password: password.text);
+                  ref.read(activeValidator.notifier).state = true;
+                  // ref
+                  //     .read(userAuth.notifier)
+                  //     .auth(email: email.text, password: password.text);
                 },
                 style: ElevatedButton.styleFrom(
                   textStyle: textStyles.subtitle,
@@ -82,11 +109,12 @@ class _AuthPageState extends ConsumerState<AuthPage> {
               const SizedBox(height: 6),
               ElevatedButton(
                 onPressed: () async {
-                  ref.read(userAuth.notifier).reg(
-                        name: name.text,
-                        email: email.text,
-                        password: password.text,
-                      );
+                  ref.read(activeValidator.notifier).state = true;
+                  // ref.read(userAuth.notifier).reg(
+                  //       name: name.text,
+                  //       email: email.text,
+                  //       password: password.text,
+                  //     );
                 },
                 style: ElevatedButton.styleFrom(
                   textStyle: textStyles.subtitle,
