@@ -14,38 +14,40 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
-AppUser _$UserFromJson(Map<String, dynamic> json) {
+AppUser _$AppUserFromJson(Map<String, dynamic> json) {
   return _User.fromJson(json);
 }
 
 /// @nodoc
-mixin _$User {
+mixin _$AppUser {
   String get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   String get email => throw _privateConstructorUsedError;
   bool get isVerified => throw _privateConstructorUsedError;
+  bool get isRegistered => throw _privateConstructorUsedError;
   String? get photoURL => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $UserCopyWith<AppUser> get copyWith => throw _privateConstructorUsedError;
+  $AppUserCopyWith<AppUser> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $UserCopyWith<$Res> {
-  factory $UserCopyWith(AppUser value, $Res Function(AppUser) then) =
-      _$UserCopyWithImpl<$Res>;
+abstract class $AppUserCopyWith<$Res> {
+  factory $AppUserCopyWith(AppUser value, $Res Function(AppUser) then) =
+      _$AppUserCopyWithImpl<$Res>;
   $Res call(
       {String id,
       String name,
       String email,
       bool isVerified,
+      bool isRegistered,
       String? photoURL});
 }
 
 /// @nodoc
-class _$UserCopyWithImpl<$Res> implements $UserCopyWith<$Res> {
-  _$UserCopyWithImpl(this._value, this._then);
+class _$AppUserCopyWithImpl<$Res> implements $AppUserCopyWith<$Res> {
+  _$AppUserCopyWithImpl(this._value, this._then);
 
   final AppUser _value;
   // ignore: unused_field
@@ -57,6 +59,7 @@ class _$UserCopyWithImpl<$Res> implements $UserCopyWith<$Res> {
     Object? name = freezed,
     Object? email = freezed,
     Object? isVerified = freezed,
+    Object? isRegistered = freezed,
     Object? photoURL = freezed,
   }) {
     return _then(_value.copyWith(
@@ -76,6 +79,10 @@ class _$UserCopyWithImpl<$Res> implements $UserCopyWith<$Res> {
           ? _value.isVerified
           : isVerified // ignore: cast_nullable_to_non_nullable
               as bool,
+      isRegistered: isRegistered == freezed
+          ? _value.isRegistered
+          : isRegistered // ignore: cast_nullable_to_non_nullable
+              as bool,
       photoURL: photoURL == freezed
           ? _value.photoURL
           : photoURL // ignore: cast_nullable_to_non_nullable
@@ -85,7 +92,7 @@ class _$UserCopyWithImpl<$Res> implements $UserCopyWith<$Res> {
 }
 
 /// @nodoc
-abstract class _$$_UserCopyWith<$Res> implements $UserCopyWith<$Res> {
+abstract class _$$_UserCopyWith<$Res> implements $AppUserCopyWith<$Res> {
   factory _$$_UserCopyWith(_$_User value, $Res Function(_$_User) then) =
       __$$_UserCopyWithImpl<$Res>;
   @override
@@ -94,11 +101,12 @@ abstract class _$$_UserCopyWith<$Res> implements $UserCopyWith<$Res> {
       String name,
       String email,
       bool isVerified,
+      bool isRegistered,
       String? photoURL});
 }
 
 /// @nodoc
-class __$$_UserCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res>
+class __$$_UserCopyWithImpl<$Res> extends _$AppUserCopyWithImpl<$Res>
     implements _$$_UserCopyWith<$Res> {
   __$$_UserCopyWithImpl(_$_User _value, $Res Function(_$_User) _then)
       : super(_value, (v) => _then(v as _$_User));
@@ -112,6 +120,7 @@ class __$$_UserCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res>
     Object? name = freezed,
     Object? email = freezed,
     Object? isVerified = freezed,
+    Object? isRegistered = freezed,
     Object? photoURL = freezed,
   }) {
     return _then(_$_User(
@@ -131,6 +140,10 @@ class __$$_UserCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res>
           ? _value.isVerified
           : isVerified // ignore: cast_nullable_to_non_nullable
               as bool,
+      isRegistered: isRegistered == freezed
+          ? _value.isRegistered
+          : isRegistered // ignore: cast_nullable_to_non_nullable
+              as bool,
       photoURL: photoURL == freezed
           ? _value.photoURL
           : photoURL // ignore: cast_nullable_to_non_nullable
@@ -146,7 +159,8 @@ class _$_User implements _User {
       {required this.id,
       required this.name,
       required this.email,
-      required this.isVerified,
+      this.isVerified = false,
+      this.isRegistered = false,
       this.photoURL});
 
   factory _$_User.fromJson(Map<String, dynamic> json) => _$$_UserFromJson(json);
@@ -158,13 +172,17 @@ class _$_User implements _User {
   @override
   final String email;
   @override
+  @JsonKey()
   final bool isVerified;
+  @override
+  @JsonKey()
+  final bool isRegistered;
   @override
   final String? photoURL;
 
   @override
   String toString() {
-    return 'User(id: $id, name: $name, email: $email, isVerified: $isVerified, photoURL: $photoURL)';
+    return 'AppUser(id: $id, name: $name, email: $email, isVerified: $isVerified, isRegistered: $isRegistered, photoURL: $photoURL)';
   }
 
   @override
@@ -177,6 +195,8 @@ class _$_User implements _User {
             const DeepCollectionEquality().equals(other.email, email) &&
             const DeepCollectionEquality()
                 .equals(other.isVerified, isVerified) &&
+            const DeepCollectionEquality()
+                .equals(other.isRegistered, isRegistered) &&
             const DeepCollectionEquality().equals(other.photoURL, photoURL));
   }
 
@@ -188,6 +208,7 @@ class _$_User implements _User {
       const DeepCollectionEquality().hash(name),
       const DeepCollectionEquality().hash(email),
       const DeepCollectionEquality().hash(isVerified),
+      const DeepCollectionEquality().hash(isRegistered),
       const DeepCollectionEquality().hash(photoURL));
 
   @JsonKey(ignore: true)
@@ -208,7 +229,8 @@ abstract class _User implements AppUser {
       {required final String id,
       required final String name,
       required final String email,
-      required final bool isVerified,
+      final bool isVerified,
+      final bool isRegistered,
       final String? photoURL}) = _$_User;
 
   factory _User.fromJson(Map<String, dynamic> json) = _$_User.fromJson;
@@ -221,6 +243,8 @@ abstract class _User implements AppUser {
   String get email;
   @override
   bool get isVerified;
+  @override
+  bool get isRegistered;
   @override
   String? get photoURL;
   @override

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'auth_page/auth_page.dart';
+import '../providers/user_auth.dart';
+import 'auth_page/auth_user_page.dart';
 import 'timetable_page/timetable_page.dart';
 import '../styles/app_theme.dart';
 import '../styles/colors.dart';
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({Key? key}) : super(key: key);
 
   final appLightColors = const AppLightColors();
@@ -13,9 +14,11 @@ class MyApp extends StatelessWidget {
   final appDarkColors = const AppDarkColors();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     const lightColors = AppLightColors();
     const darkColors = AppDarkColors();
+
+    ref.read(userAuth);
 
     return MaterialApp(
       title: 'Flutter Demo',
@@ -36,7 +39,7 @@ class HomePage extends ConsumerWidget {
 
   final pages = [
     const TimetablePage(),
-    const AuthPage(),
+    const AuthUserPage(),
   ];
 
   @override
@@ -64,8 +67,8 @@ class HomePage extends ConsumerWidget {
               icon: Icon(Icons.calendar_month_outlined),
             ),
             BottomNavigationBarItem(
-              label: 'Параметры',
-              icon: Icon(Icons.settings_outlined),
+              label: 'Профиль',
+              icon: Icon(Icons.account_circle_outlined),
             ),
           ],
         ),

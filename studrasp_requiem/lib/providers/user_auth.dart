@@ -14,16 +14,22 @@ class UserAuthNotifier extends StateNotifier<AppUser> {
     _init();
   }
 
+  AppUser userToAppUser(User user) {
+    return AppUser(
+      id: user.uid,
+      name: user.displayName ?? '',
+      email: user.email!,
+      isVerified: user.emailVerified,
+      isRegistered: true,
+      photoURL: user.photoURL,
+    );
+  }
+
   Future<void> _init() async {
     FirebaseAuth.instance.authStateChanges().listen((user) {
       if (user != null) {
-        state = AppUser(
-          id: user.uid,
-          name: user.displayName ?? '',
-          email: user.email!,
-          isVerified: user.emailVerified,
-          photoURL: user.photoURL,
-        );
+        state = userToAppUser(user);
+        print(user);
       }
     });
   }
@@ -38,13 +44,7 @@ class UserAuthNotifier extends StateNotifier<AppUser> {
 
       if (res.user != null) {
         final user = res.user!;
-        state = AppUser(
-          id: user.uid,
-          name: user.displayName ?? '',
-          email: user.email!,
-          isVerified: user.emailVerified,
-          photoURL: user.photoURL,
-        );
+        state = userToAppUser(user);
       }
     } on FirebaseAuthException catch (e) {
       return e.code;
@@ -67,18 +67,16 @@ class UserAuthNotifier extends StateNotifier<AppUser> {
           user.sendEmailVerification(),
           user.updateDisplayName(name),
         ]);
-
-        state = AppUser(
-          id: user.uid,
-          name: user.displayName ?? name,
-          email: user.email!,
-          isVerified: user.emailVerified,
-          photoURL: user.photoURL,
-        );
+        state = userToAppUser(user);
       }
     } on FirebaseAuthException catch (e) {
       return e.code;
     }
     return null;
+  }
+
+  Future<void> logout() async {
+    await FirebaseAuth.instance.signOut();
+    state = AppUser.empty();
   }
 }

@@ -59,8 +59,10 @@ class _AuthPageState extends ConsumerState<AuthPage>
 
   void auth() async {
     ref.read(_activeValidatorProvider.notifier).state = true;
+    final isValidate = validationController.state['email']! &&
+        validationController.state['password']!;
 
-    if (validationController.isValidate()) {
+    if (isValidate) {
       print(
         await ref
             .read(userAuth.notifier)
