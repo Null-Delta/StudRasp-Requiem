@@ -1,10 +1,8 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
-
 import '../../gen/assets.gen.dart';
 import '../../models/day/day_model.dart';
 import '../../models/lesson/lesson_model.dart';
@@ -13,7 +11,6 @@ import '../../models/timetable/timetable_model.dart';
 import '../../providers/providers.dart';
 import '../../styles/colors.dart';
 import '../../styles/fonts.dart';
-import '../../styles/widget_styles.dart';
 import '../../support/fast_swipe_physics.dart';
 import '../lesson_card/card_styles/editable_lesson_card.dart';
 import '../lesson_card/card_styles/empty_lesson_card.dart';
@@ -181,11 +178,16 @@ class _TimetableEditorPageState extends ConsumerState<TimetableEditorPage> {
                       onReorderStart: (index) {
                         HapticFeedback.heavyImpact();
                       },
-                      onReorderEnd: (index) {},
+                      onReorderEnd: (index) {
+                        HapticFeedback.heavyImpact();
+                      },
                       proxyDecorator: (child, index, animation) {
                         return Material(
                           type: MaterialType.transparency,
-                          child: child,
+                          child: Transform.scale(
+                            scale: 1.1,
+                            child: child,
+                          ),
                         );
                       },
                       header: Column(

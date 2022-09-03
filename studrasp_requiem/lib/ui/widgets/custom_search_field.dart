@@ -485,7 +485,11 @@ class _SearchFieldState<T> extends State<SearchField<T>> {
 
       if (widget.showListTop) {
         isUp = true;
-        return Offset(0, -(widget.itemHeight * suggestionsCount));
+        if (suggestionsCount > widget.maxSuggestionsInViewPort) {
+          return Offset(0, -(widget.itemHeight * widget.maxSuggestionsInViewPort));
+        } else {
+          return Offset(0, -(widget.itemHeight * suggestionsCount));
+        }
       } else if (isSpaceAvailable) {
         isUp = false;
         return Offset(0, textFieldSize.height);
