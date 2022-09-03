@@ -12,11 +12,11 @@ _$_Timetable _$$_TimetableFromJson(Map<String, dynamic> json) => _$_Timetable(
       days: (json['days'] as List<dynamic>)
           .map((e) => Day.fromJson(e as Map<String, dynamic>))
           .toList(),
-      owner: User.fromJson(json['owner'] as Map<String, dynamic>),
+      owner: AppUser.fromJson(json['owner'] as Map<String, dynamic>),
       editors: (json['editors'] as List<dynamic>)
-          .map((e) => User.fromJson(e as Map<String, dynamic>))
+          .map((e) => AppUser.fromJson(e as Map<String, dynamic>))
           .toList(),
-      lastEditor: User.fromJson(json['lastEditor'] as Map<String, dynamic>),
+      lastEditor: AppUser.fromJson(json['lastEditor'] as Map<String, dynamic>),
       creationDate: DateTime.parse(json['creationDate'] as String),
       lastUpdateDate: DateTime.parse(json['lastUpdateDate'] as String),
       config: TimetableConfig.fromJson(json['config'] as Map<String, dynamic>),
