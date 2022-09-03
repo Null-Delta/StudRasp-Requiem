@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../models/user/user_model.dart';
-import '../support/logger.dart';
 
 final userAuth = StateNotifierProvider<UserAuthNotifier, AppUser>((ref) {
   return UserAuthNotifier(
@@ -25,54 +24,61 @@ class UserAuthNotifier extends StateNotifier<AppUser> {
           isVerified: user.emailVerified,
           photoURL: user.photoURL,
         );
-        logger.warning(state);
       }
     });
   }
 
-  Future<void> auth({
+  Future<String?> auth({
     required String email,
     required String password,
   }) async {
-    final res = await FirebaseAuth.instance
-        .signInWithEmailAndPassword(email: email, password: password);
+    try {
+      final res = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email, password: password);
 
-    if (res.user != null) {
-      final user = res.user!;
-      state = AppUser(
-        id: user.uid,
-        name: user.displayName ?? '',
-        email: user.email!,
-        isVerified: user.emailVerified,
-        photoURL: user.photoURL,
-      );
-      logger.info(state);
+      if (res.user != null) {
+        final user = res.user!;
+        state = AppUser(
+          id: user.uid,
+          name: user.displayName ?? '',
+          email: user.email!,
+          isVerified: user.emailVerified,
+          photoURL: user.photoURL,
+        );
+      }
+    } on FirebaseAuthException catch (e) {
+      return e.code;
     }
+    return null;
   }
 
-  Future<void> reg({
+  Future<String?> reg({
     required String name,
     required String email,
     required String password,
   }) async {
-    final res = await FirebaseAuth.instance
-        .createUserWithEmailAndPassword(email: email, password: password);
+    try {
+      final res = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: email, password: password);
 
-    if (res.user != null) {
-      final user = res.user!;
-      await Future.wait([
-        user.sendEmailVerification(),
-        user.updateDisplayName(name),
-      ]);
+      if (res.user != null) {
+        final user = res.user!;
+        await Future.wait([
+          user.sendEmailVerification(),
+          user.updateDisplayName(name),
+        ]);
 
-      state = AppUser(
-        id: user.uid,
-        name: user.displayName ?? name,
-        email: user.email!,
-        isVerified: user.emailVerified,
-        photoURL: user.photoURL,
-      );
-      logger.info(state);
+        state = AppUser(
+          id: user.uid,
+          name: user.displayName ?? name,
+          email: user.email!,
+          isVerified: user.emailVerified,
+          photoURL: user.photoURL,
+        );
+      }
+    } on FirebaseAuthException catch (e) {
+      return e.code;
     }
+    return null;
   }
 }
