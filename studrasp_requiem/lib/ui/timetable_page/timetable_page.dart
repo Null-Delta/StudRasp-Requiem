@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/gestures.dart';
@@ -15,6 +16,7 @@ import '../search_page/search_page.dart';
 import '../timetable_editor_page/timetable_editor_page.dart';
 import '../timetable_list_pages/timetable_list_page.dart';
 import '../timetable_list_pages/widgets/time_table_card.dart';
+import '../timetable_settings_page/labeled_text.dart';
 import '../widgets/week_timeline.dart';
 
 import '../../models/lesson/lesson_model.dart';
@@ -31,6 +33,16 @@ class TimetablePage extends ConsumerStatefulWidget {
 
 class _TimetablePageState extends ConsumerState<TimetablePage> {
   final dayPageController = PageController(initialPage: 366);
+
+  @override
+  void initState() {
+    super.initState();
+
+    Timer.periodic(const Duration(minutes: 1), (timer) {
+      print("Update!");
+      ref.read(currentDate.notifier).state = DateTime.now();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,6 +68,11 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
       },
     );
 
+    final timeTable = ref.watch(currentTimetable);
+    final creationDay = Duration(milliseconds: timeTable.creationDate.millisecondsSinceEpoch).inDays -
+        timeTable.creationDate.weekday +
+        1;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: colors.backgroundPrimary,
@@ -64,8 +81,7 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
           splashRadius: 24,
           onPressed: () {
             final selectedDate = DateTime.fromMillisecondsSinceEpoch(
-              ref.read(currentDate).millisecondsSinceEpoch +
-                  ref.read(selectedDuration).inMilliseconds,
+              ref.read(currentDate).millisecondsSinceEpoch + ref.read(selectedDuration).inMilliseconds,
             );
             showDatePicker(
               context: context,
@@ -77,10 +93,8 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
                 final now = Duration(
                   milliseconds: ref.read(currentDate).millisecondsSinceEpoch,
                 ).inDays;
-                final selected =
-                    Duration(milliseconds: date.millisecondsSinceEpoch).inDays;
-                ref.read(selectedDuration.notifier).state =
-                    Duration(days: selected - now + 1);
+                final selected = Duration(milliseconds: date.millisecondsSinceEpoch).inDays;
+                ref.read(selectedDuration.notifier).state = Duration(days: selected - now + 1);
                 ref.read(needSwipeDays.notifier).state = true;
               }
             });
@@ -162,43 +176,30 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
               dragStartBehavior: DragStartBehavior.down,
               onPageChanged: (value) {
                 if (!ref.read(daysSwiping)) {
-                  ref.read(selectedDuration.notifier).state =
-                      Duration(days: value - 366);
+                  ref.read(selectedDuration.notifier).state = Duration(days: value - 366);
                 }
               },
               itemCount: 1000,
-              itemBuilder: (context, index) {
-                return ListView.separated(
-                  controller: ScrollController(),
-                  physics: const BouncingScrollPhysics(),
-                  padding: const EdgeInsets.all(16),
-                  itemCount: 8,
-                  separatorBuilder: (context, index) {
-                    return const SizedBox(
-                      height: 12,
-                    );
-                  },
-                  itemBuilder: (context, index) {
-                    final type = Random().nextInt(100) % 2;
-                    if (type == 0) {
-                      return EmptyLessonCard(
-                        index: index % 10,
-                        interval: TimeInterval(
-                          from: Duration(hours: index),
-                          to: Duration(hours: index + 1),
-                        ),
-                      );
-                    } else {
-                      return LessonCard(
-                        index: index % 10,
-                        lesson: Lesson.random(),
-                        interval: TimeInterval(
-                          from: Duration(hours: index),
-                          to: Duration(hours: index + 1),
-                        ),
-                      );
-                    }
-                  },
+              itemBuilder: (context, pageImage) {
+                final today = Duration(milliseconds: DateTime.now().millisecondsSinceEpoch).inDays;
+
+                final dayIndex = (today - creationDay + pageImage - 366) % 14;
+                return ListView(
+                  children: [
+                    LabeledText(label: "Неделя", text: timeTable.config.weekTypes[dayIndex ~/ 7]),
+                    for (int index = 0; index < timeTable.days[dayIndex].lessons.length; index++)
+                      if (!timeTable.days[dayIndex].lessons[index].isEmpty)
+                        Padding(
+                          key: ValueKey(index),
+                          padding: const EdgeInsets.only(bottom: 12, left: 16, right: 16),
+                          child: LessonCard(
+                            index: index + 1,
+                            interval: timeTable.config.timeIntervals[index],
+                            lesson: timeTable.days[dayIndex].lessons[index],
+                            isToday: pageImage == 366,
+                          ),
+                        )
+                  ],
                 );
               },
             ),

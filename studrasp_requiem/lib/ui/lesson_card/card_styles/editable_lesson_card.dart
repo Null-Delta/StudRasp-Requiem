@@ -29,7 +29,7 @@ class EditableLessonCard extends StatelessWidget {
 
     return DecoratedBox(
       decoration: BoxDecoration(
-        borderRadius: BurderRadiusStyles.large,
+        borderRadius: BorderRadiusStyles.large,
         border: Border.all(color: colors.separator!, width: 1),
         color: colors.backgroundPrimary,
         boxShadow: [
@@ -43,8 +43,7 @@ class EditableLessonCard extends StatelessWidget {
       child: Column(
         children: [
           Padding(
-            padding:
-                const EdgeInsets.only(left: 12, right: 6, top: 6, bottom: 0),
+            padding: const EdgeInsets.only(left: 12, right: 6, top: 6, bottom: 0),
             child: LessonHeader(
               index: index,
               interval: interval,
@@ -79,8 +78,7 @@ class EditableLessonCard extends StatelessWidget {
                 color: colors.backgroundPrimary,
                 elevation: 16,
                 splashRadius: 1,
-                icon: Assets.images.moreHorizontal
-                    .svg(color: colors.accentPrimary),
+                icon: Assets.images.moreHorizontal.svg(color: colors.accentPrimary),
                 constraints: const BoxConstraints(minWidth: 256),
               ),
             ),

@@ -8,15 +8,14 @@ import 'colors.dart';
 class AppTheme {
   AppTheme._();
   static ThemeData getTheme(AppColors colors) {
-    final theme =
-        colors is AppLightColors ? ThemeData.light() : ThemeData.dark();
+    final theme = colors is AppLightColors ? ThemeData.light() : ThemeData.dark();
 
     final textStyles = AppDefaultTextStyles(colors);
 
     return theme.copyWith(
       dialogTheme: DialogTheme(
         backgroundColor: colors.backgroundPrimary,
-        shape: RoundedRectangleBorder(borderRadius: BurderRadiusStyles.large),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadiusStyles.large),
         contentTextStyle: textStyles.label,
       ),
       colorScheme: ColorScheme.light(
@@ -65,15 +64,15 @@ class AppTheme {
         fillColor: colors.backgroundSecondary,
         border: OutlineInputBorder(
           borderSide: BorderSide(color: colors.separator!, width: 1),
-          borderRadius: BurderRadiusStyles.normal,
+          borderRadius: BorderRadiusStyles.normal,
         ),
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(color: colors.separator!, width: 1),
-          borderRadius: BurderRadiusStyles.normal,
+          borderRadius: BorderRadiusStyles.normal,
         ),
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(color: colors.separator!, width: 1),
-          borderRadius: BurderRadiusStyles.normal,
+          borderRadius: BorderRadiusStyles.normal,
         ),
       ),
       bottomNavigationBarTheme: theme.bottomNavigationBarTheme.copyWith(

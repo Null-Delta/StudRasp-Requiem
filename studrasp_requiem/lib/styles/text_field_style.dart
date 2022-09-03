@@ -14,15 +14,15 @@ InputDecoration textFieldDecoration(BuildContext context) {
     fillColor: colors.backgroundSecondary,
     border: OutlineInputBorder(
       borderSide: BorderSide(color: colors.separator!, width: 1),
-      borderRadius: BurderRadiusStyles.normal,
+      borderRadius: BorderRadiusStyles.normal,
     ),
     focusedBorder: OutlineInputBorder(
       borderSide: BorderSide(color: colors.separator!, width: 1),
-      borderRadius: BurderRadiusStyles.normal,
+      borderRadius: BorderRadiusStyles.normal,
     ),
     enabledBorder: OutlineInputBorder(
       borderSide: BorderSide(color: colors.separator!, width: 1),
-      borderRadius: BurderRadiusStyles.normal,
+      borderRadius: BorderRadiusStyles.normal,
     ),
   );
 }
