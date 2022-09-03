@@ -32,11 +32,10 @@ class EmptyLessonCard extends StatelessWidget {
       child: DecoratedBox(
         decoration: BoxDecoration(
           color: colors.backgroundSecondary,
-          borderRadius: BurderRadiusStyles.large,
+          borderRadius: BorderRadiusStyles.large,
         ),
         child: Padding(
-          padding:
-              const EdgeInsets.only(left: 12, right: 12, top: 6, bottom: 6),
+          padding: const EdgeInsets.only(left: 12, right: 12, top: 6, bottom: 6),
           child: LessonHeader(
             index: index,
             interval: interval,

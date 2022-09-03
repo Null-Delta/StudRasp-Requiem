@@ -32,13 +32,12 @@ class LessonHeader extends StatelessWidget {
             height: 24,
             alignment: Alignment.center,
             decoration: BoxDecoration(
-              borderRadius: BurderRadiusStyles.large,
+              borderRadius: BorderRadiusStyles.large,
               color: colors.backgroundSecondary,
             ),
             child: Text(
               index.toString(),
-              style:
-                  textStyles.smallLabel!.copyWith(fontWeight: FontWeight.bold),
+              style: textStyles.smallLabel!.copyWith(fontWeight: FontWeight.bold),
             ),
           ),
           const SizedBox(

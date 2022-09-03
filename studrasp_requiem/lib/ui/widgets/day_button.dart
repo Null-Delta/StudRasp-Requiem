@@ -71,7 +71,7 @@ class _DayButtonState extends ConsumerState<DayButton> {
         },
         child: DecoratedBox(
           decoration: BoxDecoration(
-            borderRadius: BurderRadiusStyles.normal,
+            borderRadius: BorderRadiusStyles.normal,
             border: Border.all(width: 1, color: borderColor(colors)),
             color: backgroundColor(colors),
           ),

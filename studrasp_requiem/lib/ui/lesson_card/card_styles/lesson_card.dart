@@ -43,7 +43,7 @@ class LessonCard extends StatelessWidget {
     final textStyles = context.textStyles;
     return DecoratedBox(
       decoration: BoxDecoration(
-        borderRadius: BurderRadiusStyles.large,
+        borderRadius: BorderRadiusStyles.large,
         border: Border.all(color: cardBorder(colors), width: 1),
         color: cardBackground(colors),
         boxShadow: [
@@ -57,8 +57,7 @@ class LessonCard extends StatelessWidget {
       child: Column(
         children: [
           Padding(
-            padding:
-                const EdgeInsets.only(left: 12, top: 6, bottom: 0, right: 12),
+            padding: const EdgeInsets.only(left: 12, top: 6, bottom: 0, right: 12),
             child: LessonHeader(
               index: index,
               interval: interval,

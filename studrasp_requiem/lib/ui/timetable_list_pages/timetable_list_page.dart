@@ -67,8 +67,7 @@ class _TimetableListPageState extends State<TimetableListPage> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              icon: Assets.images.circleChevronLeft
-                  .svg(color: colors.accentPrimary),
+              icon: Assets.images.circleChevronLeft.svg(color: colors.accentPrimary),
               splashRadius: 24,
             ),
           ),
@@ -92,20 +91,19 @@ class _TimetableListPageState extends State<TimetableListPage> {
               child: Container(
                 decoration: BoxDecoration(
                   color: colors.backgroundSecondary,
-                  borderRadius: BurderRadiusStyles.large,
+                  borderRadius: BorderRadiusStyles.large,
                   border: Border.all(color: colors.separator!, width: 1),
                 ),
                 padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
                 child: TabBar(
                   labelColor: colors.backgroundPrimary,
                   labelStyle: textStyles.label!,
-                  unselectedLabelStyle:
-                      textStyles.label!.copyWith(color: colors.accentPrimary),
+                  unselectedLabelStyle: textStyles.label!.copyWith(color: colors.accentPrimary),
                   unselectedLabelColor: colors.accentPrimary,
                   indicatorWeight: 0,
                   indicator: BoxDecoration(
                     color: colors.accentPrimary,
-                    borderRadius: BurderRadiusStyles.normal,
+                    borderRadius: BorderRadiusStyles.normal,
                   ),
                   tabs: [
                     Container(
