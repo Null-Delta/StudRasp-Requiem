@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/gestures.dart';
@@ -32,6 +33,16 @@ class TimetablePage extends ConsumerStatefulWidget {
 
 class _TimetablePageState extends ConsumerState<TimetablePage> {
   final dayPageController = PageController(initialPage: 366);
+
+  @override
+  void initState() {
+    super.initState();
+
+    Timer.periodic(const Duration(minutes: 1), (timer) {
+      print("Update!");
+      ref.read(currentDate.notifier).state = DateTime.now();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -169,28 +180,26 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
                 }
               },
               itemCount: 1000,
-              itemBuilder: (context, index) {
+              itemBuilder: (context, pageImage) {
                 final today = Duration(milliseconds: DateTime.now().millisecondsSinceEpoch).inDays;
 
-                final dayIndex = (today - creationDay + index - 366) % 14;
-                return Padding(
-                  padding: const EdgeInsets.only(left: 16, right: 16, top: 0, bottom: 4),
-                  child: ListView(
-                    children: [
-                      LabeledText(label: "Неделя", text: timeTable.config.weekTypes[dayIndex ~/ 7]),
-                      for (int index = 0; index < timeTable.days[dayIndex].lessons.length; index++)
-                        if (!timeTable.days[dayIndex].lessons[index].isEmpty)
-                          Padding(
-                            key: ValueKey(index),
-                            padding: const EdgeInsets.only(bottom: 12),
-                            child: LessonCard(
-                              index: index + 1,
-                              interval: timeTable.config.timeIntervals[index],
-                              lesson: timeTable.days[dayIndex].lessons[index],
-                            ),
-                          )
-                    ],
-                  ),
+                final dayIndex = (today - creationDay + pageImage - 366) % 14;
+                return ListView(
+                  children: [
+                    LabeledText(label: "Неделя", text: timeTable.config.weekTypes[dayIndex ~/ 7]),
+                    for (int index = 0; index < timeTable.days[dayIndex].lessons.length; index++)
+                      if (!timeTable.days[dayIndex].lessons[index].isEmpty)
+                        Padding(
+                          key: ValueKey(index),
+                          padding: const EdgeInsets.only(bottom: 12, left: 16, right: 16),
+                          child: LessonCard(
+                            index: index + 1,
+                            interval: timeTable.config.timeIntervals[index],
+                            lesson: timeTable.days[dayIndex].lessons[index],
+                            isToday: pageImage == 366,
+                          ),
+                        )
+                  ],
                 );
               },
             ),
