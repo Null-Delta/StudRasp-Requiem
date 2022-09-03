@@ -11,11 +11,11 @@ import '../widgets/app_text_field.dart';
 
 part '../auth_page/widgets/auth_page_text_fields.dart';
 
-final activeValidatorProvider = StateProvider.autoDispose<bool>((ref) {
+final _activeValidatorProvider = StateProvider.autoDispose<bool>((ref) {
   return false;
 });
 
-final isAuthProvider = StateProvider.autoDispose<bool>((ref) {
+final _isAuthProvider = StateProvider.autoDispose<bool>((ref) {
   return true;
 });
 
@@ -58,7 +58,7 @@ class _AuthPageState extends ConsumerState<AuthPage>
   );
 
   void auth() async {
-    ref.read(activeValidatorProvider.notifier).state = true;
+    ref.read(_activeValidatorProvider.notifier).state = true;
 
     if (validationController.isValidate()) {
       print(
@@ -70,7 +70,7 @@ class _AuthPageState extends ConsumerState<AuthPage>
   }
 
   void reg() async {
-    ref.read(activeValidatorProvider.notifier).state = true;
+    ref.read(_activeValidatorProvider.notifier).state = true;
 
     if (validationController.isValidate()) {
       print(
@@ -100,7 +100,7 @@ class _AuthPageState extends ConsumerState<AuthPage>
       log(next.toString());
     });
 
-    final isAuth = ref.watch(isAuthProvider);
+    final isAuth = ref.watch(_isAuthProvider);
 
     return Scaffold(
       body: SafeArea(
@@ -164,8 +164,8 @@ class _AuthPageState extends ConsumerState<AuthPage>
               ElevatedButton(
                 onPressed: () {
                   animateIcon();
-                  ref.read(activeValidatorProvider.notifier).state = false;
-                  ref.read(isAuthProvider.notifier).update((state) => !state);
+                  ref.read(_activeValidatorProvider.notifier).state = false;
+                  ref.read(_isAuthProvider.notifier).update((state) => !state);
                 },
                 style: ElevatedButton.styleFrom(
                   textStyle: textStyles.subtitle,

@@ -26,7 +26,7 @@ class AuthPageTextFields extends ConsumerStatefulWidget {
 class _AuthPageTextFieldsState extends ConsumerState<AuthPageTextFields> {
   @override
   Widget build(BuildContext context) {
-    final active = ref.watch(activeValidatorProvider);
+    final active = ref.watch(_activeValidatorProvider);
     return Column(
       children: [
         FadeTransition(
@@ -49,7 +49,7 @@ class _AuthPageTextFieldsState extends ConsumerState<AuthPageTextFields> {
               child: AppTextField(
                 controller: widget.name,
                 hint: 'Имя',
-                showError: active && !ref.watch(isAuthProvider),
+                showError: active && !ref.watch(_isAuthProvider),
                 validator: RegExp(r'^[а-яА-ЯёЁa-zA-Z0-9 ]{2,}$'),
                 onChangeValidation: (val) {
                   widget.validationController.setValidation(
