@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
-
 import '../../gen/assets.gen.dart';
 import '../../models/day/day_model.dart';
 import '../../models/lesson/lesson_model.dart';
 import '../../providers/providers.dart';
 import '../../styles/colors.dart';
 import '../../styles/fonts.dart';
-import '../widgets/app_text_field.dart';
+import '../widgets/search_field.dart';
 
 class LessonEditorPage extends ConsumerStatefulWidget {
   const LessonEditorPage({
@@ -25,43 +24,54 @@ class LessonEditorPage extends ConsumerStatefulWidget {
 }
 
 class _LessonEditorPageState extends ConsumerState<LessonEditorPage> {
-  late Lesson lesson = ref
-      .read(currentEditingTimetable)
-      .days[widget.lessonDay]
-      .lessons[widget.lessonNumber];
+  late Lesson lesson = ref.read(currentEditingTimetable).days[widget.lessonDay].lessons[widget.lessonNumber];
 
   late TextEditingController name = TextEditingController(text: lesson.name);
 
-  late TextEditingController audience =
-      TextEditingController(text: lesson.audience);
+  late TextEditingController audience = TextEditingController(text: lesson.audience);
 
-  late TextEditingController teacher =
-      TextEditingController(text: lesson.teacher);
+  late TextEditingController teacher = TextEditingController(text: lesson.teacher);
 
   late TextEditingController type = TextEditingController(text: lesson.type);
 
-  void saveChanges() {
-    Lesson newLesson = Lesson(
-      name: name.text,
-      type: type.text,
-      teacher: teacher.text,
-      audience: audience.text,
-    );
+  late List<String> lessonsList;
+  late List<String> teachersList;
+  late List<String> audiencesList;
+  late List<String> lessonTypesList;
 
-    ref.read(currentEditingTimetable.notifier).update(
-      (state) {
-        List<Day> newDays = List<Day>.from(state.days)
-          ..[widget.lessonDay] = Day(
-            lessons: List<Lesson>.from(state.days[widget.lessonDay].lessons)
-              ..[widget.lessonNumber] = newLesson,
-          );
-        return state.copyWith(
-          days: newDays,
-        );
-      },
-    );
+  @override
+  void initState() {
+    super.initState();
 
-    Navigator.of(context).pop();
+    final table = ref.read(currentEditingTimetable);
+
+    lessonsList = table.days
+        .map((day) => day.lessons.map((lesson) => lesson.name))
+        .fold<List<String>>([], (previousValue, element) => [...previousValue, ...element])
+        .where((name) => name.isNotEmpty)
+        .toSet()
+        .toList();
+
+    teachersList = table.days
+        .map((day) => day.lessons.map((lesson) => lesson.teacher))
+        .fold<List<String>>([], (previousValue, element) => [...previousValue, ...element])
+        .where((name) => name.isNotEmpty)
+        .toSet()
+        .toList();
+
+    audiencesList = table.days
+        .map((day) => day.lessons.map((lesson) => lesson.audience))
+        .fold<List<String>>([], (previousValue, element) => [...previousValue, ...element])
+        .where((name) => name.isNotEmpty)
+        .toSet()
+        .toList();
+
+    lessonTypesList = table.days
+        .map((day) => day.lessons.map((lesson) => lesson.type))
+        .fold<List<String>>([], (previousValue, element) => [...previousValue, ...element])
+        .where((name) => name.isNotEmpty)
+        .toSet()
+        .toList();
   }
 
   @override
@@ -99,7 +109,6 @@ class _LessonEditorPageState extends ConsumerState<LessonEditorPage> {
           ),
         ),
         body: ListView(
-          shrinkWrap: true,
           children: [
             Divider(
               height: 1,
@@ -111,38 +120,64 @@ class _LessonEditorPageState extends ConsumerState<LessonEditorPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  AppTextField(
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 8),
+                    child: Text(
+                      "Название предмета",
+                      style: textStyles.label,
+                    ),
+                  ),
+                  SearchTextField(
+                    values: lessonsList,
                     controller: name,
-                    label: 'Название предмета',
-                    hint: 'Дискретная математика',
-                    onTap: () {},
+                    hint: "Название предмета",
                   ),
                   const SizedBox(
                     height: 12,
                   ),
-                  AppTextField(
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 8),
+                    child: Text(
+                      "Аудитория",
+                      style: textStyles.label,
+                    ),
+                  ),
+                  SearchTextField(
+                    values: audiencesList,
                     controller: audience,
-                    label: 'Аудитория',
-                    hint: '104',
-                    onTap: () {},
+                    hint: "Аудитория",
                   ),
                   const SizedBox(
                     height: 12,
                   ),
-                  AppTextField(
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 8),
+                    child: Text(
+                      "Преподаватель",
+                      style: textStyles.label,
+                    ),
+                  ),
+                  SearchTextField(
+                    values: teachersList,
                     controller: teacher,
-                    label: 'Преподаватель',
-                    hint: 'Жук А. С.',
-                    onTap: () {},
+                    hint: "Преподаватель",
+                    isTop: true,
                   ),
                   const SizedBox(
                     height: 12,
                   ),
-                  AppTextField(
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 8),
+                    child: Text(
+                      "Тип пары",
+                      style: textStyles.label,
+                    ),
+                  ),
+                  SearchTextField(
+                    values: lessonTypesList,
                     controller: type,
-                    label: 'Тип',
-                    hint: 'Практика',
-                    onTap: () {},
+                    hint: "Тип пары",
+                    isTop: true,
                   ),
                 ],
               ),
@@ -151,5 +186,28 @@ class _LessonEditorPageState extends ConsumerState<LessonEditorPage> {
         ),
       ),
     );
+  }
+
+  void saveChanges() {
+    Lesson newLesson = Lesson(
+      name: name.text,
+      type: type.text,
+      teacher: teacher.text,
+      audience: audience.text,
+    );
+
+    ref.read(currentEditingTimetable.notifier).update(
+      (state) {
+        List<Day> newDays = List<Day>.from(state.days)
+          ..[widget.lessonDay] = Day(
+            lessons: List<Lesson>.from(state.days[widget.lessonDay].lessons)..[widget.lessonNumber] = newLesson,
+          );
+        return state.copyWith(
+          days: newDays,
+        );
+      },
+    );
+
+    Navigator.of(context).pop();
   }
 }

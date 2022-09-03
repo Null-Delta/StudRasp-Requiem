@@ -14,6 +14,7 @@ import '../../providers/providers.dart';
 import '../../styles/colors.dart';
 import '../../styles/fonts.dart';
 import '../../styles/widget_styles.dart';
+import '../../support/fast_swipe_physics.dart';
 import '../lesson_card/card_styles/editable_lesson_card.dart';
 import '../lesson_card/card_styles/empty_lesson_card.dart';
 import '../lesson_editor_page/lesson_editor_page.dart';
@@ -165,6 +166,7 @@ class _TimetableEditorPageState extends ConsumerState<TimetableEditorPage> {
               Expanded(
                 child: PageView.builder(
                   controller: dayPageController,
+                  physics: const CustomPageViewScrollPhysics(),
                   itemCount: 14,
                   onPageChanged: (value) {
                     if (!ref.read(daysSwiping)) {
@@ -173,6 +175,7 @@ class _TimetableEditorPageState extends ConsumerState<TimetableEditorPage> {
                   },
                   itemBuilder: (context, dayIndex) {
                     return ReorderableListView(
+                      scrollController: ScrollController(),
                       physics: const AlwaysScrollableScrollPhysics(),
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       onReorderStart: (index) {
