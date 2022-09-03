@@ -85,12 +85,15 @@ class _AuthPageState extends ConsumerState<AuthPage>
     }
   }
 
-  void animateIcon() {
+  bool animateIcon() {
     if (animationController.isCompleted) {
       animationController.reverse();
-    } else {
+      return true;
+    } else if (animationController.isDismissed) {
       animationController.forward();
+      return true;
     }
+    return false;
   }
 
   @override
@@ -165,9 +168,12 @@ class _AuthPageState extends ConsumerState<AuthPage>
               const SizedBox(height: 6),
               ElevatedButton(
                 onPressed: () {
-                  animateIcon();
-                  ref.read(_activeValidatorProvider.notifier).state = false;
-                  ref.read(_isAuthProvider.notifier).update((state) => !state);
+                  if (animateIcon()) {
+                    ref.read(_activeValidatorProvider.notifier).state = false;
+                    ref
+                        .read(_isAuthProvider.notifier)
+                        .update((state) => !state);
+                  }
                 },
                 style: ElevatedButton.styleFrom(
                   textStyle: textStyles.subtitle,
