@@ -72,6 +72,9 @@ class _SearchPageState<T> extends State<SearchPage<T>> {
           ),
           Expanded(
             child: ListView.separated(
+              physics: const BouncingScrollPhysics(
+                parent: AlwaysScrollableScrollPhysics(),
+              ),
               itemBuilder: (context, index) {
                 return widget.itemBuilder(searchResult[index]);
               },

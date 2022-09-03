@@ -182,7 +182,9 @@ class _TimetableEditorPageState extends ConsumerState<TimetableEditorPage> {
                   itemBuilder: (context, dayIndex) {
                     return ReorderableListView(
                       scrollController: ScrollController(),
-                      physics: const AlwaysScrollableScrollPhysics(),
+                      physics: const BouncingScrollPhysics(
+                        parent: AlwaysScrollableScrollPhysics(),
+                      ),
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       onReorderStart: (index) {
                         HapticFeedback.heavyImpact();

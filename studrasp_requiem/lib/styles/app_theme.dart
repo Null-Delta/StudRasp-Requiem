@@ -8,11 +8,19 @@ import 'colors.dart';
 class AppTheme {
   AppTheme._();
   static ThemeData getTheme(AppColors colors) {
-    final theme = colors is AppLightColors ? ThemeData.light() : ThemeData.dark();
+    final theme =
+        colors is AppLightColors ? ThemeData.light() : ThemeData.dark();
 
     final textStyles = AppDefaultTextStyles(colors);
 
     return theme.copyWith(
+      disabledColor: colors.disable,
+      dividerColor: colors.separator,
+      unselectedWidgetColor: colors.disable,
+      cardColor: colors.backgroundSecondary,
+      primaryColor: colors.backgroundPrimary,
+      backgroundColor: colors.backgroundPrimary,
+      scaffoldBackgroundColor: colors.backgroundPrimary,
       dialogTheme: DialogTheme(
         backgroundColor: colors.backgroundPrimary,
         shape: RoundedRectangleBorder(borderRadius: BorderRadiusStyles.large),
@@ -22,14 +30,8 @@ class AppTheme {
         primary: colors.accentSecondary!,
         onPrimary: colors.backgroundPrimary!,
         onSurface: colors.accentPrimary!,
+        secondary: colors.accentSecondary!,
       ),
-      disabledColor: colors.disable,
-      dividerColor: colors.separator,
-      unselectedWidgetColor: colors.disable,
-      cardColor: colors.backgroundSecondary,
-      primaryColor: colors.backgroundPrimary,
-      backgroundColor: colors.backgroundPrimary,
-      scaffoldBackgroundColor: colors.backgroundPrimary,
       appBarTheme: theme.appBarTheme.copyWith(
         backgroundColor: colors.backgroundPrimary,
         foregroundColor: colors.accentPrimary,

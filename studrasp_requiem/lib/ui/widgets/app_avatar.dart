@@ -36,23 +36,33 @@ class AppAvatar extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = context.colors;
     final textStyle = context.textStyles;
-    return Container(
+    return DecoratedBox(
       decoration: BoxDecoration(
         color: colors.backgroundSecondary!,
         shape: BoxShape.circle,
         border: Border.all(color: colors.separator!, width: 3),
       ),
-      padding: const EdgeInsets.all(16),
-      child: Container(
-        width: size - 16,
-        height: size - 16,
-        alignment: Alignment.center,
-        child: Text(
-          getCharacters('starPoroxima'),
-          style: textStyle.title!.copyWith(
-            fontSize: 48,
+      child: ClipRRect(
+        borderRadius: const BorderRadius.all(Radius.circular(999)),
+        child: Material(
+          type: MaterialType.transparency,
+          child: InkWell(
+            highlightColor: colors.separator,
+            onTap: () {},
+            child: Container(
+              width: size,
+              height: size,
+              alignment: Alignment.center,
+              padding: const EdgeInsets.all(16),
+              child: Text(
+                getCharacters('starPoroxima'),
+                style: textStyle.title!.copyWith(
+                  fontSize: 48,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
           ),
-          textAlign: TextAlign.center,
         ),
       ),
     );
