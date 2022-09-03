@@ -13,9 +13,10 @@ class AppTextField extends ConsumerStatefulWidget {
     this.hint,
     this.onTap,
     this.obscureText = false,
-    this.activeValidator = false,
+    this.showError = true,
     this.validator,
     this.errorText,
+    this.onChangeValidation,
   }) : super(key: key);
 
   final TextEditingController controller;
@@ -23,12 +24,12 @@ class AppTextField extends ConsumerStatefulWidget {
   final String? hint;
 
   final VoidCallback? onTap;
+  final bool obscureText;
 
-  final bool activeValidator;
+  final bool showError;
   final RegExp? validator;
   final String? errorText;
-
-  final bool obscureText;
+  final Function(bool)? onChangeValidation;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _AppTextFieldState();
@@ -40,8 +41,7 @@ class _AppTextFieldState extends ConsumerState<AppTextField> {
   });
 
   late final validateProvider = Provider<String?>((ref) {
-    if (!(widget.activeValidator && widget.validator != null)) return null;
-
+    if (widget.validator == null) return null;
     if (widget.validator!.hasMatch(widget.controller.text)) return null;
 
     return widget.errorText;
@@ -53,8 +53,14 @@ class _AppTextFieldState extends ConsumerState<AppTextField> {
     final colors = Theme.of(context).extension<AppColors>()!;
     final obscure = ref.watch(obscureText);
 
-    final activeValidator = widget.activeValidator && widget.validator != null;
     ref.refresh(validateProvider);
+
+    ref.listen<String?>(
+      validateProvider,
+      (last, next) {
+        widget.onChangeValidation?.call(next == null);
+      },
+    );
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -70,14 +76,14 @@ class _AppTextFieldState extends ConsumerState<AppTextField> {
         TextField(
           controller: widget.controller,
           obscureText: obscure,
-          onChanged: activeValidator
+          onChanged: widget.validator != null
               ? (value) {
                   ref.refresh(validateProvider);
                 }
               : null,
           decoration: InputDecoration(
             hintText: widget.hint,
-            errorText: ref.watch(validateProvider),
+            errorText: widget.showError ? ref.watch(validateProvider) : null,
             errorMaxLines: 3,
             isDense: true,
             contentPadding: const EdgeInsets.all(12),

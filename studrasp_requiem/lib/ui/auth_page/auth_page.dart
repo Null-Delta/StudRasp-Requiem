@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -5,6 +7,20 @@ import '../../gen/assets.gen.dart';
 import '../../styles/colors.dart';
 import '../../styles/fonts.dart';
 import '../widgets/app_text_field.dart';
+
+class ValidationController {
+  Map<String, bool> state;
+
+  ValidationController(this.state);
+
+  void setValidation(String name, bool validate) {
+    state = state..[name] = validate;
+  }
+
+  bool isValidate() {
+    return state.values.every((element) => element);
+  }
+}
 
 class AuthPage extends ConsumerStatefulWidget {
   const AuthPage({Key? key}) : super(key: key);
@@ -20,6 +36,12 @@ class _AuthPageState extends ConsumerState<AuthPage> {
 
   final activeValidator = StateProvider<bool>((ref) {
     return false;
+  });
+
+  final validationController = ValidationController({
+    'name': false,
+    'email': false,
+    'password': false,
   });
 
   @override
@@ -57,19 +79,25 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                       AppTextField(
                         controller: name,
                         hint: 'Имя',
-                        activeValidator: active,
+                        showError: active,
                         validator: RegExp(r'^[а-яА-ЯёЁa-zA-Z0-9 ]{2,}$'),
+                        onChangeValidation: (val) {
+                          validationController.setValidation('name', val);
+                        },
                         errorText:
-                            'Имя должно быть длинее 2-х символов и собержать только буквы и цифры.',
+                            'Имя должно содержать хотя-бы 2 символа и состоять только из букв и цифр.',
                       ),
                       const SizedBox(height: 12),
                       AppTextField(
                         controller: email,
                         hint: 'Email',
-                        activeValidator: active,
+                        showError: active,
                         validator: RegExp(
                           r'^[-\w.]+@([A-z0-9][-A-z0-9]+\.)+[A-z]{2,4}$',
                         ),
+                        onChangeValidation: (val) {
+                          validationController.setValidation('email', val);
+                        },
                         errorText: 'Некорректный Email.',
                       ),
                       const SizedBox(height: 12),
@@ -77,11 +105,15 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                         controller: password,
                         hint: 'Пароль',
                         obscureText: true,
-                        activeValidator: active,
+                        showError: active,
                         validator: RegExp(
-                          r'^[0-9a-zA-Z!@#$%^&*]{5,}$',
+                          r'^[0-9a-zA-Z!@#$%^&*]{4,}$',
                         ),
-                        errorText: 'Пароль должен быть длиннее 4-х символов.',
+                        onChangeValidation: (val) {
+                          validationController.setValidation('password', val);
+                        },
+                        errorText:
+                            'Пароль должнен содержать хотя-бы 4 символа и не иметь кириллических символов.',
                       ),
                     ],
                   );
@@ -91,6 +123,9 @@ class _AuthPageState extends ConsumerState<AuthPage> {
               ElevatedButton(
                 onPressed: () async {
                   ref.read(activeValidator.notifier).state = true;
+                  if (validationController.isValidate()) {
+                    log('login');
+                  }
                   // ref
                   //     .read(userAuth.notifier)
                   //     .auth(email: email.text, password: password.text);
@@ -110,6 +145,9 @@ class _AuthPageState extends ConsumerState<AuthPage> {
               ElevatedButton(
                 onPressed: () async {
                   ref.read(activeValidator.notifier).state = true;
+                  if (validationController.isValidate()) {
+                    log('reg');
+                  }
                   // ref.read(userAuth.notifier).reg(
                   //       name: name.text,
                   //       email: email.text,
