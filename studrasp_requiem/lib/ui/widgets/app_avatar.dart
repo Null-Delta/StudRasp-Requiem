@@ -22,7 +22,7 @@ class AppAvatar extends StatelessWidget {
 
     final split = name.split(RegExp(r"(?=(?!^)[A-Z])"));
 
-    if (split.length == 1) {
+    if (split.length == 1 && split[0].isNotEmpty) {
       return split[0].substring(0, 2).toUpperCase();
     } else if (split.length > 1) {
       return split[0].substring(0, 1).toUpperCase() +
@@ -55,7 +55,7 @@ class AppAvatar extends StatelessWidget {
               alignment: Alignment.center,
               padding: const EdgeInsets.all(16),
               child: Text(
-                getCharacters('starPoroxima'),
+                getCharacters(name),
                 style: textStyle.title!.copyWith(
                   fontSize: 48,
                 ),

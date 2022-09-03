@@ -14,10 +14,10 @@ class UserAuthNotifier extends StateNotifier<AppUser> {
     _init();
   }
 
-  AppUser userToAppUser(User user) {
+  AppUser userToAppUser(User user, [String? name]) {
     return AppUser(
       id: user.uid,
-      name: user.displayName ?? '',
+      name: user.displayName ?? name ?? '',
       email: user.email!,
       isVerified: user.emailVerified,
       isRegistered: true,
@@ -67,7 +67,7 @@ class UserAuthNotifier extends StateNotifier<AppUser> {
           user.sendEmailVerification(),
           user.updateDisplayName(name),
         ]);
-        state = userToAppUser(user);
+        state = userToAppUser(user, name);
       }
     } on FirebaseAuthException catch (e) {
       return e.code;
