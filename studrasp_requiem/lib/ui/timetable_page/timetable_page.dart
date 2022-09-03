@@ -8,6 +8,8 @@ import '../../models/timetable/timetable_model.dart';
 import '../../models/timetable_config/timetable_config_model.dart';
 import '../../models/user/user_model.dart';
 import '../../providers/providers.dart';
+import '../../providers/user_auth.dart';
+import '../../repositories/global_repository.dart';
 import '../../styles/colors.dart';
 import '../../support/fast_swipe_physics.dart';
 import '../lesson_card/card_styles/lesson_card.dart';
@@ -57,6 +59,12 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
     );
 
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          TimetableGlobalSavesRepositoryImpl()
+              .saveTimetable(Timetable.empty(ref.read(userAuth)));
+        },
+      ),
       appBar: AppBar(
         backgroundColor: colors.backgroundPrimary,
         leading: IconButton(
