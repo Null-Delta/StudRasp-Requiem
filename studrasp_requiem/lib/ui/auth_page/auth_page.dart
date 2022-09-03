@@ -30,7 +30,8 @@ class AuthPage extends ConsumerStatefulWidget {
   ConsumerState<ConsumerStatefulWidget> createState() => _AuthPageState();
 }
 
-class _AuthPageState extends ConsumerState<AuthPage> {
+class _AuthPageState extends ConsumerState<AuthPage>
+    with SingleTickerProviderStateMixin {
   final email = TextEditingController();
   final name = TextEditingController();
   final password = TextEditingController();
@@ -45,6 +46,39 @@ class _AuthPageState extends ConsumerState<AuthPage> {
     'password': false,
   });
 
+  final isAuthProvider = StateProvider<bool>((ref) {
+    return true;
+  });
+
+  late final animationContoller = AnimationController(
+    duration: const Duration(milliseconds: 300),
+    vsync: this,
+  );
+
+  void auth() async {
+    ref.read(activeValidator.notifier).state = true;
+    if (validationController.isValidate()) {
+      print(
+        await ref
+            .read(userAuth.notifier)
+            .auth(email: email.text, password: password.text),
+      );
+    }
+  }
+
+  void reg() async {
+    ref.read(activeValidator.notifier).state = true;
+    if (validationController.isValidate()) {
+      print(
+        await ref.read(userAuth.notifier).reg(
+              name: name.text,
+              email: email.text,
+              password: password.text,
+            ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).extension<AppColors>()!;
@@ -54,25 +88,48 @@ class _AuthPageState extends ConsumerState<AuthPage> {
       log(next.toString());
     });
 
+    final isAuth = ref.watch(isAuthProvider);
+
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Column(
             children: [
-              const SizedBox(height: 48),
-              SizedBox(
-                height: 128,
-                width: 128,
-                child: MediaQuery.of(context).platformBrightness ==
-                        Brightness.light
-                    ? Assets.images.studRaspLightIcon.image()
-                    : Assets.images.studRaspDarkIcon.image(),
-              ),
-              Text(
-                'StudRasp',
-                style: textStyles.title!.copyWith(
-                  fontSize: 32,
+              SlideTransition(
+                position: Tween<Offset>(
+                  begin: Offset(
+                    0,
+                    ref.read(activeValidator) &&
+                            !validationController.state['name']!
+                        ? 0.4
+                        : 0.2,
+                  ),
+                  end: const Offset(0, 0),
+                ).animate(
+                  CurvedAnimation(
+                    parent: animationContoller,
+                    curve: Curves.easeInOutBack,
+                  ),
+                ),
+                child: Column(
+                  children: [
+                    const SizedBox(height: 36),
+                    SizedBox(
+                      height: 128,
+                      width: 128,
+                      child: MediaQuery.of(context).platformBrightness ==
+                              Brightness.light
+                          ? Assets.images.studRaspLightIcon.image()
+                          : Assets.images.studRaspDarkIcon.image(),
+                    ),
+                    Text(
+                      'StudRasp',
+                      style: textStyles.title!.copyWith(
+                        fontSize: 32,
+                      ),
+                    ),
+                  ],
                 ),
               ),
               const SizedBox(height: 32),
@@ -81,31 +138,58 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                   final active = ref.watch(activeValidator);
                   return Column(
                     children: [
-                      AppTextField(
-                        controller: name,
-                        hint: 'Имя',
-                        showError: active,
-                        validator: RegExp(r'^[а-яА-ЯёЁa-zA-Z0-9 ]{2,}$'),
-                        onChangeValidation: (val) {
-                          validationController.setValidation('name', val);
-                        },
-                        errorText:
-                            'Имя должно содержать хотя-бы 2 символа и состоять только из букв и цифр.',
-                      ),
-                      const SizedBox(height: 12),
-                      AppTextField(
-                        controller: email,
-                        hint: 'Email',
-                        showError: active,
-                        validator: RegExp(
-                          r'^[-\w.]+@([A-z0-9][-A-z0-9]+\.)+[A-z]{2,4}$',
+                      Container(
+                        child: FadeTransition(
+                          opacity: CurvedAnimation(
+                            parent: animationContoller,
+                            curve: Curves.easeInOutBack,
+                          ),
+                          child: SlideTransition(
+                            position: Tween<Offset>(
+                              begin: const Offset(0, -0.5),
+                              end: const Offset(0, 0),
+                            ).animate(
+                              CurvedAnimation(
+                                parent: animationContoller,
+                                curve: Curves.easeInOutBack,
+                              ),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.only(bottom: 16),
+                              child: AppTextField(
+                                controller: name,
+                                hint: 'Имя',
+                                showError: active,
+                                validator:
+                                    RegExp(r'^[а-яА-ЯёЁa-zA-Z0-9 ]{2,}$'),
+                                onChangeValidation: (val) {
+                                  validationController.setValidation(
+                                    'name',
+                                    val,
+                                  );
+                                },
+                                errorText:
+                                    'Имя должно содержать хотя-бы 2 символа и состоять только из букв и цифр.',
+                              ),
+                            ),
+                          ),
                         ),
-                        onChangeValidation: (val) {
-                          validationController.setValidation('email', val);
-                        },
-                        errorText: 'Некорректный Email.',
                       ),
-                      const SizedBox(height: 12),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 16),
+                        child: AppTextField(
+                          controller: email,
+                          hint: 'Email',
+                          showError: active,
+                          validator: RegExp(
+                            r'^[-\w.]+@([A-z0-9][-A-z0-9]+\.)+[A-z]{2,4}$',
+                          ),
+                          onChangeValidation: (val) {
+                            validationController.setValidation('email', val);
+                          },
+                          errorText: 'Некорректный Email.',
+                        ),
+                      ),
                       AppTextField(
                         controller: password,
                         hint: 'Пароль',
@@ -126,21 +210,12 @@ class _AuthPageState extends ConsumerState<AuthPage> {
               ),
               const SizedBox(height: 32),
               ElevatedButton(
-                onPressed: () async {
-                  ref.read(activeValidator.notifier).state = true;
-                  if (validationController.isValidate()) {
-                    print(
-                      await ref
-                          .read(userAuth.notifier)
-                          .auth(email: email.text, password: password.text),
-                    );
-                  }
-                },
+                onPressed: isAuth ? auth : reg,
                 style: ElevatedButton.styleFrom(
                   textStyle: textStyles.subtitle,
                   minimumSize: const Size(double.infinity, 42),
                 ),
-                child: const Text('Войти'),
+                child: Text(isAuth ? 'Войти' : 'Зарегистрироваться'),
               ),
               const SizedBox(height: 6),
               Text(
@@ -149,17 +224,14 @@ class _AuthPageState extends ConsumerState<AuthPage> {
               ),
               const SizedBox(height: 6),
               ElevatedButton(
-                onPressed: () async {
-                  ref.read(activeValidator.notifier).state = true;
-                  if (validationController.isValidate()) {
-                    print(
-                      await ref.read(userAuth.notifier).reg(
-                            name: name.text,
-                            email: email.text,
-                            password: password.text,
-                          ),
-                    );
+                onPressed: () {
+                  if (animationContoller.isCompleted) {
+                    animationContoller.reverse();
+                  } else {
+                    animationContoller.forward();
                   }
+
+                  ref.read(isAuthProvider.notifier).update((state) => !state);
                 },
                 style: ElevatedButton.styleFrom(
                   textStyle: textStyles.subtitle,
@@ -170,7 +242,7 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                   ),
                   minimumSize: const Size(double.infinity, 42),
                 ),
-                child: const Text('Зарегистрироваться'),
+                child: Text(isAuth ? 'Зарегистрироваться' : 'Войти'),
               ),
             ],
           ),

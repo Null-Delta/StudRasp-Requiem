@@ -95,6 +95,7 @@ class _AppTextFieldState extends ConsumerState<AppTextField> {
                       color: Colors.transparent,
                       child: IconButton(
                         padding: EdgeInsets.zero,
+                        iconSize: 24,
                         splashRadius: 22,
                         onPressed: () {
                           ref
