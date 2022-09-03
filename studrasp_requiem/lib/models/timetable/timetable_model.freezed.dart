@@ -23,9 +23,9 @@ mixin _$Timetable {
   String get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   List<Day> get days => throw _privateConstructorUsedError;
-  User get owner => throw _privateConstructorUsedError;
-  List<User> get editors => throw _privateConstructorUsedError;
-  User get lastEditor => throw _privateConstructorUsedError;
+  AppUser get owner => throw _privateConstructorUsedError;
+  List<AppUser> get editors => throw _privateConstructorUsedError;
+  AppUser get lastEditor => throw _privateConstructorUsedError;
   DateTime get creationDate => throw _privateConstructorUsedError;
   DateTime get lastUpdateDate => throw _privateConstructorUsedError;
   TimetableConfig get config => throw _privateConstructorUsedError;
@@ -44,9 +44,9 @@ abstract class $TimetableCopyWith<$Res> {
       {String id,
       String name,
       List<Day> days,
-      User owner,
-      List<User> editors,
-      User lastEditor,
+      AppUser owner,
+      List<AppUser> editors,
+      AppUser lastEditor,
       DateTime creationDate,
       DateTime lastUpdateDate,
       TimetableConfig config});
@@ -92,15 +92,15 @@ class _$TimetableCopyWithImpl<$Res> implements $TimetableCopyWith<$Res> {
       owner: owner == freezed
           ? _value.owner
           : owner // ignore: cast_nullable_to_non_nullable
-              as User,
+              as AppUser,
       editors: editors == freezed
           ? _value.editors
           : editors // ignore: cast_nullable_to_non_nullable
-              as List<User>,
+              as List<AppUser>,
       lastEditor: lastEditor == freezed
           ? _value.lastEditor
           : lastEditor // ignore: cast_nullable_to_non_nullable
-              as User,
+              as AppUser,
       creationDate: creationDate == freezed
           ? _value.creationDate
           : creationDate // ignore: cast_nullable_to_non_nullable
@@ -148,9 +148,9 @@ abstract class _$$_TimetableCopyWith<$Res> implements $TimetableCopyWith<$Res> {
       {String id,
       String name,
       List<Day> days,
-      User owner,
-      List<User> editors,
-      User lastEditor,
+      AppUser owner,
+      List<AppUser> editors,
+      AppUser lastEditor,
       DateTime creationDate,
       DateTime lastUpdateDate,
       TimetableConfig config});
@@ -201,15 +201,15 @@ class __$$_TimetableCopyWithImpl<$Res> extends _$TimetableCopyWithImpl<$Res>
       owner: owner == freezed
           ? _value.owner
           : owner // ignore: cast_nullable_to_non_nullable
-              as User,
+              as AppUser,
       editors: editors == freezed
           ? _value._editors
           : editors // ignore: cast_nullable_to_non_nullable
-              as List<User>,
+              as List<AppUser>,
       lastEditor: lastEditor == freezed
           ? _value.lastEditor
           : lastEditor // ignore: cast_nullable_to_non_nullable
-              as User,
+              as AppUser,
       creationDate: creationDate == freezed
           ? _value.creationDate
           : creationDate // ignore: cast_nullable_to_non_nullable
@@ -234,7 +234,7 @@ class _$_Timetable extends _Timetable {
       required this.name,
       required final List<Day> days,
       required this.owner,
-      required final List<User> editors,
+      required final List<AppUser> editors,
       required this.lastEditor,
       required this.creationDate,
       required this.lastUpdateDate,
@@ -258,16 +258,16 @@ class _$_Timetable extends _Timetable {
   }
 
   @override
-  final User owner;
-  final List<User> _editors;
+  final AppUser owner;
+  final List<AppUser> _editors;
   @override
-  List<User> get editors {
+  List<AppUser> get editors {
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_editors);
   }
 
   @override
-  final User lastEditor;
+  final AppUser lastEditor;
   @override
   final DateTime creationDate;
   @override
@@ -331,9 +331,9 @@ abstract class _Timetable extends Timetable {
       {required final String id,
       required final String name,
       required final List<Day> days,
-      required final User owner,
-      required final List<User> editors,
-      required final User lastEditor,
+      required final AppUser owner,
+      required final List<AppUser> editors,
+      required final AppUser lastEditor,
       required final DateTime creationDate,
       required final DateTime lastUpdateDate,
       required final TimetableConfig config}) = _$_Timetable;
@@ -349,11 +349,11 @@ abstract class _Timetable extends Timetable {
   @override
   List<Day> get days;
   @override
-  User get owner;
+  AppUser get owner;
   @override
-  List<User> get editors;
+  List<AppUser> get editors;
   @override
-  User get lastEditor;
+  AppUser get lastEditor;
   @override
   DateTime get creationDate;
   @override

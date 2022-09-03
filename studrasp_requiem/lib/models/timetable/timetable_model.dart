@@ -15,9 +15,9 @@ class Timetable with _$Timetable {
     required String id,
     required String name,
     required List<Day> days,
-    required User owner,
-    required List<User> editors,
-    required User lastEditor,
+    required AppUser owner,
+    required List<AppUser> editors,
+    required AppUser lastEditor,
     required DateTime creationDate,
     required DateTime lastUpdateDate,
     required TimetableConfig config,
@@ -27,14 +27,14 @@ class Timetable with _$Timetable {
       _$TimetableFromJson(json);
 
   //нужно получение данного пользователя
-  factory Timetable.empty() {
+  factory Timetable.empty(AppUser user) {
     return Timetable(
       id: '',
       name: 'Новое расписание',
       days: [for (int i = 0; i < 14; i++) Day.empty()],
-      owner: const User(id: '', name: '', avatarUrl: ''),
+      owner: user,
       editors: [],
-      lastEditor: const User(id: '', name: '', avatarUrl: ''),
+      lastEditor: user,
       creationDate: DateTime.now(),
       lastUpdateDate: DateTime.now(),
       config: TimetableConfig.empty(),

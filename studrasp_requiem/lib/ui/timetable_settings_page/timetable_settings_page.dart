@@ -19,16 +19,19 @@ class TimetableSettingsPage extends ConsumerStatefulWidget {
   const TimetableSettingsPage({Key? key}) : super(key: key);
 
   @override
-  ConsumerState<TimetableSettingsPage> createState() => _TimeTableSettingsPageState();
+  ConsumerState<TimetableSettingsPage> createState() =>
+      _TimeTableSettingsPageState();
 }
 
 class _TimeTableSettingsPageState extends ConsumerState<TimetableSettingsPage> {
   final TextEditingController nameFieldController = TextEditingController();
-  final TextEditingController firstWeekFieldController = TextEditingController();
-  final TextEditingController secondWeekFieldController = TextEditingController();
+  final TextEditingController firstWeekFieldController =
+      TextEditingController();
+  final TextEditingController secondWeekFieldController =
+      TextEditingController();
 
   List<LessonIntervalController> lessonControllers = [];
-  List<User> editors = [];
+  List<AppUser> editors = [];
 
   void saveChanges() {
     ref.read(currentEditingTimetable.notifier).update(
@@ -72,15 +75,16 @@ class _TimeTableSettingsPageState extends ConsumerState<TimetableSettingsPage> {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) {
-          return SearchPage<User>(
+          return SearchPage<AppUser>(
             filter: (name) {
               int count = Random().nextInt(20);
-              return List<User>.generate(
+              return List<AppUser>.generate(
                 count,
-                (index) => User(
+                (index) => AppUser(
                   id: "${Random().nextInt(100)}",
                   name: "user ${Random().nextInt(100)}",
-                  avatarUrl: "",
+                  email: '',
+                  isVerified: false,
                 ),
               );
             },
@@ -125,7 +129,8 @@ class _TimeTableSettingsPageState extends ConsumerState<TimetableSettingsPage> {
           onPressed: () {
             saveChanges();
           },
-          icon: Assets.images.circleChevronLeft.svg(color: colors.accentPrimary),
+          icon:
+              Assets.images.circleChevronLeft.svg(color: colors.accentPrimary),
           splashRadius: 24,
         ),
         title: Text(

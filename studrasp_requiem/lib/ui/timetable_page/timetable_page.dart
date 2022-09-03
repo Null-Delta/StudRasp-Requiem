@@ -64,7 +64,8 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
           splashRadius: 24,
           onPressed: () {
             final selectedDate = DateTime.fromMillisecondsSinceEpoch(
-              ref.read(currentDate).millisecondsSinceEpoch + ref.read(selectedDuration).inMilliseconds,
+              ref.read(currentDate).millisecondsSinceEpoch +
+                  ref.read(selectedDuration).inMilliseconds,
             );
             showDatePicker(
               context: context,
@@ -73,9 +74,13 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
               lastDate: selectedDate.add(const Duration(days: 365)),
             ).then((date) {
               if (date != null) {
-                final now = Duration(milliseconds: ref.read(currentDate).millisecondsSinceEpoch).inDays;
-                final selected = Duration(milliseconds: date.millisecondsSinceEpoch).inDays;
-                ref.read(selectedDuration.notifier).state = Duration(days: selected - now + 1);
+                final now = Duration(
+                  milliseconds: ref.read(currentDate).millisecondsSinceEpoch,
+                ).inDays;
+                final selected =
+                    Duration(milliseconds: date.millisecondsSinceEpoch).inDays;
+                ref.read(selectedDuration.notifier).state =
+                    Duration(days: selected - now + 1);
                 ref.read(needSwipeDays.notifier).state = true;
               }
             });
@@ -157,14 +162,15 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
               dragStartBehavior: DragStartBehavior.down,
               onPageChanged: (value) {
                 if (!ref.read(daysSwiping)) {
-                  ref.read(selectedDuration.notifier).state = Duration(days: value - 366);
+                  ref.read(selectedDuration.notifier).state =
+                      Duration(days: value - 366);
                 }
               },
               itemCount: 1000,
               itemBuilder: (context, index) {
                 return ListView.separated(
                   controller: ScrollController(),
-                  physics: const AlwaysScrollableScrollPhysics(),
+                  physics: const BouncingScrollPhysics(),
                   padding: const EdgeInsets.all(16),
                   itemCount: 8,
                   separatorBuilder: (context, index) {
@@ -216,16 +222,20 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
                   id: "0",
                   name: "${Random().nextInt(100)}",
                   days: [],
-                  owner: const User(
+                  owner: const AppUser(
                     id: "0",
                     name: "JakeApps",
-                    avatarUrl: "",
+                    email: '',
+                    photoURL: "",
+                    isVerified: false,
                   ),
                   editors: [],
-                  lastEditor: const User(
+                  lastEditor: const AppUser(
                     id: "0",
                     name: "JakeApps",
-                    avatarUrl: "",
+                    email: '',
+                    photoURL: "",
+                    isVerified: false,
                   ),
                   creationDate: DateTime.now(),
                   lastUpdateDate: DateTime.now(),

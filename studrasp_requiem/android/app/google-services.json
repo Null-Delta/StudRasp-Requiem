@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1009441715837",
+    "project_id": "studrasp-4e58d",
+    "storage_bucket": "studrasp-4e58d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1009441715837:android:89b3dc568044e9a54ea314",
+        "android_client_info": {
+          "package_name": "com.example.studrasp_requiem"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1009441715837-cgd6dcpruba24h2l1daiidt6h4ol8pk1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZOC5MwBOmiI_pvSdxAxd38yUpb4Aehjs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1009441715837-cgd6dcpruba24h2l1daiidt6h4ol8pk1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
