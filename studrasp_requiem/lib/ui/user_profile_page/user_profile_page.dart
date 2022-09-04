@@ -20,6 +20,7 @@ class _UserProfilePageState extends ConsumerState<UserProfilePage> {
   }
 
   void toTimetablesList() {
+    //context.go(context.namedLocation('profile-list'));
     Navigator.push(
       context,
       MaterialPageRoute(

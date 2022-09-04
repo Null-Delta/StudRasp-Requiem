@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 import '../../gen/assets.gen.dart';
 import '../../models/day/day_model.dart';
 import '../../models/lesson/lesson_model.dart';
@@ -17,7 +18,6 @@ import '../lesson_card/card_styles/editable_lesson_card.dart';
 import '../lesson_card/card_styles/empty_lesson_card.dart';
 import '../lesson_editor_page/lesson_editor_page.dart';
 import '../timetable_settings_page/labeled_text.dart';
-import '../timetable_settings_page/timetable_settings_page.dart';
 import '../widgets/popup_menu_action.dart';
 import '../widgets/week_timeline.dart';
 import 'widgets/paste_bar.dart';
@@ -141,13 +141,14 @@ class _TimetableEditorPageState extends ConsumerState<TimetableEditorPage> {
               padding: EdgeInsets.zero,
               onPressed: () {
                 // временно переход в настройки
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return const TimetableSettingsPage();
-                    },
-                  ),
-                );
+                context.go(context.namedLocation('timetable-settings'));
+                // Navigator.of(context).push(
+                //   MaterialPageRoute(
+                //     builder: (context) {
+                //       return const TimetableSettingsPage();
+                //     },
+                //   ),
+                // );
               },
               icon: SvgPicture.asset(
                 Assets.images.settings.path,
@@ -273,16 +274,17 @@ class _TimetableEditorPageState extends ConsumerState<TimetableEditorPage> {
                                 onTap: () {
                                   if (copiedLesson == null) {
                                     //переход в редактор пары
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) {
-                                          return LessonEditorPage(
-                                            lessonDay: dayIndex,
-                                            lessonNumber: index,
-                                          );
-                                        },
-                                      ),
-                                    );
+                                    context.go(context.namedLocation('lesson'));
+                                    // Navigator.of(context).push(
+                                    //   MaterialPageRoute(
+                                    //     builder: (context) {
+                                    //       return LessonEditorPage(
+                                    //         lessonDay: dayIndex,
+                                    //         lessonNumber: index,
+                                    //       );
+                                    //     },
+                                    //   ),
+                                    // );
                                   } else {
                                     insertLesson(copiedLesson, dayIndex, index);
                                   }
