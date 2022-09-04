@@ -71,11 +71,14 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
     );
 
     final timeTable = ref.watch(currentTimetable);
-    final creationDay =
-        Duration(milliseconds: timeTable.creationDate.millisecondsSinceEpoch)
-                .inDays -
-            timeTable.creationDate.weekday +
-            1;
+    int creationDay = 0;
+    if (timeTable != null) {
+      creationDay =
+          Duration(milliseconds: timeTable.creationDate.millisecondsSinceEpoch)
+                  .inDays -
+              timeTable.creationDate.weekday +
+              1;
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -139,99 +142,108 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
         ],
       ),
       backgroundColor: colors.backgroundPrimary!,
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          InkWell(
-            onTap: () {
-              ref.read(selectedDuration.notifier).update((state) {
-                return const Duration();
-              });
-              context.go(
-                context.namedLocation('editor'),
-              );
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(
-              //     builder: (context) {
-              //       return TimetableEditorPage(
-              //         timeTable: ref.watch(currentTimetable),
-              //       );
-              //     },
-              //   ),
-              // );
-            },
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Text(
-                ref.watch(currentTimetable.select((value) => value.name)),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: textStyles.largeTitle,
-                textAlign: TextAlign.start,
-              ),
-            ),
-          ),
-          const WeekTimeline(),
-          Divider(
-            height: 1,
-            thickness: 1,
-            color: colors.separator,
-          ),
-          Expanded(
-            child: PageView.builder(
-              physics: const CustomPageViewScrollPhysics(),
-              padEnds: true,
-              allowImplicitScrolling: false,
-              controller: dayPageController,
-              dragStartBehavior: DragStartBehavior.down,
-              onPageChanged: (value) {
-                if (!ref.read(daysSwiping)) {
-                  ref.read(selectedDuration.notifier).state =
-                      Duration(days: value - 366);
-                }
-              },
-              itemCount: 1000,
-              itemBuilder: (context, pageImage) {
-                final today = Duration(
-                  milliseconds: DateTime.now().millisecondsSinceEpoch,
-                ).inDays;
-
-                final dayIndex = (today - creationDay + pageImage - 366) % 14;
-                return ListView(
-                  physics: const BouncingScrollPhysics(
-                    parent: AlwaysScrollableScrollPhysics(),
-                  ),
-                  children: [
-                    LabeledText(
-                      label: "Неделя",
-                      text: timeTable.config.weekTypes[dayIndex ~/ 7],
+      body: timeTable != null
+          ? Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                InkWell(
+                  onTap: () {
+                    ref.read(selectedDuration.notifier).update((state) {
+                      return const Duration();
+                    });
+                    context.go(
+                      context.namedLocation('editor'),
+                    );
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //     builder: (context) {
+                    //       return TimetableEditorPage(
+                    //         timeTable: ref.watch(currentTimetable),
+                    //       );
+                    //     },
+                    //   ),
+                    // );
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Text(
+                      timeTable.name,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: textStyles.largeTitle,
+                      textAlign: TextAlign.start,
                     ),
-                    for (int index = 0;
-                        index < timeTable.days[dayIndex].lessons.length;
-                        index++)
-                      if (!timeTable.days[dayIndex].lessons[index].isEmpty)
-                        Padding(
-                          key: ValueKey(index),
-                          padding: const EdgeInsets.only(
-                            bottom: 12,
-                            left: 16,
-                            right: 16,
+                  ),
+                ),
+                const WeekTimeline(),
+                Divider(
+                  height: 1,
+                  thickness: 1,
+                  color: colors.separator,
+                ),
+                Expanded(
+                  child: PageView.builder(
+                    physics: const CustomPageViewScrollPhysics(),
+                    padEnds: true,
+                    allowImplicitScrolling: false,
+                    controller: dayPageController,
+                    dragStartBehavior: DragStartBehavior.down,
+                    onPageChanged: (value) {
+                      if (!ref.read(daysSwiping)) {
+                        ref.read(selectedDuration.notifier).state =
+                            Duration(days: value - 366);
+                      }
+                    },
+                    itemCount: 1000,
+                    itemBuilder: (context, pageImage) {
+                      final today = Duration(
+                        milliseconds: DateTime.now().millisecondsSinceEpoch,
+                      ).inDays;
+
+                      final dayIndex =
+                          (today - creationDay + pageImage - 366) % 14;
+                      return ListView(
+                        physics: const BouncingScrollPhysics(
+                          parent: AlwaysScrollableScrollPhysics(),
+                        ),
+                        children: [
+                          LabeledText(
+                            label: "Неделя",
+                            text: timeTable.config.weekTypes[dayIndex ~/ 7],
                           ),
-                          child: LessonCard(
-                            index: index + 1,
-                            interval: timeTable.config.timeIntervals[index],
-                            lesson: timeTable.days[dayIndex].lessons[index],
-                            isToday: pageImage == 366,
-                          ),
-                        )
-                  ],
-                );
-              },
-            ),
-          )
-        ],
-      ),
+                          for (int index = 0;
+                              index < timeTable.days[dayIndex].lessons.length;
+                              index++)
+                            if (!timeTable
+                                .days[dayIndex].lessons[index].isEmpty)
+                              Padding(
+                                key: ValueKey(index),
+                                padding: const EdgeInsets.only(
+                                  bottom: 12,
+                                  left: 16,
+                                  right: 16,
+                                ),
+                                child: LessonCard(
+                                  index: index + 1,
+                                  interval:
+                                      timeTable.config.timeIntervals[index],
+                                  lesson:
+                                      timeTable.days[dayIndex].lessons[index],
+                                  isToday: pageImage == 366,
+                                ),
+                              )
+                        ],
+                      );
+                    },
+                  ),
+                )
+              ],
+            )
+          : Center(
+              child: Container(
+              child: Text('Выберите расписание'),
+            )),
     );
   }
 
