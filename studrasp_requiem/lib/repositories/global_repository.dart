@@ -23,23 +23,17 @@ abstract class TimetableGlobalSavesRepository {
   Future<String?> getUserEmailByLogin(String login);
 }
 
-class TimetableGlobalSavesRepositoryImpl
-    implements TimetableGlobalSavesRepository {
+class TimetableGlobalSavesRepositoryImpl implements TimetableGlobalSavesRepository {
   @override
   Future<void> deleteTimetable(String timetableId) async {
     try {
-      var timetableList = await FirebaseFirestore.instance
-          .collection('timetables')
-          .where('id', isEqualTo: timetableId)
-          .get();
+      var timetableList =
+          await FirebaseFirestore.instance.collection('timetables').where('id', isEqualTo: timetableId).get();
       if (timetableList.docs.isEmpty) {
         logger.severe('Таблица не найдена');
         throw Error();
       } else if (timetableList.docs.length == 1) {
-        await FirebaseFirestore.instance
-            .collection('timetables')
-            .doc(timetableList.docs[0].id)
-            .delete();
+        await FirebaseFirestore.instance.collection('timetables').doc(timetableList.docs[0].id).delete();
       } else {
         logger.severe('Повторяющиеся ID таблиц');
         throw Error();
@@ -54,14 +48,11 @@ class TimetableGlobalSavesRepositoryImpl
   @override
   Future<List<Timetable>?> getEditableTimetables(String userId) async {
     try {
-      var timetableList =
-          await FirebaseFirestore.instance.collection('timetables').get();
+      var timetableList = await FirebaseFirestore.instance.collection('timetables').get();
       return List.from(
         timetableList.docs.map((e) {
           Timetable timetable = Timetable.fromJson(e.data());
-          if (timetable.editors
-              .where((element) => element.id == userId)
-              .isEmpty) {
+          if (timetable.editors.where((element) => element.id == userId).isEmpty) {
             return null;
           } else {
             return timetable;
@@ -79,10 +70,8 @@ class TimetableGlobalSavesRepositoryImpl
   @override
   Future<List<Timetable>?> getOwnedTimetables(String userId) async {
     try {
-      var timetableList = await FirebaseFirestore.instance
-          .collection('timetables')
-          .where('owner.id', isEqualTo: userId)
-          .get();
+      var timetableList =
+          await FirebaseFirestore.instance.collection('timetables').where('owner.id', isEqualTo: userId).get();
       return List.from(
         timetableList.docs.map((e) => Timetable.fromJson(e.data())),
       );
@@ -97,10 +86,9 @@ class TimetableGlobalSavesRepositoryImpl
   @override
   Future<List<Timetable>?> getSearchedTimetables(String searchName) async {
     try {
-      var timetableList = await FirebaseFirestore.instance
-          .collection('timetables')
-          .where('name', isEqualTo: searchName)
-          .get();
+      var timetableList =
+          await FirebaseFirestore.instance.collection('timetables').where('name', isEqualTo: searchName).get();
+
       return List.from(
         timetableList.docs.map((e) => Timetable.fromJson(e.data())),
       );
@@ -117,10 +105,8 @@ class TimetableGlobalSavesRepositoryImpl
     List<String> timetableIdList,
   ) async {
     try {
-      var timetableList = await FirebaseFirestore.instance
-          .collection('timetables')
-          .where('id', whereIn: timetableIdList)
-          .get();
+      var timetableList =
+          await FirebaseFirestore.instance.collection('timetables').where('id', whereIn: timetableIdList).get();
       if (timetableList.docs.isEmpty) {
         logger.severe('Таблицы не найдены');
         throw Error();
@@ -141,17 +127,12 @@ class TimetableGlobalSavesRepositoryImpl
   Future<void> saveTimetable(Timetable timetable) async {
     try {
       Map<String, dynamic> json = jsonDecode(jsonEncode(timetable.toJson()));
-      var timetableList = await FirebaseFirestore.instance
-          .collection('timetables')
-          .where('id', isEqualTo: timetable.id)
-          .get();
+      var timetableList =
+          await FirebaseFirestore.instance.collection('timetables').where('id', isEqualTo: timetable.id).get();
       if (timetableList.docs.isEmpty) {
         await FirebaseFirestore.instance.collection('timetables').add(json);
       } else if (timetableList.docs.length == 1) {
-        await FirebaseFirestore.instance
-            .collection('timetables')
-            .doc(timetableList.docs[0].id)
-            .update(json);
+        await FirebaseFirestore.instance.collection('timetables').doc(timetableList.docs[0].id).update(json);
       } else {
         logger.severe('Повторяющиеся ID таблиц');
         throw Error();
@@ -169,9 +150,7 @@ class TimetableGlobalSavesRepositoryImpl
     String login,
   ) async {
     try {
-      await FirebaseFirestore.instance
-          .collection('users')
-          .add({'email': email, 'login': login});
+      await FirebaseFirestore.instance.collection('users').add({'email': email, 'login': login});
     } on FirebaseException catch (e) {
       logger.severe(e.message);
     } catch (e) {
@@ -182,10 +161,7 @@ class TimetableGlobalSavesRepositoryImpl
   @override
   Future<String?> getUserEmailByLogin(String login) async {
     try {
-      var usersList = await FirebaseFirestore.instance
-          .collection('users')
-          .where('login', isEqualTo: login)
-          .get();
+      var usersList = await FirebaseFirestore.instance.collection('users').where('login', isEqualTo: login).get();
       return usersList.docs[0].get('email');
     } on FirebaseException catch (e) {
       logger.severe(e.message);

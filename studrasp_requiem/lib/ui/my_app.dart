@@ -45,10 +45,7 @@ class _MyAppState extends ConsumerState<MyApp> {
                 name: 'lesson',
                 path: 'lesson',
                 builder: (BuildContext context, GoRouterState state) {
-                  return const LessonEditorPage(
-                    lessonDay: 1,
-                    lessonNumber: 1,
-                  );
+                  return const LessonEditorPage();
                 },
               ),
               GoRoute(

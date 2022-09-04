@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../models/lesson/editable_lesson.dart';
 import '../models/lesson/lesson_model.dart';
 import '../models/timetable/timetable_model.dart';
 import '../models/user/user_model.dart';
@@ -26,8 +27,12 @@ final currentUser = StateProvider<AppUser>((ref) {
   return AppUser.empty();
 });
 
-final currentEditingLesson = StateProvider<Lesson>((ref) {
-  return const Lesson(name: '', type: '', teacher: '', audience: '');
+final currentEditingLesson = StateProvider<EditableLesson>((ref) {
+  return EditableLesson(
+    day: 0,
+    number: 0,
+    lesson: Lesson.empty(),
+  );
 });
 
 final editorCopiedLesson = StateProvider<Lesson?>((ref) {
