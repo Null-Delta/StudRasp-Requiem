@@ -1,23 +1,19 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:math';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../gen/assets.gen.dart';
 import '../../models/timetable/timetable_model.dart';
-import '../../models/timetable_config/timetable_config_model.dart';
-import '../../models/user/user_model.dart';
 import '../../providers/current_timetable.dart';
 import '../../providers/providers.dart';
 import '../../styles/colors.dart';
 import '../../support/fast_swipe_physics.dart';
 import '../lesson_card/card_styles/lesson_card.dart';
 import '../search_page/search_page.dart';
+import '../timetable_editor_page/timetable_editor_page.dart';
+import '../timetable_list_pages/timetable_list_page.dart';
 import '../timetable_list_pages/widgets/time_table_card.dart';
 import '../timetable_settings_page/labeled_text.dart';
 import '../widgets/week_timeline.dart';
@@ -89,7 +85,8 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
           splashRadius: 24,
           onPressed: () {
             final selectedDate = DateTime.fromMillisecondsSinceEpoch(
-              ref.read(currentDate).millisecondsSinceEpoch + ref.read(selectedDuration).inMilliseconds,
+              ref.read(currentDate).millisecondsSinceEpoch +
+                  ref.read(selectedDuration).inMilliseconds,
             );
             showDatePicker(
               context: context,
@@ -101,8 +98,10 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
                 final now = Duration(
                   milliseconds: ref.read(currentDate).millisecondsSinceEpoch,
                 ).inDays;
-                final selected = Duration(milliseconds: date.millisecondsSinceEpoch).inDays;
-                ref.read(selectedDuration.notifier).state = Duration(days: selected - now + 1);
+                final selected =
+                    Duration(milliseconds: date.millisecondsSinceEpoch).inDays;
+                ref.read(selectedDuration.notifier).state =
+                    Duration(days: selected - now + 1);
                 ref.read(needSwipeDays.notifier).state = true;
               }
             });
@@ -113,15 +112,14 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
             icon: const Icon(Icons.list_alt),
             splashRadius: 24,
             onPressed: () {
-              context.go(context.namedLocation('list'));
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(
-              //     builder: (context) {
-              //       return const TimetableListPage();
-              //     },
-              //   ),
-              // );
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return const TimetableListPage();
+                  },
+                ),
+              );
             },
           ),
           const SizedBox(
@@ -149,19 +147,17 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
                     ref.read(selectedDuration.notifier).update((state) {
                       return const Duration();
                     });
-                    context.go(
-                      context.namedLocation('editor'),
+
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return TimetableEditorPage(
+                            timeTable: ref.watch(currentTimetable),
+                          );
+                        },
+                      ),
                     );
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //     builder: (context) {
-                    //       return TimetableEditorPage(
-                    //         timeTable: ref.watch(currentTimetable),
-                    //       );
-                    //     },
-                    //   ),
-                    // );
                   },
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -240,8 +236,9 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
             )
           : Center(
               child: Container(
-              child: Text('Выберите расписание'),
-            )),
+                child: const Text('Выберите расписание'),
+              ),
+            ),
     );
   }
 
