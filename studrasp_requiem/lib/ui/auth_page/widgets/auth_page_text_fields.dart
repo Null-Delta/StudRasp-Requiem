@@ -58,7 +58,7 @@ class _AuthPageTextFieldsState extends ConsumerState<AuthPageTextFields> {
                   );
                 },
                 errorText:
-                    'Имя должно содержать хотя-бы 2 символа и состоять только из букв и цифр.',
+                    'Имя должно содержать хотя-бы 2 символа и не иметь спецсимволов.',
               ),
             ),
           ),

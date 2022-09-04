@@ -15,16 +15,18 @@ class AppAvatar extends StatelessWidget {
   String getCharacters(String name) {
     final splitSpace = name.split(' ');
 
-    if (splitSpace.length > 1) {
+    if (splitSpace.length > 1 &&
+        splitSpace[0].isNotEmpty &&
+        splitSpace[1].isNotEmpty) {
       return splitSpace[0].substring(0, 1).toUpperCase() +
           splitSpace[1].substring(0, 1).toUpperCase();
     }
 
     final split = name.split(RegExp(r"(?=(?!^)[A-Z])"));
 
-    if (split.length == 1 && split[0].isNotEmpty) {
+    if (split.length == 1 && split[0].length > 1) {
       return split[0].substring(0, 2).toUpperCase();
-    } else if (split.length > 1) {
+    } else if (split.length > 1 && split[0].isNotEmpty && split[1].isNotEmpty) {
       return split[0].substring(0, 1).toUpperCase() +
           split[1].substring(0, 1).toUpperCase();
     }

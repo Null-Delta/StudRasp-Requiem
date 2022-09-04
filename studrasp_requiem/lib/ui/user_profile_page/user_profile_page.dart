@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../providers/user_auth.dart';
 import '../../styles/build_context_extension.dart';
+import '../timetable_list_pages/timetable_list_page.dart';
 import '../widgets/app_avatar.dart';
 
 class UserProfilePage extends ConsumerStatefulWidget {
@@ -14,6 +15,21 @@ class UserProfilePage extends ConsumerStatefulWidget {
 }
 
 class _UserProfilePageState extends ConsumerState<UserProfilePage> {
+  void logout() {
+    ref.read(userAuth.notifier).logout();
+  }
+
+  void toTimetablesList() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) {
+          return const TimetableListPage();
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
@@ -52,42 +68,57 @@ class _UserProfilePageState extends ConsumerState<UserProfilePage> {
                   color: colors.disable,
                 ),
               ),
-              const SizedBox(height: 32),
-              // Padding(
-              //   padding: const EdgeInsets.symmetric(
-              //     horizontal: 16,
-              //   ),
-              //   child: ElevatedButton(
-              //     onPressed: () {
-              //       ref.read(userAuth.notifier).logout();
-              //     },
-              //     style: ElevatedButton.styleFrom(
-              //       padding: const EdgeInsets.symmetric(
-              //         horizontal: 16,
-              //       ),
-              //       minimumSize: const Size(double.infinity, 48),
-              //       textStyle: textStyle.label,
-              //     ),
-              //     child: const Text('Cписок расписаний'),
-              //   ),
-              // ),
+              const SizedBox(height: 48),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                ),
+                child: ElevatedButton(
+                  onPressed: toTimetablesList,
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                    ),
+                    minimumSize: const Size(double.infinity, 42),
+                    textStyle: textStyle.label,
+                  ),
+                  child: const Text('Список расписаний'),
+                ),
+              ),
+              const SizedBox(height: 12),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                ),
+                child: ElevatedButton(
+                  onPressed: logout,
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                    ),
+                    minimumSize: const Size(double.infinity, 42),
+                    textStyle: textStyle.label,
+                  ),
+                  child: const Text('Настройки'),
+                ),
+              ),
             ],
           ),
         ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: ElevatedButton(
-        onPressed: () {
-          ref.read(userAuth.notifier).logout();
-        },
-        style: ElevatedButton.styleFrom(
-          primary: colors.destructive,
-          padding: const EdgeInsets.symmetric(
-            horizontal: 16,
-          ),
-        ),
-        child: const Text('Выйти из аккаунта'),
-      ),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      // floatingActionButton: ElevatedButton(
+      //   onPressed: () {
+      //     ref.read(userAuth.notifier).logout();
+      //   },
+      //   style: ElevatedButton.styleFrom(
+      //     primary: colors.destructive,
+      //     padding: const EdgeInsets.symmetric(
+      //       horizontal: 16,
+      //     ),
+      //   ),
+      //   child: const Text('Выйти из аккаунта'),
+      // ),
     );
   }
 }
