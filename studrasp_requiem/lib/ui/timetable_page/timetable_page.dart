@@ -21,7 +21,9 @@ import '../widgets/week_timeline.dart';
 import '../../styles/build_context_extension.dart';
 
 class TimetablePage extends ConsumerStatefulWidget {
-  const TimetablePage({Key? key}) : super(key: key);
+  const TimetablePage({Key? key, required this.timetable}) : super(key: key);
+
+  final Timetable? timetable;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _TimetablePageState();
@@ -35,7 +37,6 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
     super.initState();
 
     Timer.periodic(const Duration(minutes: 1), (timer) {
-      print("Update!");
       if (mounted) {
         ref.read(currentDate.notifier).state = DateTime.now();
       }
@@ -66,7 +67,7 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
       },
     );
 
-    final timeTable = ref.watch(currentTimetable);
+    final timeTable = widget.timetable;
 
     int creationDay = 0;
     if (timeTable != null) {
@@ -153,7 +154,7 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
                       MaterialPageRoute(
                         builder: (context) {
                           return TimetableEditorPage(
-                            timeTable: ref.watch(currentTimetable),
+                            timeTable: timeTable,
                           );
                         },
                       ),
