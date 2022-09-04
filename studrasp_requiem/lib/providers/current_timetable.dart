@@ -1,35 +1,62 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import '../models/timetable/timetable_model.dart';
-import '../models/user/user_model.dart';
 import '../repositories/current_timetable_repository.dart';
 
+class LocalStorageModel {
+  Timetable? currentTimetable;
+  List<String> savedTimetables = [];
 
-final currentTimetable =
-    StateNotifierProvider<CurrentTimetableNotifier, Timetable?>((ref) {
-  return CurrentTimetableNotifier(null);
+  LocalStorageModel(this.currentTimetable, this.savedTimetables);
+
+  copyWith({
+    Timetable? currentTimetable,
+    List<String>? savedTimetables,
+  }) {
+    return LocalStorageModel(
+      currentTimetable ?? this.currentTimetable,
+      savedTimetables ?? this.savedTimetables,
+    );
+  }
+}
+
+final localStorage = StateNotifierProvider<LocalStorageNotifier, LocalStorageModel>((ref) {
+  return LocalStorageNotifier(LocalStorageModel(null, []));
 });
 
-class CurrentTimetableNotifier extends StateNotifier<Timetable?> {
-  late final CurrentTimetableRepository currentTimetableRepository;
-  CurrentTimetableNotifier(super.state) {
+class LocalStorageNotifier extends StateNotifier<LocalStorageModel> {
+  late final LocalStorageRepository localStorageRepository;
+  LocalStorageNotifier(super.state) {
     _init();
   }
 
   Future<void> _init() async {
-    currentTimetableRepository = CurrentTimetableRepositorySPImpl();
+    localStorageRepository = CurrentLocalStoragePImpl();
     load();
   }
 
   void load() {
-    Timetable? loadedTimetable = currentTimetableRepository.loadCurrent();
+    Timetable? loadedTimetable = localStorageRepository.loadCurrent();
+    List<String> savedTimetables = localStorageRepository.savedTimetables();
+
     if (loadedTimetable != null) {
-      state = loadedTimetable;
+      state = state.copyWith(currentTimetable: loadedTimetable, savedTimetables: savedTimetables);
     }
   }
 
   void save(Timetable timetable) {
-    currentTimetableRepository.saveCurrent(timetable);
-    state = timetable;
+    localStorageRepository.saveCurrent(timetable);
+    state = state.copyWith(currentTimetable: timetable);
+  }
+
+  void addToSavedTimeTables(String timetableId) {
+    localStorageRepository.addToSaved(timetableId);
+    state = state.copyWith(savedTimetables: [...state.savedTimetables, timetableId]);
+  }
+
+  void removeFromSavedTimeTables(String timetableId) {
+    localStorageRepository.removeFromSaved(timetableId);
+    state = state.copyWith(
+      savedTimetables: state.savedTimetables.where((id) => id != timetableId).toList(),
+    );
   }
 }
