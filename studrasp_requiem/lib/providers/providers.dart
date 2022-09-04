@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/lesson/lesson_model.dart';
 import '../models/timetable/timetable_model.dart';
 import '../models/user/user_model.dart';
+import '../repositories/global_repository.dart';
 import '../ui/widgets/day_button.dart';
 
 final currentDate = StateProvider<DateTime>((ref) {
@@ -41,6 +42,11 @@ final currentEditingTimetable = StateProvider<Timetable>((ref) {
   return Timetable.empty(AppUser.empty());
 });
 
+final globalRepositoryStore =
+    StateProvider<TimetableGlobalSavesRepository>((ref) {
+  return TimetableGlobalSavesRepositoryImpl();
+});
+
 final selectedDay = Provider<int>((ref) {
   final currentDay = ref.watch(currentDate);
   int weekValue = ref.watch(selectedDuration).inDays + currentDay.weekday - 1;
@@ -50,14 +56,16 @@ final selectedDay = Provider<int>((ref) {
   return weekValue;
 });
 
-final dayButtonStyleProvider = Provider.family.autoDispose<DayButtonStyle, Duration>((ref, duration) {
+final dayButtonStyleProvider =
+    Provider.family.autoDispose<DayButtonStyle, Duration>((ref, duration) {
   if (duration.inDays == ref.watch(selectedDuration).inDays) {
     return DayButtonStyle.selected;
   }
 
   final now = DateTime.now().millisecondsSinceEpoch;
 
-  final buttonDays = Duration(milliseconds: now + duration.inMilliseconds).inDays;
+  final buttonDays =
+      Duration(milliseconds: now + duration.inMilliseconds).inDays;
 
   final currentdays = Duration(milliseconds: now).inDays;
 
