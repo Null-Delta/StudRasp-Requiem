@@ -22,10 +22,6 @@ final daysSwiping = StateProvider<bool>((ref) {
   return false;
 });
 
-final currentTimetable = StateProvider<Timetable>((ref) {
-  return Timetable.random(AppUser.empty());
-});
-
 final currentUser = StateProvider<AppUser>((ref) {
   return AppUser.empty();
 });
