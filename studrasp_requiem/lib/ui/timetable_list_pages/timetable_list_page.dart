@@ -127,13 +127,17 @@ class _TimetableListPageState extends ConsumerState<TimetableListPage> {
                       await loadSavedTables();
                     },
                     child: savedTables.isEmpty
-                        ? Container(
-                            alignment: Alignment.center,
-                            height: 128,
-                            child: Text(
-                              "Список пуст",
-                              style: textStyles.label!.copyWith(color: colors.disable),
-                            ),
+                        ? ListView(
+                            children: [
+                              Container(
+                                alignment: Alignment.center,
+                                height: 128,
+                                child: Text(
+                                  "Список пуст",
+                                  style: textStyles.label!.copyWith(color: colors.disable),
+                                ),
+                              ),
+                            ],
                           )
                         : ListView.separated(
                             physics: const BouncingScrollPhysics(

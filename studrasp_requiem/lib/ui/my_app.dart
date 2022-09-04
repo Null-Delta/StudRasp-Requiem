@@ -35,10 +35,7 @@ class _MyAppState extends ConsumerState<MyApp> {
         path: '/timetable/:tid',
         builder: (BuildContext context, GoRouterState state) {
           return FutureBuilder<List<Timetable>?>(
-            future: ref
-                .read(globalRepositoryStore.notifier)
-                .state
-                .getTimetablesOnId([state.params['tid']!]),
+            future: ref.read(globalRepositoryStore.notifier).state.getTimetablesOnId([state.params['tid']!]),
             builder: (context, snap) {
               if (snap.hasData) {
                 return TimetablePage(
@@ -101,7 +98,7 @@ class _HomePageState extends ConsumerState<HomePage> {
   Widget build(BuildContext context) {
     final colors = Theme.of(context).extension<AppColors>()!;
     final pages = [
-      TimetablePage(timetable: ref.watch(currentTimetable)),
+      TimetablePage(timetable: ref.watch(localStorage.select((value) => value.currentTimetable))),
       const AuthUserPage(),
     ];
     return Scaffold(
