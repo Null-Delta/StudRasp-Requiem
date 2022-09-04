@@ -4,8 +4,7 @@ import '../models/timetable/timetable_model.dart';
 import '../models/user/user_model.dart';
 import '../repositories/current_timetable_repository.dart';
 
-final currentTimetable =
-    StateNotifierProvider<CurrentTimetableNotifier, Timetable>((ref) {
+final currentTimetable = StateNotifierProvider<CurrentTimetableNotifier, Timetable>((ref) {
   return CurrentTimetableNotifier(
     Timetable.empty(AppUser.empty()),
   );
@@ -31,5 +30,6 @@ class CurrentTimetableNotifier extends StateNotifier<Timetable> {
 
   void save(Timetable timetable) {
     currentTimetableRepository.saveCurrent(timetable);
+    state = timetable;
   }
 }

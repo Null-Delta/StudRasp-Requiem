@@ -71,11 +71,9 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
     );
 
     final timeTable = ref.watch(currentTimetable);
-    final creationDay =
-        Duration(milliseconds: timeTable.creationDate.millisecondsSinceEpoch)
-                .inDays -
-            timeTable.creationDate.weekday +
-            1;
+    final creationDay = Duration(milliseconds: timeTable.creationDate.millisecondsSinceEpoch).inDays -
+        timeTable.creationDate.weekday +
+        1;
 
     return Scaffold(
       appBar: AppBar(
@@ -85,8 +83,7 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
           splashRadius: 24,
           onPressed: () {
             final selectedDate = DateTime.fromMillisecondsSinceEpoch(
-              ref.read(currentDate).millisecondsSinceEpoch +
-                  ref.read(selectedDuration).inMilliseconds,
+              ref.read(currentDate).millisecondsSinceEpoch + ref.read(selectedDuration).inMilliseconds,
             );
             showDatePicker(
               context: context,
@@ -98,10 +95,8 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
                 final now = Duration(
                   milliseconds: ref.read(currentDate).millisecondsSinceEpoch,
                 ).inDays;
-                final selected =
-                    Duration(milliseconds: date.millisecondsSinceEpoch).inDays;
-                ref.read(selectedDuration.notifier).state =
-                    Duration(days: selected - now + 1);
+                final selected = Duration(milliseconds: date.millisecondsSinceEpoch).inDays;
+                ref.read(selectedDuration.notifier).state = Duration(days: selected - now + 1);
                 ref.read(needSwipeDays.notifier).state = true;
               }
             });
@@ -187,8 +182,7 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
               dragStartBehavior: DragStartBehavior.down,
               onPageChanged: (value) {
                 if (!ref.read(daysSwiping)) {
-                  ref.read(selectedDuration.notifier).state =
-                      Duration(days: value - 366);
+                  ref.read(selectedDuration.notifier).state = Duration(days: value - 366);
                 }
               },
               itemCount: 1000,
@@ -207,9 +201,7 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
                       label: "Неделя",
                       text: timeTable.config.weekTypes[dayIndex ~/ 7],
                     ),
-                    for (int index = 0;
-                        index < timeTable.days[dayIndex].lessons.length;
-                        index++)
+                    for (int index = 0; index < timeTable.days[dayIndex].lessons.length; index++)
                       if (!timeTable.days[dayIndex].lessons[index].isEmpty)
                         Padding(
                           key: ValueKey(index),
@@ -256,7 +248,10 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
                   ),
                   splashRadius: 24,
                 ),
-                onTap: () {},
+                onTap: () {
+                  ref.read(currentTimetable.notifier).save(table);
+                  Navigator.pop(context);
+                },
               );
             },
           );
