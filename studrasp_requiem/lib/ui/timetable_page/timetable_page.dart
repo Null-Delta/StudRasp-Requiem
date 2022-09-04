@@ -101,11 +101,18 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
               lastDate: selectedDate.add(const Duration(days: 365)),
             ).then((date) {
               if (date != null) {
-                final now = Duration(
+                var now = Duration(
                   milliseconds: ref.read(currentDate).millisecondsSinceEpoch,
-                ).inDays;
+                ).inMilliseconds;
+
+                now -= ref.read(currentDate).hour * 3600 * 1000;
+                now -= ref.read(currentDate).minute * 60 * 1000;
+                now -= ref.read(currentDate).second * 1000;
+                now -= ref.read(currentDate).millisecond;
+
                 final selected = Duration(milliseconds: date.millisecondsSinceEpoch).inDays;
-                ref.read(selectedDuration.notifier).state = Duration(days: selected - now + 1);
+                ref.read(selectedDuration.notifier).state =
+                    Duration(days: selected - Duration(milliseconds: now).inDays);
                 ref.read(needSwipeDays.notifier).state = true;
               }
             });
