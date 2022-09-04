@@ -26,11 +26,11 @@ Map<String, dynamic> _$$_TimetableToJson(_$_Timetable instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
-      'days': instance.days,
-      'owner': instance.owner,
-      'editors': instance.editors,
-      'lastEditor': instance.lastEditor,
+      'days': instance.days.map((e) => e.toJson()).toList(),
+      'owner': instance.owner.toJson(),
+      'editors': instance.editors.map((e) => e.toJson()).toList(),
+      'lastEditor': instance.lastEditor.toJson(),
       'creationDate': instance.creationDate.toIso8601String(),
       'lastUpdateDate': instance.lastUpdateDate.toIso8601String(),
-      'config': instance.config,
+      'config': instance.config.toJson(),
     };

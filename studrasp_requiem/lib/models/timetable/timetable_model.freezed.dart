@@ -51,8 +51,8 @@ abstract class $TimetableCopyWith<$Res> {
       DateTime lastUpdateDate,
       TimetableConfig config});
 
-  $UserCopyWith<$Res> get owner;
-  $UserCopyWith<$Res> get lastEditor;
+  $AppUserCopyWith<$Res> get owner;
+  $AppUserCopyWith<$Res> get lastEditor;
   $TimetableConfigCopyWith<$Res> get config;
 }
 
@@ -117,15 +117,15 @@ class _$TimetableCopyWithImpl<$Res> implements $TimetableCopyWith<$Res> {
   }
 
   @override
-  $UserCopyWith<$Res> get owner {
-    return $UserCopyWith<$Res>(_value.owner, (value) {
+  $AppUserCopyWith<$Res> get owner {
+    return $AppUserCopyWith<$Res>(_value.owner, (value) {
       return _then(_value.copyWith(owner: value));
     });
   }
 
   @override
-  $UserCopyWith<$Res> get lastEditor {
-    return $UserCopyWith<$Res>(_value.lastEditor, (value) {
+  $AppUserCopyWith<$Res> get lastEditor {
+    return $AppUserCopyWith<$Res>(_value.lastEditor, (value) {
       return _then(_value.copyWith(lastEditor: value));
     });
   }
@@ -156,9 +156,9 @@ abstract class _$$_TimetableCopyWith<$Res> implements $TimetableCopyWith<$Res> {
       TimetableConfig config});
 
   @override
-  $UserCopyWith<$Res> get owner;
+  $AppUserCopyWith<$Res> get owner;
   @override
-  $UserCopyWith<$Res> get lastEditor;
+  $AppUserCopyWith<$Res> get lastEditor;
   @override
   $TimetableConfigCopyWith<$Res> get config;
 }

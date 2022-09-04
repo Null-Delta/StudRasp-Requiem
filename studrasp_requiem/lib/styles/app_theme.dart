@@ -14,16 +14,6 @@ class AppTheme {
     final textStyles = AppDefaultTextStyles(colors);
 
     return theme.copyWith(
-      dialogTheme: DialogTheme(
-        backgroundColor: colors.backgroundPrimary,
-        shape: RoundedRectangleBorder(borderRadius: BurderRadiusStyles.large),
-        contentTextStyle: textStyles.label,
-      ),
-      colorScheme: ColorScheme.light(
-        primary: colors.accentSecondary!,
-        onPrimary: colors.backgroundPrimary!,
-        onSurface: colors.accentPrimary!,
-      ),
       disabledColor: colors.disable,
       dividerColor: colors.separator,
       unselectedWidgetColor: colors.disable,
@@ -31,6 +21,17 @@ class AppTheme {
       primaryColor: colors.backgroundPrimary,
       backgroundColor: colors.backgroundPrimary,
       scaffoldBackgroundColor: colors.backgroundPrimary,
+      dialogTheme: DialogTheme(
+        backgroundColor: colors.backgroundPrimary,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadiusStyles.large),
+        contentTextStyle: textStyles.label,
+      ),
+      colorScheme: ColorScheme.light(
+        primary: colors.accentSecondary!,
+        onPrimary: colors.backgroundPrimary!,
+        onSurface: colors.accentPrimary!,
+        secondary: colors.accentSecondary!,
+      ),
       appBarTheme: theme.appBarTheme.copyWith(
         backgroundColor: colors.backgroundPrimary,
         foregroundColor: colors.accentPrimary,
@@ -65,15 +66,15 @@ class AppTheme {
         fillColor: colors.backgroundSecondary,
         border: OutlineInputBorder(
           borderSide: BorderSide(color: colors.separator!, width: 1),
-          borderRadius: BurderRadiusStyles.normal,
+          borderRadius: BorderRadiusStyles.normal,
         ),
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(color: colors.separator!, width: 1),
-          borderRadius: BurderRadiusStyles.normal,
+          borderRadius: BorderRadiusStyles.normal,
         ),
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(color: colors.separator!, width: 1),
-          borderRadius: BurderRadiusStyles.normal,
+          borderRadius: BorderRadiusStyles.normal,
         ),
       ),
       bottomNavigationBarTheme: theme.bottomNavigationBarTheme.copyWith(

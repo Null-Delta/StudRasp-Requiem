@@ -4,23 +4,24 @@ part 'user_model.freezed.dart';
 part 'user_model.g.dart';
 
 @freezed
-class AppUser with _$User {
+class AppUser with _$AppUser {
   const factory AppUser({
     required String id,
     required String name,
     required String email,
-    required bool isVerified,
+    @Default(false) bool isVerified,
+    @Default(false) bool isRegistered,
     String? photoURL,
   }) = _User;
 
-  factory AppUser.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
+  factory AppUser.fromJson(Map<String, dynamic> json) =>
+      _$AppUserFromJson(json);
 
   factory AppUser.empty() {
     return const AppUser(
       id: '',
       name: '',
       email: '',
-      isVerified: false,
     );
   }
 }

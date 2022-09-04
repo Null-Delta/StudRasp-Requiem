@@ -92,7 +92,7 @@ class _TimetableListPageState extends State<TimetableListPage> {
               child: Container(
                 decoration: BoxDecoration(
                   color: colors.backgroundSecondary,
-                  borderRadius: BurderRadiusStyles.large,
+                  borderRadius: BorderRadiusStyles.large,
                   border: Border.all(color: colors.separator!, width: 1),
                 ),
                 padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
@@ -105,7 +105,7 @@ class _TimetableListPageState extends State<TimetableListPage> {
                   indicatorWeight: 0,
                   indicator: BoxDecoration(
                     color: colors.accentPrimary,
-                    borderRadius: BurderRadiusStyles.normal,
+                    borderRadius: BorderRadiusStyles.normal,
                   ),
                   tabs: [
                     Container(
@@ -132,13 +132,17 @@ class _TimetableListPageState extends State<TimetableListPage> {
               child: TabBarView(
                 children: [
                   ListView.separated(
+                    physics: const BouncingScrollPhysics(
+                      parent: AlwaysScrollableScrollPhysics(),
+                    ),
                     controller: savedTimeTablesContoller,
                     itemBuilder: (context, index) {
                       return TimetableCard(
                         timeTable: savedTables[index],
                         button: IconButton(
                           onPressed: () {},
-                          icon: Assets.images.moreHorizontal.svg(color: colors.accentPrimary),
+                          icon: Assets.images.moreHorizontal
+                              .svg(color: colors.accentPrimary),
                           splashRadius: 24,
                         ),
                         onTap: () {},
@@ -154,13 +158,17 @@ class _TimetableListPageState extends State<TimetableListPage> {
                     itemCount: savedTables.length,
                   ),
                   ListView.separated(
+                    physics: const BouncingScrollPhysics(
+                      parent: AlwaysScrollableScrollPhysics(),
+                    ),
                     controller: myTimeTablesContoller,
                     itemBuilder: (context, index) {
                       return TimetableCard(
                         timeTable: myTables[index],
                         button: IconButton(
                           onPressed: () {},
-                          icon: Assets.images.moreHorizontal.svg(color: colors.accentPrimary),
+                          icon: Assets.images.moreHorizontal
+                              .svg(color: colors.accentPrimary),
                           splashRadius: 24,
                         ),
                         onTap: () {

@@ -41,11 +41,11 @@ class SearchTextField extends StatelessWidget {
       maxSuggestionsInViewPort: 3,
       hint: hint,
       suggestionsDecoration: BoxDecoration(
-        borderRadius: BurderRadiusStyles.normal,
+        borderRadius: BorderRadiusStyles.normal,
         color: colors.backgroundPrimary,
         boxShadow: [
           BoxShadow(
-            color: colors.disable!.withOpacity(0.5),
+            color: colors.shadow!.withOpacity(0.5),
             blurRadius: 32.0,
             spreadRadius: 0.1,
           ),

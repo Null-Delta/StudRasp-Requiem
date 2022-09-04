@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/gestures.dart';
@@ -17,12 +18,10 @@ import '../search_page/search_page.dart';
 import '../timetable_editor_page/timetable_editor_page.dart';
 import '../timetable_list_pages/timetable_list_page.dart';
 import '../timetable_list_pages/widgets/time_table_card.dart';
+import '../timetable_settings_page/labeled_text.dart';
 import '../widgets/week_timeline.dart';
 
-import '../../models/lesson/lesson_model.dart';
-import '../../models/time_interval/time_interval_model.dart';
 import '../../styles/build_context_extension.dart';
-import '../lesson_card/card_styles/empty_lesson_card.dart';
 
 class TimetablePage extends ConsumerStatefulWidget {
   const TimetablePage({Key? key}) : super(key: key);
@@ -33,6 +32,18 @@ class TimetablePage extends ConsumerStatefulWidget {
 
 class _TimetablePageState extends ConsumerState<TimetablePage> {
   final dayPageController = PageController(initialPage: 366);
+
+  @override
+  void initState() {
+    super.initState();
+
+    Timer.periodic(const Duration(minutes: 1), (timer) {
+      print("Update!");
+      if (mounted) {
+        ref.read(currentDate.notifier).state = DateTime.now();
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,6 +68,13 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
         }
       },
     );
+
+    final timeTable = ref.watch(currentTimetable);
+    final creationDay =
+        Duration(milliseconds: timeTable.creationDate.millisecondsSinceEpoch)
+                .inDays -
+            timeTable.creationDate.weekday +
+            1;
 
     return Scaffold(
       floatingActionButton: FloatingActionButton(
@@ -175,38 +193,40 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
                 }
               },
               itemCount: 1000,
-              itemBuilder: (context, index) {
-                return ListView.separated(
-                  controller: ScrollController(),
-                  physics: const BouncingScrollPhysics(),
-                  padding: const EdgeInsets.all(16),
-                  itemCount: 8,
-                  separatorBuilder: (context, index) {
-                    return const SizedBox(
-                      height: 12,
-                    );
-                  },
-                  itemBuilder: (context, index) {
-                    final type = Random().nextInt(100) % 2;
-                    if (type == 0) {
-                      return EmptyLessonCard(
-                        index: index % 10,
-                        interval: TimeInterval(
-                          from: Duration(hours: index),
-                          to: Duration(hours: index + 1),
-                        ),
-                      );
-                    } else {
-                      return LessonCard(
-                        index: index % 10,
-                        lesson: Lesson.random(),
-                        interval: TimeInterval(
-                          from: Duration(hours: index),
-                          to: Duration(hours: index + 1),
-                        ),
-                      );
-                    }
-                  },
+              itemBuilder: (context, pageImage) {
+                final today = Duration(
+                  milliseconds: DateTime.now().millisecondsSinceEpoch,
+                ).inDays;
+
+                final dayIndex = (today - creationDay + pageImage - 366) % 14;
+                return ListView(
+                  physics: const BouncingScrollPhysics(
+                    parent: AlwaysScrollableScrollPhysics(),
+                  ),
+                  children: [
+                    LabeledText(
+                      label: "Неделя",
+                      text: timeTable.config.weekTypes[dayIndex ~/ 7],
+                    ),
+                    for (int index = 0;
+                        index < timeTable.days[dayIndex].lessons.length;
+                        index++)
+                      if (!timeTable.days[dayIndex].lessons[index].isEmpty)
+                        Padding(
+                          key: ValueKey(index),
+                          padding: const EdgeInsets.only(
+                            bottom: 12,
+                            left: 16,
+                            right: 16,
+                          ),
+                          child: LessonCard(
+                            index: index + 1,
+                            interval: timeTable.config.timeIntervals[index],
+                            lesson: timeTable.days[dayIndex].lessons[index],
+                            isToday: pageImage == 366,
+                          ),
+                        )
+                  ],
                 );
               },
             ),
