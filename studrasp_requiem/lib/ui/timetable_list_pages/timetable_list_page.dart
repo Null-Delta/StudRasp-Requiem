@@ -1,62 +1,53 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../gen/assets.gen.dart';
 import '../../models/timetable/timetable_model.dart';
 import '../../models/timetable_config/timetable_config_model.dart';
 import '../../models/user/user_model.dart';
+import '../../providers/current_timetable.dart';
+import '../../providers/providers.dart';
 import '../../styles/build_context_extension.dart';
 import '../../styles/widget_styles.dart';
 import '../timetable_editor_page/timetable_editor_page.dart';
 import 'widgets/time_table_card.dart';
 
-class TimetableListPage extends StatefulWidget {
+class TimetableListPage extends ConsumerStatefulWidget {
   const TimetableListPage({Key? key}) : super(key: key);
 
   @override
-  State<TimetableListPage> createState() => _TimetableListPageState();
+  ConsumerState<TimetableListPage> createState() => _TimetableListPageState();
 }
 
-class _TimetableListPageState extends State<TimetableListPage> {
+class _TimetableListPageState extends ConsumerState<TimetableListPage> {
   ScrollController savedTimeTablesContoller = ScrollController();
   ScrollController myTimeTablesContoller = ScrollController();
+
+  List<Timetable> savedTables = [];
+  List<Timetable> myTables = [];
+
+  @override
+  void initState() {
+    super.initState();
+    loadSavedTables();
+  }
+
+  Future<void> loadSavedTables() async {
+    final savedList = ref.read(localStorage).savedTimetables;
+    final repository = ref.read(globalRepositoryStore);
+
+    final newList = await repository.getTimetablesOnId(savedList) ?? [];
+
+    setState(() {
+      savedTables = newList;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
 
     final textStyles = context.textStyles;
-
-    final List<Timetable> savedTables = List<Timetable>.generate(
-      20,
-      (index) => Timetable(
-        id: "0",
-        name: "Шарарам 36/2",
-        days: [],
-        owner: AppUser.empty(),
-        editors: [],
-        lastEditor: AppUser.empty(),
-        creationDate: DateTime.now(),
-        lastUpdateDate: DateTime.now(),
-        config: TimetableConfig.empty(),
-        isPublished: false,
-      ),
-    );
-
-    final List<Timetable> myTables = List<Timetable>.generate(
-      6,
-      (index) => Timetable(
-        id: "0",
-        name: "Не шарарам 36/1",
-        days: [],
-        owner: AppUser.empty(),
-        editors: [],
-        lastEditor: AppUser.empty(),
-        creationDate: DateTime.now(),
-        lastUpdateDate: DateTime.now(),
-        config: TimetableConfig.empty(),
-        isPublished: false,
-      ),
-    );
 
     return DefaultTabController(
       length: 2,
@@ -69,8 +60,7 @@ class _TimetableListPageState extends State<TimetableListPage> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              icon: Assets.images.circleChevronLeft
-                  .svg(color: colors.accentPrimary),
+              icon: Assets.images.circleChevronLeft.svg(color: colors.accentPrimary),
               splashRadius: 24,
             ),
           ),
@@ -101,8 +91,7 @@ class _TimetableListPageState extends State<TimetableListPage> {
                 child: TabBar(
                   labelColor: colors.backgroundPrimary,
                   labelStyle: textStyles.label!,
-                  unselectedLabelStyle:
-                      textStyles.label!.copyWith(color: colors.accentPrimary),
+                  unselectedLabelStyle: textStyles.label!.copyWith(color: colors.accentPrimary),
                   unselectedLabelColor: colors.accentPrimary,
                   indicatorWeight: 0,
                   indicator: BoxDecoration(
@@ -133,31 +122,47 @@ class _TimetableListPageState extends State<TimetableListPage> {
             Expanded(
               child: TabBarView(
                 children: [
-                  ListView.separated(
-                    physics: const BouncingScrollPhysics(
-                      parent: AlwaysScrollableScrollPhysics(),
-                    ),
-                    controller: savedTimeTablesContoller,
-                    itemBuilder: (context, index) {
-                      return TimetableCard(
-                        timeTable: savedTables[index],
-                        button: IconButton(
-                          onPressed: () {},
-                          icon: Assets.images.moreHorizontal
-                              .svg(color: colors.accentPrimary),
-                          splashRadius: 24,
-                        ),
-                        onTap: () {},
-                      );
+                  RefreshIndicator(
+                    onRefresh: () async {
+                      await loadSavedTables();
                     },
-                    separatorBuilder: (context, index) {
-                      return Divider(
-                        height: 1,
-                        thickness: 1,
-                        color: colors.separator,
-                      );
-                    },
-                    itemCount: savedTables.length,
+                    child: savedTables.isEmpty
+                        ? Container(
+                            alignment: Alignment.center,
+                            height: 128,
+                            child: Text(
+                              "Список пуст",
+                              style: textStyles.label!.copyWith(color: colors.disable),
+                            ),
+                          )
+                        : ListView.separated(
+                            physics: const BouncingScrollPhysics(
+                              parent: AlwaysScrollableScrollPhysics(),
+                            ),
+                            controller: savedTimeTablesContoller,
+                            itemBuilder: (context, index) {
+                              return TimetableCard(
+                                timeTable: savedTables[index],
+                                button: IconButton(
+                                  onPressed: () {},
+                                  icon: Assets.images.moreHorizontal.svg(color: colors.accentPrimary),
+                                  splashRadius: 24,
+                                ),
+                                onTap: () {
+                                  ref.read(localStorage.notifier).save(savedTables[index]);
+                                  Navigator.pop(context);
+                                },
+                              );
+                            },
+                            separatorBuilder: (context, index) {
+                              return Divider(
+                                height: 1,
+                                thickness: 1,
+                                color: colors.separator,
+                              );
+                            },
+                            itemCount: savedTables.length,
+                          ),
                   ),
                   ListView.separated(
                     physics: const BouncingScrollPhysics(
@@ -169,8 +174,7 @@ class _TimetableListPageState extends State<TimetableListPage> {
                         timeTable: myTables[index],
                         button: IconButton(
                           onPressed: () {},
-                          icon: Assets.images.moreHorizontal
-                              .svg(color: colors.accentPrimary),
+                          icon: Assets.images.moreHorizontal.svg(color: colors.accentPrimary),
                           splashRadius: 24,
                         ),
                         onTap: () {
