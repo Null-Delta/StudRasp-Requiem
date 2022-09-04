@@ -5,11 +5,10 @@ import '../../styles/build_context_extension.dart';
 import '../../styles/text_field_style.dart';
 
 class SearchPage<T> extends StatefulWidget {
-  final List<T> Function(String name) filter;
+  final Future<List<T>?> Function(String name) filter;
   final Widget Function(T) itemBuilder;
 
-  const SearchPage({Key? key, required this.filter, required this.itemBuilder})
-      : super(key: key);
+  const SearchPage({Key? key, required this.filter, required this.itemBuilder}) : super(key: key);
 
   @override
   State<SearchPage> createState() => _SearchPageState<T>();
@@ -17,6 +16,7 @@ class SearchPage<T> extends StatefulWidget {
 
 class _SearchPageState<T> extends State<SearchPage<T>> {
   final searchFieldFocus = FocusNode();
+  final serachFieldController = TextEditingController();
   List<T> searchResult = [];
 
   @override
@@ -36,8 +36,7 @@ class _SearchPageState<T> extends State<SearchPage<T>> {
             onPressed: () {
               Navigator.pop(context);
             },
-            icon: Assets.images.circleChevronLeft
-                .svg(color: colors.accentPrimary),
+            icon: Assets.images.circleChevronLeft.svg(color: colors.accentPrimary),
             splashRadius: 24,
           ),
         ),
@@ -49,10 +48,15 @@ class _SearchPageState<T> extends State<SearchPage<T>> {
             child: SizedBox(
               height: 42,
               child: TextField(
+                controller: serachFieldController,
                 focusNode: searchFieldFocus,
                 onEditingComplete: () {
-                  setState(() {
-                    searchResult = widget.filter("");
+                  widget.filter(serachFieldController.text).then((value) {
+                    setState(
+                      () {
+                        searchResult = value ?? [];
+                      },
+                    );
                   });
                   searchFieldFocus.unfocus();
                 },

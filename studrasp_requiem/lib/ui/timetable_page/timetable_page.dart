@@ -7,10 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../gen/assets.gen.dart';
 import '../../models/timetable/timetable_model.dart';
-import '../../models/timetable_config/timetable_config_model.dart';
-import '../../models/user/user_model.dart';
 import '../../providers/providers.dart';
-import '../../repositories/global_repository.dart';
 import '../../styles/colors.dart';
 import '../../support/fast_swipe_physics.dart';
 import '../lesson_card/card_styles/lesson_card.dart';
@@ -68,19 +65,11 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
     );
 
     final timeTable = ref.watch(currentTimetable);
-    final creationDay =
-        Duration(milliseconds: timeTable.creationDate.millisecondsSinceEpoch)
-                .inDays -
-            timeTable.creationDate.weekday +
-            1;
+    final creationDay = Duration(milliseconds: timeTable.creationDate.millisecondsSinceEpoch).inDays -
+        timeTable.creationDate.weekday +
+        1;
 
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          await TimetableGlobalSavesRepositoryImpl()
-              .deleteTimetable('1662295447177');
-        },
-      ),
       appBar: AppBar(
         backgroundColor: colors.backgroundPrimary,
         leading: IconButton(
@@ -88,8 +77,7 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
           splashRadius: 24,
           onPressed: () {
             final selectedDate = DateTime.fromMillisecondsSinceEpoch(
-              ref.read(currentDate).millisecondsSinceEpoch +
-                  ref.read(selectedDuration).inMilliseconds,
+              ref.read(currentDate).millisecondsSinceEpoch + ref.read(selectedDuration).inMilliseconds,
             );
             showDatePicker(
               context: context,
@@ -101,10 +89,8 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
                 final now = Duration(
                   milliseconds: ref.read(currentDate).millisecondsSinceEpoch,
                 ).inDays;
-                final selected =
-                    Duration(milliseconds: date.millisecondsSinceEpoch).inDays;
-                ref.read(selectedDuration.notifier).state =
-                    Duration(days: selected - now + 1);
+                final selected = Duration(milliseconds: date.millisecondsSinceEpoch).inDays;
+                ref.read(selectedDuration.notifier).state = Duration(days: selected - now + 1);
                 ref.read(needSwipeDays.notifier).state = true;
               }
             });
@@ -190,8 +176,7 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
               dragStartBehavior: DragStartBehavior.down,
               onPageChanged: (value) {
                 if (!ref.read(daysSwiping)) {
-                  ref.read(selectedDuration.notifier).state =
-                      Duration(days: value - 366);
+                  ref.read(selectedDuration.notifier).state = Duration(days: value - 366);
                 }
               },
               itemCount: 1000,
@@ -210,9 +195,7 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
                       label: "Неделя",
                       text: timeTable.config.weekTypes[dayIndex ~/ 7],
                     ),
-                    for (int index = 0;
-                        index < timeTable.days[dayIndex].lessons.length;
-                        index++)
+                    for (int index = 0; index < timeTable.days[dayIndex].lessons.length; index++)
                       if (!timeTable.days[dayIndex].lessons[index].isEmpty)
                         Padding(
                           key: ValueKey(index),
@@ -245,34 +228,9 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
         builder: (context) {
           return SearchPage<Timetable>(
             filter: (name) {
-              int count = Random().nextInt(20);
-              return List<Timetable>.generate(
-                count,
-                (index) => Timetable(
-                  id: "0",
-                  name: "${Random().nextInt(100)}",
-                  days: [],
-                  owner: const AppUser(
-                    id: "0",
-                    name: "JakeApps",
-                    email: '',
-                    photoURL: "",
-                    isVerified: false,
-                  ),
-                  editors: [],
-                  lastEditor: const AppUser(
-                    id: "0",
-                    name: "JakeApps",
-                    email: '',
-                    photoURL: "",
-                    isVerified: false,
-                  ),
-                  creationDate: DateTime.now(),
-                  lastUpdateDate: DateTime.now(),
-                  config: TimetableConfig.empty(),
-                  isPublished: false,
-                ),
-              );
+              final repository = ref.read(globalRepositoryStore);
+
+              return repository.getSearchedTimetables(name);
             },
             itemBuilder: (table) {
               return TimetableCard(

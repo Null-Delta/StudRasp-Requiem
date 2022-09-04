@@ -19,16 +19,13 @@ class TimetableSettingsPage extends ConsumerStatefulWidget {
   const TimetableSettingsPage({Key? key}) : super(key: key);
 
   @override
-  ConsumerState<TimetableSettingsPage> createState() =>
-      _TimeTableSettingsPageState();
+  ConsumerState<TimetableSettingsPage> createState() => _TimeTableSettingsPageState();
 }
 
 class _TimeTableSettingsPageState extends ConsumerState<TimetableSettingsPage> {
   final TextEditingController nameFieldController = TextEditingController();
-  final TextEditingController firstWeekFieldController =
-      TextEditingController();
-  final TextEditingController secondWeekFieldController =
-      TextEditingController();
+  final TextEditingController firstWeekFieldController = TextEditingController();
+  final TextEditingController secondWeekFieldController = TextEditingController();
 
   List<LessonIntervalController> lessonControllers = [];
   List<AppUser> editors = [];
@@ -78,15 +75,17 @@ class _TimeTableSettingsPageState extends ConsumerState<TimetableSettingsPage> {
           return SearchPage<AppUser>(
             filter: (name) {
               int count = Random().nextInt(20);
-              return List<AppUser>.generate(
-                count,
-                (index) => AppUser(
-                  id: "${Random().nextInt(100)}",
-                  name: "user ${Random().nextInt(100)}",
-                  email: '',
-                  isVerified: false,
-                ),
-              );
+              return Future.delayed(const Duration(seconds: 1), () {
+                return List<AppUser>.generate(
+                  count,
+                  (index) => AppUser(
+                    id: "${Random().nextInt(100)}",
+                    name: "user ${Random().nextInt(100)}",
+                    email: '',
+                    isVerified: false,
+                  ),
+                );
+              });
             },
             itemBuilder: (user) {
               return EditorCard(
@@ -129,8 +128,7 @@ class _TimeTableSettingsPageState extends ConsumerState<TimetableSettingsPage> {
           onPressed: () {
             saveChanges();
           },
-          icon:
-              Assets.images.circleChevronLeft.svg(color: colors.accentPrimary),
+          icon: Assets.images.circleChevronLeft.svg(color: colors.accentPrimary),
           splashRadius: 24,
         ),
         title: Text(
