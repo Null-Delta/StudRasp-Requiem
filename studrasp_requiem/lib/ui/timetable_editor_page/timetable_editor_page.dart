@@ -6,6 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import '../../gen/assets.gen.dart';
 import '../../models/day/day_model.dart';
+import '../../models/lesson/editable_lesson.dart';
 import '../../models/lesson/lesson_model.dart';
 import '../../models/time_interval/time_interval_model.dart';
 import '../../models/timetable/timetable_model.dart';
@@ -16,7 +17,6 @@ import '../../styles/fonts.dart';
 import '../../support/fast_swipe_physics.dart';
 import '../lesson_card/card_styles/editable_lesson_card.dart';
 import '../lesson_card/card_styles/empty_lesson_card.dart';
-import '../lesson_editor_page/lesson_editor_page.dart';
 import '../timetable_settings_page/labeled_text.dart';
 import '../widgets/popup_menu_action.dart';
 import '../widgets/week_timeline.dart';
@@ -273,18 +273,16 @@ class _TimetableEditorPageState extends ConsumerState<TimetableEditorPage> {
                                 ),
                                 onTap: () {
                                   if (copiedLesson == null) {
-                                    //переход в редактор пары
+                                    ref
+                                        .read(
+                                          currentEditingLesson.notifier,
+                                        )
+                                        .state = EditableLesson(
+                                      day: dayIndex,
+                                      number: index,
+                                      lesson: days[dayIndex].lessons[index],
+                                    );
                                     context.go(context.namedLocation('lesson'));
-                                    // Navigator.of(context).push(
-                                    //   MaterialPageRoute(
-                                    //     builder: (context) {
-                                    //       return LessonEditorPage(
-                                    //         lessonDay: dayIndex,
-                                    //         lessonNumber: index,
-                                    //       );
-                                    //     },
-                                    //   ),
-                                    // );
                                   } else {
                                     insertLesson(copiedLesson, dayIndex, index);
                                   }
@@ -313,16 +311,18 @@ class _TimetableEditorPageState extends ConsumerState<TimetableEditorPage> {
                                     icon: Assets.images.iconEditOutline
                                         .svg(color: colors.accentPrimary),
                                     action: () {
-                                      Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                          builder: (context) {
-                                            return LessonEditorPage(
-                                              lessonDay: dayIndex,
-                                              lessonNumber: index,
-                                            );
-                                          },
-                                        ),
+                                      ref
+                                          .read(
+                                            currentEditingLesson.notifier,
+                                          )
+                                          .state = EditableLesson(
+                                        day: dayIndex,
+                                        number: index,
+                                        lesson: days[dayIndex].lessons[index],
                                       );
+
+                                      context
+                                          .go(context.namedLocation('lesson'));
                                     },
                                   ),
                                   PopupMenuAction(
