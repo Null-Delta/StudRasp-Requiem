@@ -52,19 +52,24 @@ class TimetableCard extends StatelessWidget {
                   ),
                   Text(
                     'Обновлено ${getDate()}',
-                    style:
-                        textStyles.smallLabel!.copyWith(color: colors.disable),
+                    style: textStyles.smallLabel!.copyWith(color: colors.disable),
                   ),
                   if (showOwner)
                     Text(
                       'Владелец ${timeTable.owner.name}',
-                      style: textStyles.smallLabel!
-                          .copyWith(color: colors.disable),
+                      style: textStyles.smallLabel!.copyWith(color: colors.disable),
                     ),
                 ],
               ),
               const Spacer(),
-              button,
+              Container(
+                color: colors.backgroundPrimary,
+                width: 42,
+                height: 42,
+                child: Center(
+                  child: button,
+                ),
+              )
             ],
           ),
         ),

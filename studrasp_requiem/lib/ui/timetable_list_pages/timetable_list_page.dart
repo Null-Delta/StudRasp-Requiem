@@ -26,27 +26,16 @@ class _TimetableListPageState extends ConsumerState<TimetableListPage> {
   @override
   void initState() {
     super.initState();
-
-    loadSavedTables();
+    loadSavedTables(ref.read(localStorage).savedTimetables);
   }
 
-  Future<void> loadSavedTables() async {
-    final savedList = ref.read(localStorage).savedTimetables;
+  Future<void> loadSavedTables(List<String> list) async {
     final repository = ref.read(globalRepositoryStore);
 
-    try {
-      final newList = await repository.getTimetablesOnId(savedList.isEmpty ? [''] : savedList) ?? [];
-      setState(() {
-        savedTables = newList;
-      });
-    } catch (e) {
-      showDialog(
-        context: context,
-        builder: (context) {
-          return Text(e.toString());
-        },
-      );
-    }
+    final newList = await repository.getTimetablesOnId(list.isEmpty ? [''] : list) ?? [];
+    setState(() {
+      savedTables = newList;
+    });
   }
 
   @override
@@ -129,7 +118,7 @@ class _TimetableListPageState extends ConsumerState<TimetableListPage> {
                 children: [
                   RefreshIndicator(
                     onRefresh: () async {
-                      await loadSavedTables();
+                      await loadSavedTables(ref.read(localStorage).savedTimetables);
                     },
                     child: savedTables.isEmpty
                         ? ListView(
@@ -152,10 +141,31 @@ class _TimetableListPageState extends ConsumerState<TimetableListPage> {
                             itemBuilder: (context, index) {
                               return TimetableCard(
                                 timeTable: savedTables[index],
-                                button: IconButton(
-                                  onPressed: () {},
+                                button: PopupMenuButton(
+                                  iconSize: 24,
                                   icon: Assets.images.moreHorizontal.svg(color: colors.accentPrimary),
-                                  splashRadius: 24,
+                                  itemBuilder: (context) {
+                                    return [
+                                      PopupMenuItem(
+                                        child: const Text("Использовать"),
+                                        onTap: () {
+                                          ref.read(localStorage.notifier).save(savedTables[index]);
+                                          Navigator.pop(context);
+                                        },
+                                      ),
+                                      PopupMenuItem(
+                                        value: 1,
+                                        child: const Text("Удалить"),
+                                        onTap: () {
+                                          final id = savedTables[index].id;
+                                          ref.read(localStorage.notifier).removeFromSavedTimeTables(id);
+                                          setState(() {
+                                            savedTables.removeWhere((table) => table.id == id);
+                                          });
+                                        },
+                                      ),
+                                    ];
+                                  },
                                 ),
                                 onTap: () {
                                   ref.read(localStorage.notifier).save(savedTables[index]);
@@ -181,11 +191,7 @@ class _TimetableListPageState extends ConsumerState<TimetableListPage> {
                     itemBuilder: (context, index) {
                       return TimetableCard(
                         timeTable: myTables[index],
-                        button: IconButton(
-                          onPressed: () {},
-                          icon: Assets.images.moreHorizontal.svg(color: colors.accentPrimary),
-                          splashRadius: 24,
-                        ),
+                        button: Assets.images.moreHorizontal.svg(color: colors.accentPrimary),
                         onTap: () {
                           Navigator.push(
                             context,

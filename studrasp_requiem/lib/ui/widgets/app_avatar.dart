@@ -15,11 +15,8 @@ class AppAvatar extends StatelessWidget {
   String getCharacters(String name) {
     final splitSpace = name.split(' ');
 
-    if (splitSpace.length > 1 &&
-        splitSpace[0].isNotEmpty &&
-        splitSpace[1].isNotEmpty) {
-      return splitSpace[0].substring(0, 1).toUpperCase() +
-          splitSpace[1].substring(0, 1).toUpperCase();
+    if (splitSpace.length > 1 && splitSpace[0].isNotEmpty && splitSpace[1].isNotEmpty) {
+      return splitSpace[0].substring(0, 1).toUpperCase() + splitSpace[1].substring(0, 1).toUpperCase();
     }
 
     final split = name.split(RegExp(r"(?=(?!^)[A-Z])"));
@@ -27,8 +24,7 @@ class AppAvatar extends StatelessWidget {
     if (split.length == 1 && split[0].length > 1) {
       return split[0].substring(0, 2).toUpperCase();
     } else if (split.length > 1 && split[0].isNotEmpty && split[1].isNotEmpty) {
-      return split[0].substring(0, 1).toUpperCase() +
-          split[1].substring(0, 1).toUpperCase();
+      return split[0].substring(0, 1).toUpperCase() + split[1].substring(0, 1).toUpperCase();
     }
 
     return '';
@@ -42,7 +38,14 @@ class AppAvatar extends StatelessWidget {
       decoration: BoxDecoration(
         color: colors.backgroundSecondary!,
         shape: BoxShape.circle,
-        border: Border.all(color: colors.separator!, width: 3),
+        border: Border.all(color: colors.separator!, width: 1),
+        boxShadow: [
+          BoxShadow(
+            color: colors.shadow!,
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+          )
+        ],
       ),
       child: ClipRRect(
         borderRadius: const BorderRadius.all(Radius.circular(999)),

@@ -9,13 +9,13 @@ import '../../models/timetable/timetable_model.dart';
 import '../../providers/current_timetable.dart';
 import '../../providers/providers.dart';
 import '../../styles/colors.dart';
+import '../../styles/widget_styles.dart';
 import '../../support/fast_swipe_physics.dart';
 import '../lesson_card/card_styles/lesson_card.dart';
 import '../search_page/search_page.dart';
 import '../timetable_editor_page/timetable_editor_page.dart';
 import '../timetable_list_pages/timetable_list_page.dart';
 import '../timetable_list_pages/widgets/searched_table_card.dart';
-import '../timetable_list_pages/widgets/time_table_card.dart';
 import '../timetable_settings_page/labeled_text.dart';
 import '../widgets/week_timeline.dart';
 
@@ -198,7 +198,7 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
                         milliseconds: DateTime.now().millisecondsSinceEpoch,
                       ).inDays;
 
-                      final dayIndex = (today - creationDay + pageImage - 366) % 14;
+                      final dayIndex = (today - creationDay + 1 + pageImage - 366) % 14;
                       return ListView(
                         physics: const BouncingScrollPhysics(
                           parent: AlwaysScrollableScrollPhysics(),
@@ -208,22 +208,41 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
                             label: "Неделя",
                             text: timeTable.config.weekTypes[dayIndex ~/ 7],
                           ),
-                          for (int index = 0; index < timeTable.days[dayIndex].lessons.length; index++)
-                            if (!timeTable.days[dayIndex].lessons[index].isEmpty)
-                              Padding(
-                                key: ValueKey(index),
-                                padding: const EdgeInsets.only(
-                                  bottom: 12,
-                                  left: 16,
-                                  right: 16,
+                          if (timeTable.days[dayIndex].lessons.where((lesson) => !lesson.isEmpty).isEmpty)
+                            Padding(
+                              padding: const EdgeInsets.only(left: 16, right: 16, top: 8),
+                              child: Container(
+                                height: 96,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  color: colors.backgroundSecondary,
+                                  borderRadius: BorderRadiusStyles.large,
                                 ),
-                                child: LessonCard(
-                                  index: index + 1,
-                                  interval: timeTable.config.timeIntervals[index],
-                                  lesson: timeTable.days[dayIndex].lessons[index],
-                                  isToday: pageImage == 366,
+                                child: Text(
+                                  "Сегодня пар нет",
+                                  style: textStyles.label!.copyWith(
+                                    color: colors.disable,
+                                  ),
                                 ),
-                              )
+                              ),
+                            )
+                          else
+                            for (int index = 0; index < timeTable.days[dayIndex].lessons.length; index++)
+                              if (!timeTable.days[dayIndex].lessons[index].isEmpty)
+                                Padding(
+                                  key: ValueKey(index),
+                                  padding: const EdgeInsets.only(
+                                    bottom: 12,
+                                    left: 16,
+                                    right: 16,
+                                  ),
+                                  child: LessonCard(
+                                    index: index + 1,
+                                    interval: timeTable.config.timeIntervals[index],
+                                    lesson: timeTable.days[dayIndex].lessons[index],
+                                    isToday: pageImage == 366,
+                                  ),
+                                )
                         ],
                       );
                     },

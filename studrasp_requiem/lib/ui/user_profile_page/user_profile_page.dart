@@ -10,8 +10,7 @@ class UserProfilePage extends ConsumerStatefulWidget {
   const UserProfilePage({Key? key}) : super(key: key);
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _UserProfilePageState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _UserProfilePageState();
 }
 
 class _UserProfilePageState extends ConsumerState<UserProfilePage> {
@@ -53,18 +52,16 @@ class _UserProfilePageState extends ConsumerState<UserProfilePage> {
               const SizedBox(height: 16),
               Text(
                 user.name,
-                style: textStyle.title!.copyWith(
-                  fontSize: 24,
+                style: textStyle.largeTitle!.copyWith(
+                  fontSize: 32,
                 ),
               ),
               const SizedBox(height: 16),
               Text(user.email, style: textStyle.subtitle),
               const SizedBox(height: 4),
               Text(
-                user.isVerified
-                    ? 'Почта подтверждена'
-                    : 'Почта не подтверждена',
-                style: textStyle.subtitle!.copyWith(
+                user.isVerified ? 'Почта подтверждена' : 'Почта не подтверждена',
+                style: textStyle.label!.copyWith(
                   color: colors.disable,
                 ),
               ),

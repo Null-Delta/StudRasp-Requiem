@@ -209,70 +209,70 @@ class _TimeTableSettingsPageState extends ConsumerState<TimetableSettingsPage> {
                   );
                 },
               ),
-              const SizedBox(height: 12),
-              ActionHeader(
-                title: "Редакторы",
-                action: IconButton(
-                  onPressed: () {
-                    openEditorSearch();
-                  },
-                  icon: Assets.images.iconPlusOutline.svg(
-                    color: colors.accentPrimary,
-                    width: 24,
-                    height: 24,
-                  ),
-                  iconSize: 24,
-                  splashRadius: 24,
-                ),
-              ),
-              if (editors.isEmpty)
-                Container(
-                  alignment: Alignment.center,
-                  height: 64,
-                  child: Text(
-                    "Список пуст",
-                    style: textStyles.label!.copyWith(
-                      color: colors.disable,
-                    ),
-                  ),
-                )
-              else
-                ListView.separated(
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: editors.length,
-                  itemBuilder: (context, index) {
-                    return EditorCard(
-                      user: editors[index],
-                      onTap: () {},
-                      action: IconButton(
-                        onPressed: () {
-                          setState(() {
-                            editors = editors
-                                .where(
-                                  (element) => element.id != editors[index].id,
-                                )
-                                .toList();
-                          });
-                        },
-                        icon: Assets.images.trashFull.svg(
-                          color: colors.destructive,
-                          width: 20,
-                          height: 20,
-                        ),
-                        iconSize: 24,
-                        splashRadius: 24,
-                      ),
-                    );
-                  },
-                  separatorBuilder: (context, index) {
-                    return Divider(
-                      height: 1,
-                      thickness: 1,
-                      color: colors.separator,
-                    );
-                  },
-                ),
+              //const SizedBox(height: 12),
+              // ActionHeader(
+              //   title: "Редакторы",
+              //   action: IconButton(
+              //     onPressed: () {
+              //       openEditorSearch();
+              //     },
+              //     icon: Assets.images.iconPlusOutline.svg(
+              //       color: colors.accentPrimary,
+              //       width: 24,
+              //       height: 24,
+              //     ),
+              //     iconSize: 24,
+              //     splashRadius: 24,
+              //   ),
+              // ),
+              // if (editors.isEmpty)
+              //   Container(
+              //     alignment: Alignment.center,
+              //     height: 64,
+              //     child: Text(
+              //       "Список пуст",
+              //       style: textStyles.label!.copyWith(
+              //         color: colors.disable,
+              //       ),
+              //     ),
+              //   )
+              // else
+              //   ListView.separated(
+              //     physics: const NeverScrollableScrollPhysics(),
+              //     shrinkWrap: true,
+              //     itemCount: editors.length,
+              //     itemBuilder: (context, index) {
+              //       return EditorCard(
+              //         user: editors[index],
+              //         onTap: () {},
+              //         action: IconButton(
+              //           onPressed: () {
+              //             setState(() {
+              //               editors = editors
+              //                   .where(
+              //                     (element) => element.id != editors[index].id,
+              //                   )
+              //                   .toList();
+              //             });
+              //           },
+              //           icon: Assets.images.trashFull.svg(
+              //             color: colors.destructive,
+              //             width: 20,
+              //             height: 20,
+              //           ),
+              //           iconSize: 24,
+              //           splashRadius: 24,
+              //         ),
+              //       );
+              //     },
+              //     separatorBuilder: (context, index) {
+              //       return Divider(
+              //         height: 1,
+              //         thickness: 1,
+              //         color: colors.separator,
+              //       );
+              //     },
+              //   ),
               const SizedBox(height: 12),
               const ActionHeader(title: "Информация"),
               LabeledText(

@@ -20,7 +20,7 @@ class TimetableConfig with _$TimetableConfig {
   factory TimetableConfig.empty() {
     return TimetableConfig(
       timeIntervals: [
-        for (int i = 0; i < 16; i++)
+        for (int i = 0; i < 8; i++)
           TimeInterval(
             from: Duration(hours: 8 + i),
             to: Duration(hours: 9 + i),
