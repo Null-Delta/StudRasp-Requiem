@@ -10,6 +10,7 @@ import '../../models/timetable/timetable_model.dart';
 import '../../models/timetable_config/timetable_config_model.dart';
 import '../../models/user/user_model.dart';
 import '../../providers/providers.dart';
+import '../../repositories/global_repository.dart';
 import '../../styles/colors.dart';
 import '../../support/fast_swipe_physics.dart';
 import '../lesson_card/card_styles/lesson_card.dart';
@@ -74,6 +75,12 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
             1;
 
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          await TimetableGlobalSavesRepositoryImpl()
+              .deleteTimetable('1662295447177');
+        },
+      ),
       appBar: AppBar(
         backgroundColor: colors.backgroundPrimary,
         leading: IconButton(
@@ -263,6 +270,7 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
                   creationDate: DateTime.now(),
                   lastUpdateDate: DateTime.now(),
                   config: TimetableConfig.empty(),
+                  isPublished: false,
                 ),
               );
             },

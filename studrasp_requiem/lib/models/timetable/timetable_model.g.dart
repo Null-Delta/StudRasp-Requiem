@@ -1,5 +1,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
+// ignore_for_file: non_constant_identifier_names
+
 part of 'timetable_model.dart';
 
 // **************************************************************************
@@ -20,6 +22,7 @@ _$_Timetable _$$_TimetableFromJson(Map<String, dynamic> json) => _$_Timetable(
       creationDate: DateTime.parse(json['creationDate'] as String),
       lastUpdateDate: DateTime.parse(json['lastUpdateDate'] as String),
       config: TimetableConfig.fromJson(json['config'] as Map<String, dynamic>),
+      isPublished: json['isPublished'] as bool,
     );
 
 Map<String, dynamic> _$$_TimetableToJson(_$_Timetable instance) =>
@@ -33,4 +36,5 @@ Map<String, dynamic> _$$_TimetableToJson(_$_Timetable instance) =>
       'creationDate': instance.creationDate.toIso8601String(),
       'lastUpdateDate': instance.lastUpdateDate.toIso8601String(),
       'config': instance.config.toJson(),
+      'isPublished': instance.isPublished,
     };

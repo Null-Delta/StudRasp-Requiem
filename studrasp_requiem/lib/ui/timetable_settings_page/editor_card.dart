@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../gen/assets.gen.dart';
 import '../../models/user/user_model.dart';
 import '../../styles/build_context_extension.dart';
 

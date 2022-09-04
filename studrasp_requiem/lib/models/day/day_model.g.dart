@@ -1,5 +1,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
+// ignore_for_file: non_constant_identifier_names
+
 part of 'day_model.dart';
 
 // **************************************************************************
@@ -13,5 +15,5 @@ _$_Day _$$_DayFromJson(Map<String, dynamic> json) => _$_Day(
     );
 
 Map<String, dynamic> _$$_DayToJson(_$_Day instance) => <String, dynamic>{
-      'lessons': instance.lessons,
+      'lessons': instance.lessons.map((e) => e.toJson()).toList(),
     };

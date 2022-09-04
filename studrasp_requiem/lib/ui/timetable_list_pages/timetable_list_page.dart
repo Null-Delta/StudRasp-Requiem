@@ -38,6 +38,7 @@ class _TimetableListPageState extends State<TimetableListPage> {
         creationDate: DateTime.now(),
         lastUpdateDate: DateTime.now(),
         config: TimetableConfig.empty(),
+        isPublished: false,
       ),
     );
 
@@ -53,6 +54,7 @@ class _TimetableListPageState extends State<TimetableListPage> {
         creationDate: DateTime.now(),
         lastUpdateDate: DateTime.now(),
         config: TimetableConfig.empty(),
+        isPublished: false,
       ),
     );
 

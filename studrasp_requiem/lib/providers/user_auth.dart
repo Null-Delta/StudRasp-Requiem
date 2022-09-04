@@ -71,6 +71,8 @@ class UserAuthNotifier extends StateNotifier<AppUser> {
       }
     } on FirebaseAuthException catch (e) {
       return e.code;
+    } catch (e) {
+      return null;
     }
     return null;
   }

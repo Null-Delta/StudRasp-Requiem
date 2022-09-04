@@ -29,6 +29,7 @@ mixin _$Timetable {
   DateTime get creationDate => throw _privateConstructorUsedError;
   DateTime get lastUpdateDate => throw _privateConstructorUsedError;
   TimetableConfig get config => throw _privateConstructorUsedError;
+  bool get isPublished => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -49,7 +50,8 @@ abstract class $TimetableCopyWith<$Res> {
       AppUser lastEditor,
       DateTime creationDate,
       DateTime lastUpdateDate,
-      TimetableConfig config});
+      TimetableConfig config,
+      bool isPublished});
 
   $AppUserCopyWith<$Res> get owner;
   $AppUserCopyWith<$Res> get lastEditor;
@@ -75,6 +77,7 @@ class _$TimetableCopyWithImpl<$Res> implements $TimetableCopyWith<$Res> {
     Object? creationDate = freezed,
     Object? lastUpdateDate = freezed,
     Object? config = freezed,
+    Object? isPublished = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed
@@ -113,6 +116,10 @@ class _$TimetableCopyWithImpl<$Res> implements $TimetableCopyWith<$Res> {
           ? _value.config
           : config // ignore: cast_nullable_to_non_nullable
               as TimetableConfig,
+      isPublished: isPublished == freezed
+          ? _value.isPublished
+          : isPublished // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 
@@ -153,7 +160,8 @@ abstract class _$$_TimetableCopyWith<$Res> implements $TimetableCopyWith<$Res> {
       AppUser lastEditor,
       DateTime creationDate,
       DateTime lastUpdateDate,
-      TimetableConfig config});
+      TimetableConfig config,
+      bool isPublished});
 
   @override
   $AppUserCopyWith<$Res> get owner;
@@ -184,6 +192,7 @@ class __$$_TimetableCopyWithImpl<$Res> extends _$TimetableCopyWithImpl<$Res>
     Object? creationDate = freezed,
     Object? lastUpdateDate = freezed,
     Object? config = freezed,
+    Object? isPublished = freezed,
   }) {
     return _then(_$_Timetable(
       id: id == freezed
@@ -222,6 +231,10 @@ class __$$_TimetableCopyWithImpl<$Res> extends _$TimetableCopyWithImpl<$Res>
           ? _value.config
           : config // ignore: cast_nullable_to_non_nullable
               as TimetableConfig,
+      isPublished: isPublished == freezed
+          ? _value.isPublished
+          : isPublished // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -238,7 +251,8 @@ class _$_Timetable extends _Timetable {
       required this.lastEditor,
       required this.creationDate,
       required this.lastUpdateDate,
-      required this.config})
+      required this.config,
+      required this.isPublished})
       : _days = days,
         _editors = editors,
         super._();
@@ -274,10 +288,12 @@ class _$_Timetable extends _Timetable {
   final DateTime lastUpdateDate;
   @override
   final TimetableConfig config;
+  @override
+  final bool isPublished;
 
   @override
   String toString() {
-    return 'Timetable(id: $id, name: $name, days: $days, owner: $owner, editors: $editors, lastEditor: $lastEditor, creationDate: $creationDate, lastUpdateDate: $lastUpdateDate, config: $config)';
+    return 'Timetable(id: $id, name: $name, days: $days, owner: $owner, editors: $editors, lastEditor: $lastEditor, creationDate: $creationDate, lastUpdateDate: $lastUpdateDate, config: $config, isPublished: $isPublished)';
   }
 
   @override
@@ -296,7 +312,9 @@ class _$_Timetable extends _Timetable {
                 .equals(other.creationDate, creationDate) &&
             const DeepCollectionEquality()
                 .equals(other.lastUpdateDate, lastUpdateDate) &&
-            const DeepCollectionEquality().equals(other.config, config));
+            const DeepCollectionEquality().equals(other.config, config) &&
+            const DeepCollectionEquality()
+                .equals(other.isPublished, isPublished));
   }
 
   @JsonKey(ignore: true)
@@ -311,7 +329,8 @@ class _$_Timetable extends _Timetable {
       const DeepCollectionEquality().hash(lastEditor),
       const DeepCollectionEquality().hash(creationDate),
       const DeepCollectionEquality().hash(lastUpdateDate),
-      const DeepCollectionEquality().hash(config));
+      const DeepCollectionEquality().hash(config),
+      const DeepCollectionEquality().hash(isPublished));
 
   @JsonKey(ignore: true)
   @override
@@ -336,7 +355,8 @@ abstract class _Timetable extends Timetable {
       required final AppUser lastEditor,
       required final DateTime creationDate,
       required final DateTime lastUpdateDate,
-      required final TimetableConfig config}) = _$_Timetable;
+      required final TimetableConfig config,
+      required final bool isPublished}) = _$_Timetable;
   const _Timetable._() : super._();
 
   factory _Timetable.fromJson(Map<String, dynamic> json) =
@@ -360,6 +380,8 @@ abstract class _Timetable extends Timetable {
   DateTime get lastUpdateDate;
   @override
   TimetableConfig get config;
+  @override
+  bool get isPublished;
   @override
   @JsonKey(ignore: true)
   _$$_TimetableCopyWith<_$_Timetable> get copyWith =>
