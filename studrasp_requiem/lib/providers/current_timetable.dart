@@ -34,13 +34,10 @@ class LocalStorageNotifier extends StateNotifier<LocalStorageModel> {
     load();
   }
 
-  void load() {
-    Timetable? loadedTimetable = localStorageRepository.loadCurrent();
-    List<String> savedTimetables = localStorageRepository.savedTimetables();
-
-    if (loadedTimetable != null) {
-      state = state.copyWith(currentTimetable: loadedTimetable, savedTimetables: savedTimetables);
-    }
+  void load() async {
+    Timetable? loadedTimetable = await localStorageRepository.loadCurrent();
+    List<String> savedTimetables = await localStorageRepository.savedTimetables();
+    state = state.copyWith(currentTimetable: loadedTimetable, savedTimetables: savedTimetables);
   }
 
   void save(Timetable timetable) {

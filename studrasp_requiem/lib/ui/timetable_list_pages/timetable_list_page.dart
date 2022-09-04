@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import '../../gen/assets.gen.dart';
 import '../../models/timetable/timetable_model.dart';
-import '../../models/timetable_config/timetable_config_model.dart';
-import '../../models/user/user_model.dart';
 import '../../providers/current_timetable.dart';
 import '../../providers/providers.dart';
 import '../../styles/build_context_extension.dart';
@@ -29,6 +26,7 @@ class _TimetableListPageState extends ConsumerState<TimetableListPage> {
   @override
   void initState() {
     super.initState();
+
     loadSavedTables();
   }
 
@@ -36,17 +34,24 @@ class _TimetableListPageState extends ConsumerState<TimetableListPage> {
     final savedList = ref.read(localStorage).savedTimetables;
     final repository = ref.read(globalRepositoryStore);
 
-    final newList = await repository.getTimetablesOnId(savedList) ?? [];
-
-    setState(() {
-      savedTables = newList;
-    });
+    try {
+      final newList = await repository.getTimetablesOnId(savedList.isEmpty ? [''] : savedList) ?? [];
+      setState(() {
+        savedTables = newList;
+      });
+    } catch (e) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return Text(e.toString());
+        },
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
-
     final textStyles = context.textStyles;
 
     return DefaultTabController(

@@ -5,8 +5,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../models/timetable/timetable_model.dart';
 
 abstract class LocalStorageRepository {
-  Timetable? loadCurrent();
-  List<String> savedTimetables();
+  Future<Timetable?> loadCurrent();
+  Future<List<String>> savedTimetables();
 
   void saveCurrent(Timetable timetable);
   void addToSaved(String timetableId);
@@ -15,16 +15,14 @@ abstract class LocalStorageRepository {
 
 class CurrentLocalStoragePImpl implements LocalStorageRepository {
   @override
-  Timetable? loadCurrent() {
-    SharedPreferences.getInstance().then(
-      (value) {
-        final jsonString = value.getString('currentTimeTable');
-        if (jsonString != null) {
-          return Timetable.fromJson(const JsonDecoder().convert(jsonString));
-        }
-      },
-    );
-    return null;
+  Future<Timetable?> loadCurrent() async {
+    final instance = await SharedPreferences.getInstance();
+    final jsonString = instance.getString('currentTimeTable');
+    if (jsonString != null) {
+      return Timetable.fromJson(const JsonDecoder().convert(jsonString));
+    } else {
+      return null;
+    }
   }
 
   @override
@@ -37,14 +35,10 @@ class CurrentLocalStoragePImpl implements LocalStorageRepository {
   }
 
   @override
-  List<String> savedTimetables() {
-    SharedPreferences.getInstance().then(
-      (value) {
-        final savedTimetables = value.getStringList('savedTimetables');
-        return savedTimetables ?? [];
-      },
-    );
-    return [];
+  Future<List<String>> savedTimetables() async {
+    final instance = await SharedPreferences.getInstance();
+    final savedTimetables = instance.getStringList('savedTimetables');
+    return savedTimetables ?? [];
   }
 
   @override

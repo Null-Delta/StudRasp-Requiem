@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>1009441715837-tm266kkhluckfp3mvqgk7ahkba1vjbm3.apps.googleusercontent.com</string>
+	<string>1009441715837-rkv51ppon1lj8iihjc3f18s73g215cig.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.1009441715837-tm266kkhluckfp3mvqgk7ahkba1vjbm3</string>
+	<string>com.googleusercontent.apps.1009441715837-rkv51ppon1lj8iihjc3f18s73g215cig</string>
 	<key>API_KEY</key>
 	<string>AIzaSyA7Fj2Ltri5XMq8F7241WwUVNrQAd8JJyM</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,7 +13,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.example.studraspRequiem</string>
+	<string>com.null.zed.StudRasp</string>
 	<key>PROJECT_ID</key>
 	<string>studrasp-4e58d</string>
 	<key>STORAGE_BUCKET</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:1009441715837:ios:244b9c0e91946d364ea314</string>
+	<string>1:1009441715837:ios:93053946faa4c9eb4ea314</string>
 </dict>
 </plist>
