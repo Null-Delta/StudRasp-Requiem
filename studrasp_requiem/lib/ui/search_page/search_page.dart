@@ -5,7 +5,7 @@ import '../../styles/build_context_extension.dart';
 import '../../styles/text_field_style.dart';
 
 class SearchPage<T> extends StatefulWidget {
-  final Future<List<T>> Function(String name) filter;
+  final Future<List<T>?> Function(String name) filter;
   final Widget Function(T) itemBuilder;
 
   const SearchPage({Key? key, required this.filter, required this.itemBuilder}) : super(key: key);
@@ -16,6 +16,7 @@ class SearchPage<T> extends StatefulWidget {
 
 class _SearchPageState<T> extends State<SearchPage<T>> {
   final searchFieldFocus = FocusNode();
+  final serachFieldController = TextEditingController();
   List<T> searchResult = [];
 
   @override
@@ -47,12 +48,13 @@ class _SearchPageState<T> extends State<SearchPage<T>> {
             child: SizedBox(
               height: 42,
               child: TextField(
+                controller: serachFieldController,
                 focusNode: searchFieldFocus,
                 onEditingComplete: () {
-                  widget.filter("").then((value) {
+                  widget.filter(serachFieldController.text).then((value) {
                     setState(
                       () {
-                        searchResult = value;
+                        searchResult = value ?? [];
                       },
                     );
                   });

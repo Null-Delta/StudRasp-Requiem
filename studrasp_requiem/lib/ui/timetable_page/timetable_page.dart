@@ -7,10 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../gen/assets.gen.dart';
 import '../../models/timetable/timetable_model.dart';
-import '../../models/timetable_config/timetable_config_model.dart';
-import '../../models/user/user_model.dart';
 import '../../providers/providers.dart';
-import '../../repositories/global_repository.dart';
 import '../../styles/colors.dart';
 import '../../support/fast_swipe_physics.dart';
 import '../lesson_card/card_styles/lesson_card.dart';
@@ -231,39 +228,9 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
         builder: (context) {
           return SearchPage<Timetable>(
             filter: (name) {
-              int count = Random().nextInt(20);
-              return Future.delayed(
-                const Duration(seconds: 1),
-                () {
-                  return List<Timetable>.generate(
-                    count,
-                    (index) => Timetable(
-                      id: "0",
-                      name: "${Random().nextInt(100)}",
-                      days: [],
-                      owner: const AppUser(
-                        id: "0",
-                        name: "JakeApps",
-                        email: '',
-                        photoURL: "",
-                        isVerified: false,
-                      ),
-                      editors: [],
-                      lastEditor: const AppUser(
-                        id: "0",
-                        name: "JakeApps",
-                        email: '',
-                        photoURL: "",
-                        isVerified: false,
-                      ),
-                      creationDate: DateTime.now(),
-                      lastUpdateDate: DateTime.now(),
-                      config: TimetableConfig.empty(),
-                      isPublished: false,
-                    ),
-                  );
-                },
-              );
+              final repository = ref.read(globalRepositoryStore);
+
+              return repository.getSearchedTimetables(name);
             },
             itemBuilder: (table) {
               return TimetableCard(
