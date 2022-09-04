@@ -61,6 +61,7 @@ class _DayButtonState extends ConsumerState<DayButton> {
   Widget build(BuildContext context) {
     style = ref.watch(dayButtonStyleProvider(widget.diration));
     final colors = context.colors;
+    final textStyles = context.textStyles;
 
     return SizedBox(
       height: 48,
@@ -80,7 +81,7 @@ class _DayButtonState extends ConsumerState<DayButton> {
             children: [
               Text(
                 ref.watch(currentDate).add(widget.diration).day.toString(),
-                style: const TextStyle(fontFamily: "Roboto").copyWith(
+                style: textStyles.largeTitle!.copyWith(
                   color: dayColor(colors),
                   fontSize: 12,
                   fontWeight: FontWeight.w800,
@@ -88,10 +89,9 @@ class _DayButtonState extends ConsumerState<DayButton> {
               ),
               Text(
                 DateFormat('EEE').format(ref.watch(currentDate).add(widget.diration)),
-                style: const TextStyle(fontFamily: "Roboto").copyWith(
+                style: textStyles.title!.copyWith(
                   color: colors.disable,
                   fontSize: 10,
-                  fontWeight: FontWeight.w700,
                 ),
               ),
             ],

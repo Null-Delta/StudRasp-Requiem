@@ -94,7 +94,7 @@ class _LessonCardState extends ConsumerState<LessonCard> {
           ),
           LessonBody(
             lesson: widget.lesson,
-            isCurrent: isCurrent,
+            isCurrent: isCurrent && widget.isToday,
           ),
         ],
       ),
