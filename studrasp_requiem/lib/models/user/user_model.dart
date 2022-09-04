@@ -19,7 +19,7 @@ class AppUser with _$AppUser {
 
   factory AppUser.empty() {
     return const AppUser(
-      id: '',
+      id: '1',
       name: '',
       email: '',
     );

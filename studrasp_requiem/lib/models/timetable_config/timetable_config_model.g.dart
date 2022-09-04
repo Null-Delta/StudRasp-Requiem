@@ -1,5 +1,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
+// ignore_for_file: non_constant_identifier_names
+
 part of 'timetable_config_model.dart';
 
 // **************************************************************************
@@ -20,7 +22,7 @@ _$_TimeTableConfig _$$_TimeTableConfigFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$$_TimeTableConfigToJson(_$_TimeTableConfig instance) =>
     <String, dynamic>{
-      'timeIntervals': instance.timeIntervals,
+      'timeIntervals': instance.timeIntervals.map((e) => e.toJson()).toList(),
       'weekTypes': instance.weekTypes,
       'lessonTypes': instance.lessonTypes,
     };

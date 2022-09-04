@@ -24,14 +24,16 @@ class Timetable with _$Timetable {
     required DateTime creationDate,
     required DateTime lastUpdateDate,
     required TimetableConfig config,
+    required bool isPublished,
   }) = _Timetable;
 
-  factory Timetable.fromJson(Map<String, dynamic> json) => _$TimetableFromJson(json);
+  factory Timetable.fromJson(Map<String, dynamic> json) =>
+      _$TimetableFromJson(json);
 
   //нужно получение данного пользователя
   factory Timetable.empty(AppUser user) {
     return Timetable(
-      id: '',
+      id: DateTime.now().millisecondsSinceEpoch.toString(),
       name: 'Новое расписание',
       days: [for (int i = 0; i < 14; i++) Day.empty()],
       owner: user,
@@ -40,6 +42,7 @@ class Timetable with _$Timetable {
       creationDate: DateTime.now(),
       lastUpdateDate: DateTime.now(),
       config: TimetableConfig.empty(),
+      isPublished: false,
     );
   }
 
@@ -52,7 +55,10 @@ class Timetable with _$Timetable {
           Day(
             lessons: [
               for (int i = 0; i < 16; i++)
-                if (Random().nextInt(2) == 0) Lesson.random() else Lesson.empty()
+                if (Random().nextInt(2) == 0)
+                  Lesson.random()
+                else
+                  Lesson.empty()
             ],
           )
       ],
@@ -62,6 +68,7 @@ class Timetable with _$Timetable {
       creationDate: DateTime.now(),
       lastUpdateDate: DateTime.now(),
       config: TimetableConfig.empty(),
+      isPublished: false,
     );
   }
 }
