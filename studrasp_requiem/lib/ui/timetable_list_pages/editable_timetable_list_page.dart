@@ -10,16 +10,18 @@ import '../../styles/widget_styles.dart';
 import '../timetable_editor_page/timetable_editor_page.dart';
 import 'widgets/time_table_card.dart';
 
-class TimetableListPage extends ConsumerStatefulWidget {
-  const TimetableListPage({Key? key}) : super(key: key);
+class EditableTimetableListPage extends ConsumerStatefulWidget {
+  const EditableTimetableListPage({Key? key}) : super(key: key);
 
   @override
-  ConsumerState<TimetableListPage> createState() => _TimetableListPageState();
+  ConsumerState<EditableTimetableListPage> createState() =>
+      _EditableTimetableListPageState();
 }
 
-class _TimetableListPageState extends ConsumerState<TimetableListPage> {
-  ScrollController savedTimeTablesController = ScrollController();
-  ScrollController myTimeTablesController = ScrollController();
+class _EditableTimetableListPageState
+    extends ConsumerState<EditableTimetableListPage> {
+  ScrollController savedTimeTablesContoller = ScrollController();
+  ScrollController myTimeTablesContoller = ScrollController();
 
   List<Timetable> savedTables = [];
 
@@ -144,7 +146,7 @@ class _TimetableListPageState extends ConsumerState<TimetableListPage> {
                             physics: const BouncingScrollPhysics(
                               parent: AlwaysScrollableScrollPhysics(),
                             ),
-                            controller: savedTimeTablesController,
+                            controller: savedTimeTablesContoller,
                             itemBuilder: (context, index) {
                               return TimetableCard(
                                 timeTable: savedTables[index],
@@ -237,7 +239,7 @@ class _TimetableListPageState extends ConsumerState<TimetableListPage> {
                           physics: const BouncingScrollPhysics(
                             parent: AlwaysScrollableScrollPhysics(),
                           ),
-                          controller: myTimeTablesController,
+                          controller: myTimeTablesContoller,
                           itemBuilder: (context, index) {
                             return TimetableCard(
                               timeTable: myTables[index],
