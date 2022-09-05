@@ -34,6 +34,17 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
   final dayPageController = PageController(initialPage: initialPage);
   Timer? timer;
 
+  Future<void> checkTimetable() async {
+    if (widget.timetable != null) {
+      final list = await ref
+          .read(globalRepositoryStore)
+          .getTimetablesOnId([widget.timetable!.id]);
+      if (list?.isNotEmpty == true) {
+        ref.read(localStorage.notifier).save(list!.first);
+      }
+    }
+  }
+
   @override
   void initState() {
     super.initState();
