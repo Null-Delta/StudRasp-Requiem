@@ -39,7 +39,7 @@ final editorCopiedLesson = StateProvider<Lesson?>((ref) {
   return null;
 });
 
-final currentEditingTimetable = StateProvider<Timetable>((ref) {
+final currentEditingTimetable = StateProvider.autoDispose<Timetable>((ref) {
   return Timetable.empty(AppUser.empty());
 });
 

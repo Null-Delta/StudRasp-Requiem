@@ -11,7 +11,9 @@ import '../../models/lesson/lesson_model.dart';
 import '../../models/time_interval/time_interval_model.dart';
 import '../../models/timetable/timetable_model.dart';
 import '../../models/user/user_model.dart';
+import '../../providers/my_timetables.dart';
 import '../../providers/providers.dart';
+import '../../providers/user_auth.dart';
 import '../../styles/colors.dart';
 import '../../styles/fonts.dart';
 import '../../support/fast_swipe_physics.dart';
@@ -24,17 +26,33 @@ import '../widgets/popup_menu_action.dart';
 import '../widgets/week_timeline.dart';
 import 'widgets/paste_bar.dart';
 
-class TimetableEditorPage extends ConsumerStatefulWidget {
+class TimetableEditorPage extends ConsumerWidget {
   const TimetableEditorPage({Key? key, this.timeTable}) : super(key: key);
 
   final Timetable? timeTable;
 
   @override
-  ConsumerState<TimetableEditorPage> createState() =>
-      _TimetableEditorPageState();
+  Widget build(BuildContext context, WidgetRef ref) {
+    print(1);
+    return ProviderScope(
+      overrides: [
+        currentEditingTimetable.overrideWithValue(
+          StateController(timeTable ?? Timetable.empty(AppUser.empty())),
+        ),
+      ],
+      child: _TimetableEditor(),
+    );
+  }
 }
 
-class _TimetableEditorPageState extends ConsumerState<TimetableEditorPage> {
+class _TimetableEditor extends ConsumerStatefulWidget {
+  const _TimetableEditor({Key? key}) : super(key: key);
+
+  @override
+  ConsumerState<_TimetableEditor> createState() => _TimetableEditorPageState();
+}
+
+class _TimetableEditorPageState extends ConsumerState<_TimetableEditor> {
   var dayPageController = PageController(initialPage: 0);
 
   void deleteLesson(int lessonDay, int lessonNumber) {
@@ -113,168 +131,211 @@ class _TimetableEditorPageState extends ConsumerState<TimetableEditorPage> {
         }
       },
     );
-
-    return ProviderScope(
-      overrides: [
-        currentEditingTimetable.overrideWithValue(
-          StateController(widget.timeTable ?? Timetable.empty(AppUser.empty())),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          name,
+          style: textStyles.title,
         ),
-      ],
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(
-            name,
-            style: textStyles.title,
+        leading: IconButton(
+          padding: EdgeInsets.zero,
+          onPressed: () {
+            if (ref.read(currentEditingTimetable) !=
+                Timetable.empty(ref.read(userAuth))) {
+              print(1);
+              ref
+                  .read(globalRepositoryStore)
+                  .saveTimetable(ref.read(currentEditingTimetable))
+                  .then((value) async =>
+                      await ref.read(myTimetables.notifier).update());
+            }
+            Navigator.of(context).pop();
+          },
+          icon: SvgPicture.asset(
+            Assets.images.circleChevronLeft.path,
+            color: colors.accentPrimary,
           ),
-          leading: IconButton(
+          splashRadius: 24,
+        ),
+        actions: [
+          IconButton(
             padding: EdgeInsets.zero,
             onPressed: () {
-              // переход назад временно
-              Navigator.of(context).pop();
+              // временно переход в настройки
+
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) {
+                    return const TimetableSettingsPage();
+                  },
+                ),
+              );
             },
             icon: SvgPicture.asset(
-              Assets.images.circleChevronLeft.path,
+              Assets.images.settings.path,
               color: colors.accentPrimary,
             ),
             splashRadius: 24,
           ),
-          actions: [
-            IconButton(
-              padding: EdgeInsets.zero,
-              onPressed: () {
-                // временно переход в настройки
-
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return const TimetableSettingsPage();
-                    },
-                  ),
-                );
-              },
-              icon: SvgPicture.asset(
-                Assets.images.settings.path,
-                color: colors.accentPrimary,
-              ),
-              splashRadius: 24,
+        ],
+      ),
+      body: SafeArea(
+        child: Column(
+          children: [
+            const WeekTimeline(
+              weekCount: 2,
             ),
-          ],
-        ),
-        body: SafeArea(
-          child: Column(
-            children: [
-              const WeekTimeline(
-                weekCount: 2,
-              ),
-              Divider(
-                height: 1,
-                thickness: 1,
-                color: colors.separator,
-              ),
-              Expanded(
-                child: PageView.builder(
-                  controller: dayPageController,
-                  physics: const CustomPageViewScrollPhysics(),
-                  itemCount: 14,
-                  onPageChanged: (value) {
-                    if (!ref.read(daysSwiping)) {
-                      ref.read(selectedDuration.notifier).state =
-                          Duration(days: value - dayPageController.initialPage);
-                    }
-                  },
-                  itemBuilder: (context, dayIndex) {
-                    return ReorderableListView(
-                      scrollController: ScrollController(),
-                      physics: const BouncingScrollPhysics(
-                        parent: AlwaysScrollableScrollPhysics(),
-                      ),
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      onReorderStart: (index) {
-                        HapticFeedback.heavyImpact();
-                      },
-                      onReorderEnd: (index) {
-                        HapticFeedback.heavyImpact();
-                      },
-                      proxyDecorator: (child, index, animation) {
-                        return Material(
-                          type: MaterialType.transparency,
-                          child: AnimatedBuilder(
-                            animation: animation,
-                            builder: (context, _) {
-                              return Transform.scale(
-                                scale: Tween<double>(begin: 1, end: 1.05)
-                                    .animate(
-                                      CurvedAnimation(
-                                        parent: animation,
-                                        curve: Curves.easeInOutBack,
-                                      ),
-                                    )
-                                    .value,
-                                child: child,
-                              );
-                            },
-                          ),
-                        );
-                      },
-                      header: Column(
-                        children: [
-                          LabeledText(
-                            label: 'Неделя',
-                            text: config.weekTypes[dayIndex ~/ 7],
-                            padding: 0,
-                          ),
-                          const SizedBox(
-                            height: 8,
-                          ),
-                        ],
-                      ),
-                      onReorder: (oldIndex, newIndex) {
-                        if (oldIndex < newIndex) {
-                          newIndex -= 1;
-                        }
-                        log('onReorder');
-
-                        final lessons = List<Lesson>.from(
-                          ref
-                              .watch(currentEditingTimetable.notifier)
-                              .state
-                              .days[dayIndex]
-                              .lessons,
-                        );
-
-                        final Lesson item = lessons.removeAt(oldIndex);
-
-                        lessons.insert(newIndex, item);
-
-                        ref.read(currentEditingTimetable.notifier).update(
-                          (state) {
-                            List<Day> newDays = List<Day>.from(state.days)
-                              ..[dayIndex] = Day(
-                                lessons: lessons,
-                              );
-                            return state.copyWith(
-                              days: newDays,
+            Divider(
+              height: 1,
+              thickness: 1,
+              color: colors.separator,
+            ),
+            Expanded(
+              child: PageView.builder(
+                controller: dayPageController,
+                physics: const CustomPageViewScrollPhysics(),
+                itemCount: 14,
+                onPageChanged: (value) {
+                  if (!ref.read(daysSwiping)) {
+                    ref.read(selectedDuration.notifier).state =
+                        Duration(days: value - dayPageController.initialPage);
+                  }
+                },
+                itemBuilder: (context, dayIndex) {
+                  return ReorderableListView(
+                    scrollController: ScrollController(),
+                    physics: const BouncingScrollPhysics(
+                      parent: AlwaysScrollableScrollPhysics(),
+                    ),
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    onReorderStart: (index) {
+                      HapticFeedback.heavyImpact();
+                    },
+                    onReorderEnd: (index) {
+                      HapticFeedback.heavyImpact();
+                    },
+                    proxyDecorator: (child, index, animation) {
+                      return Material(
+                        type: MaterialType.transparency,
+                        child: AnimatedBuilder(
+                          animation: animation,
+                          builder: (context, _) {
+                            return Transform.scale(
+                              scale: Tween<double>(begin: 1, end: 1.05)
+                                  .animate(
+                                    CurvedAnimation(
+                                      parent: animation,
+                                      curve: Curves.easeInOutBack,
+                                    ),
+                                  )
+                                  .value,
+                              child: child,
                             );
                           },
-                        );
-                      },
+                        ),
+                      );
+                    },
+                    header: Column(
                       children: [
-                        for (int index = 0;
-                            index < days[dayIndex].lessons.length;
-                            index++)
-                          if (days[dayIndex].lessons[index].isEmpty)
-                            Padding(
-                              key: ValueKey(index),
-                              padding: const EdgeInsets.only(bottom: 12),
-                              child: EmptyLessonCard(
-                                index: index + 1,
-                                // взять из заданного времени
-                                interval: TimeInterval(
-                                  from: config.timeIntervals[index].from,
-                                  to: config.timeIntervals[index].to,
-                                ),
-                                onTap: () {
-                                  if (copiedLesson == null) {
+                        LabeledText(
+                          label: 'Неделя',
+                          text: config.weekTypes[dayIndex ~/ 7],
+                          padding: 0,
+                        ),
+                        const SizedBox(
+                          height: 8,
+                        ),
+                      ],
+                    ),
+                    onReorder: (oldIndex, newIndex) {
+                      if (oldIndex < newIndex) {
+                        newIndex -= 1;
+                      }
+                      log('onReorder');
+
+                      final lessons = List<Lesson>.from(
+                        ref
+                            .watch(currentEditingTimetable.notifier)
+                            .state
+                            .days[dayIndex]
+                            .lessons,
+                      );
+
+                      final Lesson item = lessons.removeAt(oldIndex);
+
+                      lessons.insert(newIndex, item);
+
+                      ref.read(currentEditingTimetable.notifier).update(
+                        (state) {
+                          List<Day> newDays = List<Day>.from(state.days)
+                            ..[dayIndex] = Day(
+                              lessons: lessons,
+                            );
+                          return state.copyWith(
+                            days: newDays,
+                          );
+                        },
+                      );
+                    },
+                    children: [
+                      for (int index = 0;
+                          index < days[dayIndex].lessons.length;
+                          index++)
+                        if (days[dayIndex].lessons[index].isEmpty)
+                          Padding(
+                            key: ValueKey(index),
+                            padding: const EdgeInsets.only(bottom: 12),
+                            child: EmptyLessonCard(
+                              index: index + 1,
+                              // взять из заданного времени
+                              interval: TimeInterval(
+                                from: config.timeIntervals[index].from,
+                                to: config.timeIntervals[index].to,
+                              ),
+                              onTap: () {
+                                if (copiedLesson == null) {
+                                  ref
+                                      .read(
+                                        currentEditingLesson.notifier,
+                                      )
+                                      .state = EditableLesson(
+                                    day: dayIndex,
+                                    number: index,
+                                    lesson: days[dayIndex].lessons[index],
+                                  );
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => const LessonEditorPage(),
+                                    ),
+                                  );
+                                } else {
+                                  insertLesson(copiedLesson, dayIndex, index);
+                                }
+                              },
+                              text:
+                                  copiedLesson == null ? null : "Вставить пару",
+                            ),
+                          )
+                        else
+                          Padding(
+                            key: ValueKey(index),
+                            padding: const EdgeInsets.only(bottom: 12),
+                            child: EditableLessonCard(
+                              index: index + 1,
+                              // взять из заданного времени
+                              interval: TimeInterval(
+                                from: config.timeIntervals[index].from,
+                                to: config.timeIntervals[index].to,
+                              ),
+                              lesson: days[dayIndex].lessons[index],
+                              actions: [
+                                // реализовать действия
+                                PopupMenuAction(
+                                  text: "Изменить",
+                                  icon: Assets.images.iconEditOutline
+                                      .svg(color: colors.accentPrimary),
+                                  action: () {
                                     ref
                                         .read(
                                           currentEditingLesson.notifier,
@@ -284,83 +345,37 @@ class _TimetableEditorPageState extends ConsumerState<TimetableEditorPage> {
                                       number: index,
                                       lesson: days[dayIndex].lessons[index],
                                     );
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (_) =>
-                                            const LessonEditorPage(),
-                                      ),
-                                    );
-                                  } else {
-                                    insertLesson(copiedLesson, dayIndex, index);
-                                  }
-                                },
-                                text: copiedLesson == null
-                                    ? null
-                                    : "Вставить пару",
-                              ),
-                            )
-                          else
-                            Padding(
-                              key: ValueKey(index),
-                              padding: const EdgeInsets.only(bottom: 12),
-                              child: EditableLessonCard(
-                                index: index + 1,
-                                // взять из заданного времени
-                                interval: TimeInterval(
-                                  from: config.timeIntervals[index].from,
-                                  to: config.timeIntervals[index].to,
-                                ),
-                                lesson: days[dayIndex].lessons[index],
-                                actions: [
-                                  // реализовать действия
-                                  PopupMenuAction(
-                                    text: "Изменить",
-                                    icon: Assets.images.iconEditOutline
-                                        .svg(color: colors.accentPrimary),
-                                    action: () {
-                                      ref
-                                          .read(
-                                            currentEditingLesson.notifier,
-                                          )
-                                          .state = EditableLesson(
-                                        day: dayIndex,
-                                        number: index,
-                                        lesson: days[dayIndex].lessons[index],
-                                      );
 
-                                      context
-                                          .go(context.namedLocation('lesson'));
-                                    },
-                                  ),
-                                  PopupMenuAction(
-                                    text: "Копировать пару",
-                                    icon: Assets.images.command
-                                        .svg(color: colors.accentPrimary),
-                                    action: () {
-                                      copyLesson(days[dayIndex].lessons[index]);
-                                    },
-                                  ),
-                                  PopupMenuAction(
-                                    text: "Удалить",
-                                    icon: Assets.images.trashFull
-                                        .svg(color: colors.accentPrimary),
-                                    action: () {
-                                      deleteLesson(dayIndex, index);
-                                    },
-                                    style: PopupMenuActionStyle.destructive,
-                                  ),
-                                ],
-                              ),
-                            )
-                      ],
-                    );
-                  },
-                ),
+                                    context.go(context.namedLocation('lesson'));
+                                  },
+                                ),
+                                PopupMenuAction(
+                                  text: "Копировать пару",
+                                  icon: Assets.images.command
+                                      .svg(color: colors.accentPrimary),
+                                  action: () {
+                                    copyLesson(days[dayIndex].lessons[index]);
+                                  },
+                                ),
+                                PopupMenuAction(
+                                  text: "Удалить",
+                                  icon: Assets.images.trashFull
+                                      .svg(color: colors.accentPrimary),
+                                  action: () {
+                                    deleteLesson(dayIndex, index);
+                                  },
+                                  style: PopupMenuActionStyle.destructive,
+                                ),
+                              ],
+                            ),
+                          )
+                    ],
+                  );
+                },
               ),
-              if (copiedLesson != null) const PasteBar(),
-            ],
-          ),
+            ),
+            if (copiedLesson != null) const PasteBar(),
+          ],
         ),
       ),
     );

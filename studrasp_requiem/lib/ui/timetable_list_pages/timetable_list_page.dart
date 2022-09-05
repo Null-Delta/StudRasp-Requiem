@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../gen/assets.gen.dart';
 import '../../models/timetable/timetable_model.dart';
 import '../../providers/current_timetable.dart';
+import '../../providers/my_timetables.dart';
 import '../../providers/providers.dart';
 import '../../styles/build_context_extension.dart';
 import '../../styles/widget_styles.dart';
@@ -21,7 +22,6 @@ class _TimetableListPageState extends ConsumerState<TimetableListPage> {
   ScrollController myTimeTablesContoller = ScrollController();
 
   List<Timetable> savedTables = [];
-  List<Timetable> myTables = [];
 
   @override
   void initState() {
@@ -32,7 +32,8 @@ class _TimetableListPageState extends ConsumerState<TimetableListPage> {
   Future<void> loadSavedTables(List<String> list) async {
     final repository = ref.read(globalRepositoryStore);
 
-    final newList = await repository.getTimetablesOnId(list.isEmpty ? [''] : list) ?? [];
+    final newList =
+        await repository.getTimetablesOnId(list.isEmpty ? [''] : list) ?? [];
     setState(() {
       savedTables = newList;
     });
@@ -42,6 +43,8 @@ class _TimetableListPageState extends ConsumerState<TimetableListPage> {
   Widget build(BuildContext context) {
     final colors = context.colors;
     final textStyles = context.textStyles;
+
+    List<Timetable> myTables = ref.watch(myTimetables);
 
     return DefaultTabController(
       length: 2,
@@ -54,7 +57,8 @@ class _TimetableListPageState extends ConsumerState<TimetableListPage> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              icon: Assets.images.circleChevronLeft.svg(color: colors.accentPrimary),
+              icon: Assets.images.circleChevronLeft
+                  .svg(color: colors.accentPrimary),
               splashRadius: 24,
             ),
           ),
@@ -85,7 +89,8 @@ class _TimetableListPageState extends ConsumerState<TimetableListPage> {
                 child: TabBar(
                   labelColor: colors.backgroundPrimary,
                   labelStyle: textStyles.label!,
-                  unselectedLabelStyle: textStyles.label!.copyWith(color: colors.accentPrimary),
+                  unselectedLabelStyle:
+                      textStyles.label!.copyWith(color: colors.accentPrimary),
                   unselectedLabelColor: colors.accentPrimary,
                   indicatorWeight: 0,
                   indicator: BoxDecoration(
@@ -118,7 +123,8 @@ class _TimetableListPageState extends ConsumerState<TimetableListPage> {
                 children: [
                   RefreshIndicator(
                     onRefresh: () async {
-                      await loadSavedTables(ref.read(localStorage).savedTimetables);
+                      await loadSavedTables(
+                          ref.read(localStorage).savedTimetables);
                     },
                     child: savedTables.isEmpty
                         ? ListView(
@@ -128,7 +134,8 @@ class _TimetableListPageState extends ConsumerState<TimetableListPage> {
                                 height: 128,
                                 child: Text(
                                   "Список пуст",
-                                  style: textStyles.label!.copyWith(color: colors.disable),
+                                  style: textStyles.label!
+                                      .copyWith(color: colors.disable),
                                 ),
                               ),
                             ],
@@ -143,13 +150,16 @@ class _TimetableListPageState extends ConsumerState<TimetableListPage> {
                                 timeTable: savedTables[index],
                                 button: PopupMenuButton(
                                   iconSize: 24,
-                                  icon: Assets.images.moreHorizontal.svg(color: colors.accentPrimary),
+                                  icon: Assets.images.moreHorizontal
+                                      .svg(color: colors.accentPrimary),
                                   itemBuilder: (context) {
                                     return [
                                       PopupMenuItem(
                                         child: const Text("Использовать"),
                                         onTap: () {
-                                          ref.read(localStorage.notifier).save(savedTables[index]);
+                                          ref
+                                              .read(localStorage.notifier)
+                                              .save(savedTables[index]);
                                           Navigator.pop(context);
                                         },
                                       ),
@@ -158,9 +168,12 @@ class _TimetableListPageState extends ConsumerState<TimetableListPage> {
                                         child: const Text("Удалить"),
                                         onTap: () {
                                           final id = savedTables[index].id;
-                                          ref.read(localStorage.notifier).removeFromSavedTimeTables(id);
+                                          ref
+                                              .read(localStorage.notifier)
+                                              .removeFromSavedTimeTables(id);
                                           setState(() {
-                                            savedTables.removeWhere((table) => table.id == id);
+                                            savedTables.removeWhere(
+                                                (table) => table.id == id);
                                           });
                                         },
                                       ),
@@ -168,7 +181,9 @@ class _TimetableListPageState extends ConsumerState<TimetableListPage> {
                                   },
                                 ),
                                 onTap: () {
-                                  ref.read(localStorage.notifier).save(savedTables[index]);
+                                  ref
+                                      .read(localStorage.notifier)
+                                      .save(savedTables[index]);
                                   Navigator.pop(context);
                                 },
                               );
@@ -183,36 +198,118 @@ class _TimetableListPageState extends ConsumerState<TimetableListPage> {
                             itemCount: savedTables.length,
                           ),
                   ),
-                  ListView.separated(
-                    physics: const BouncingScrollPhysics(
-                      parent: AlwaysScrollableScrollPhysics(),
-                    ),
-                    controller: myTimeTablesContoller,
-                    itemBuilder: (context, index) {
-                      return TimetableCard(
-                        timeTable: myTables[index],
-                        button: Assets.images.moreHorizontal.svg(color: colors.accentPrimary),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return const TimetableEditorPage();
-                              },
+                  myTables.isEmpty
+                      ? ListView(
+                          children: [
+                            Container(
+                              alignment: Alignment.center,
+                              height: 128,
+                              child: DecoratedBox(
+                                decoration: BoxDecoration(
+                                  color: colors.accentPrimary,
+                                  border: Border.all(),
+                                  borderRadius: const BorderRadius.all(
+                                    Radius.circular(8),
+                                  ),
+                                ),
+                                child: TextButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) {
+                                          return const TimetableEditorPage();
+                                        },
+                                      ),
+                                    );
+                                  },
+                                  child: Text(
+                                    "Создать первое расписание",
+                                    style: textStyles.label!.copyWith(
+                                        color: colors.backgroundPrimary),
+                                  ),
+                                ),
+                              ),
                             ),
-                          );
-                        },
-                      );
-                    },
-                    separatorBuilder: (context, index) {
-                      return Divider(
-                        height: 1,
-                        thickness: 1,
-                        color: colors.separator,
-                      );
-                    },
-                    itemCount: myTables.length,
-                  ),
+                          ],
+                        )
+                      : ListView.separated(
+                          physics: const BouncingScrollPhysics(
+                            parent: AlwaysScrollableScrollPhysics(),
+                          ),
+                          controller: myTimeTablesContoller,
+                          itemBuilder: (context, index) {
+                            return TimetableCard(
+                              timeTable: myTables[index],
+                              button: PopupMenuButton(
+                                iconSize: 24,
+                                icon: Assets.images.moreHorizontal
+                                    .svg(color: colors.accentPrimary),
+                                onSelected: (value) {
+                                  if (value == 0) {
+                                    Navigator.pop(context);
+                                  } else if (value == 1) {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) {
+                                          return TimetableEditorPage(
+                                            timeTable: myTables[index],
+                                          );
+                                        },
+                                      ),
+                                    );
+                                  } else {}
+                                },
+                                itemBuilder: (context) {
+                                  return [
+                                    PopupMenuItem(
+                                      value: 0,
+                                      onTap: () {
+                                        ref
+                                            .read(localStorage.notifier)
+                                            .save(myTables[index]);
+                                      },
+                                      child: const Text("Использовать"),
+                                    ),
+                                    const PopupMenuItem(
+                                      value: 1,
+                                      child: Text("Изменить"),
+                                    ),
+                                    PopupMenuItem(
+                                      value: 2,
+                                      child: const Text("Удалить"),
+                                      onTap: () {
+                                        final id = myTables[index].id;
+                                        ref
+                                            .read(globalRepositoryStore)
+                                            .deleteTimetable(id);
+                                        setState(() {
+                                          myTables.removeWhere(
+                                              (table) => table.id == id);
+                                        });
+                                      },
+                                    ),
+                                  ];
+                                },
+                              ),
+                              onTap: () {
+                                ref
+                                    .read(localStorage.notifier)
+                                    .save(myTables[index]);
+                                Navigator.pop(context);
+                              },
+                            );
+                          },
+                          separatorBuilder: (context, index) {
+                            return Divider(
+                              height: 1,
+                              thickness: 1,
+                              color: colors.separator,
+                            );
+                          },
+                          itemCount: myTables.length,
+                        ),
                 ],
               ),
             ),
