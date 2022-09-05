@@ -31,8 +31,7 @@ class _TimetableListPageState extends ConsumerState<TimetableListPage> {
   Future<void> loadSavedTables(List<String> list) async {
     final repository = ref.read(globalRepositoryStore);
 
-    final newList =
-        await repository.getTimetablesOnId(list.isEmpty ? [''] : list) ?? [];
+    final newList = await repository.getTimetablesOnId(list.isEmpty ? [''] : list) ?? [];
     setState(() {
       savedTables = newList;
     });
@@ -68,8 +67,7 @@ class _TimetableListPageState extends ConsumerState<TimetableListPage> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              icon: Assets.images.circleChevronLeft
-                  .svg(color: colors.accentPrimary),
+              icon: Assets.images.circleChevronLeft.svg(color: colors.accentPrimary),
               splashRadius: 24,
             ),
           ),
@@ -105,8 +103,7 @@ class _TimetableListPageState extends ConsumerState<TimetableListPage> {
                             height: 96,
                             child: Text(
                               "Список пуст",
-                              style: textStyles.label!
-                                  .copyWith(color: colors.disable),
+                              style: textStyles.label!.copyWith(color: colors.disable),
                             ),
                           ),
                         ],
@@ -130,19 +127,14 @@ class _TimetableListPageState extends ConsumerState<TimetableListPage> {
                               iconSize: 24,
                               elevation: 8,
                               splashRadius: 1,
-                              icon: Assets.images.moreHorizontal
-                                  .svg(color: colors.accentPrimary),
+                              icon: Assets.images.moreHorizontal.svg(color: colors.accentPrimary),
                               onSelected: (value) {
                                 if (value == 0) {
-                                  ref
-                                      .read(localStorage.notifier)
-                                      .save(savedTables[index]);
+                                  ref.read(localStorage.notifier).save(savedTables[index]);
                                   Navigator.pop(context);
                                 } else if (value == 1) {
                                   final id = savedTables[index].id;
-                                  ref
-                                      .read(localStorage.notifier)
-                                      .removeFromSavedTimeTables(id);
+                                  ref.read(localStorage.notifier).removeFromSavedTimeTables(id);
                                   setState(() {
                                     savedTables.removeWhere(
                                       (table) => table.id == id,
@@ -172,9 +164,7 @@ class _TimetableListPageState extends ConsumerState<TimetableListPage> {
                               },
                             ),
                             onTap: () {
-                              ref
-                                  .read(localStorage.notifier)
-                                  .save(savedTables[index]);
+                              ref.read(localStorage.notifier).save(savedTables[index]);
                               Navigator.pop(context);
                             },
                           );
