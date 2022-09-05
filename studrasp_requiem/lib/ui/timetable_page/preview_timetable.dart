@@ -81,138 +81,145 @@ class _TimetablePreviewState extends ConsumerState<TimetablePreview> {
           1;
     }
 
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: colors.backgroundPrimary,
-        leading: IconButton(
-          icon: const Icon(Icons.calendar_month_outlined),
-          splashRadius: 24,
-          onPressed: () {
-            final selectedDate = DateTime.fromMillisecondsSinceEpoch(
-              ref.read(currentDate).millisecondsSinceEpoch + ref.read(selectedDuration).inMilliseconds,
-            );
-            showDatePicker(
-              context: context,
-              initialDate: selectedDate,
-              firstDate: selectedDate.subtract(const Duration(days: 365)),
-              lastDate: selectedDate.add(const Duration(days: 365)),
-            ).then((date) {
-              if (date != null) {
-                var now = Duration(
-                  milliseconds: ref.read(currentDate).millisecondsSinceEpoch,
-                ).inMilliseconds;
+    return Container(
+      alignment: Alignment.center,
+      color: colors.separator,
+      child: Container(
+        constraints: const BoxConstraints(maxWidth: 500),
+        child: Scaffold(
+          appBar: AppBar(
+            backgroundColor: colors.backgroundPrimary,
+            leading: IconButton(
+              icon: const Icon(Icons.calendar_month_outlined),
+              splashRadius: 24,
+              onPressed: () {
+                final selectedDate = DateTime.fromMillisecondsSinceEpoch(
+                  ref.read(currentDate).millisecondsSinceEpoch + ref.read(selectedDuration).inMilliseconds,
+                );
+                showDatePicker(
+                  context: context,
+                  initialDate: selectedDate,
+                  firstDate: selectedDate.subtract(const Duration(days: 365)),
+                  lastDate: selectedDate.add(const Duration(days: 365)),
+                ).then((date) {
+                  if (date != null) {
+                    var now = Duration(
+                      milliseconds: ref.read(currentDate).millisecondsSinceEpoch,
+                    ).inMilliseconds;
 
-                now -= ref.read(currentDate).hour * 3600 * 1000;
-                now -= ref.read(currentDate).minute * 60 * 1000;
-                now -= ref.read(currentDate).second * 1000;
-                now -= ref.read(currentDate).millisecond;
+                    now -= ref.read(currentDate).hour * 3600 * 1000;
+                    now -= ref.read(currentDate).minute * 60 * 1000;
+                    now -= ref.read(currentDate).second * 1000;
+                    now -= ref.read(currentDate).millisecond;
 
-                final selected = Duration(milliseconds: date.millisecondsSinceEpoch).inDays;
-                ref.read(selectedDuration.notifier).state =
-                    Duration(days: selected - Duration(milliseconds: now).inDays);
-                ref.read(needSwipeDays.notifier).state = true;
-              }
-            });
-          },
-        ),
-      ),
-      backgroundColor: colors.backgroundPrimary!,
-      body: widget.table != null
-          ? Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Text(
-                    widget.table!.name,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: textStyles.largeTitle,
-                    textAlign: TextAlign.start,
-                  ),
-                ),
-                const WeekTimeline(),
-                Divider(
-                  height: 1,
-                  thickness: 1,
-                  color: colors.separator,
-                ),
-                Expanded(
-                  child: PageView.builder(
-                    physics: const CustomPageViewScrollPhysics(),
-                    padEnds: true,
-                    allowImplicitScrolling: false,
-                    controller: dayPageController,
-                    dragStartBehavior: DragStartBehavior.down,
-                    onPageChanged: (value) {
-                      if (!ref.read(daysSwiping)) {
-                        ref.read(selectedDuration.notifier).state = Duration(days: value - 366);
-                      }
-                    },
-                    itemCount: 1000,
-                    itemBuilder: (context, pageImage) {
-                      final today = Duration(
-                        milliseconds: DateTime.now().millisecondsSinceEpoch,
-                      ).inDays;
+                    final selected = Duration(milliseconds: date.millisecondsSinceEpoch).inDays;
+                    ref.read(selectedDuration.notifier).state =
+                        Duration(days: selected - Duration(milliseconds: now).inDays);
+                    ref.read(needSwipeDays.notifier).state = true;
+                  }
+                });
+              },
+            ),
+          ),
+          backgroundColor: colors.backgroundPrimary!,
+          body: widget.table != null
+              ? Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Text(
+                        widget.table!.name,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: textStyles.largeTitle,
+                        textAlign: TextAlign.start,
+                      ),
+                    ),
+                    const WeekTimeline(),
+                    Divider(
+                      height: 1,
+                      thickness: 1,
+                      color: colors.separator,
+                    ),
+                    Expanded(
+                      child: PageView.builder(
+                        physics: const CustomPageViewScrollPhysics(),
+                        padEnds: true,
+                        allowImplicitScrolling: false,
+                        controller: dayPageController,
+                        dragStartBehavior: DragStartBehavior.down,
+                        onPageChanged: (value) {
+                          if (!ref.read(daysSwiping)) {
+                            ref.read(selectedDuration.notifier).state = Duration(days: value - 366);
+                          }
+                        },
+                        itemCount: 1000,
+                        itemBuilder: (context, pageImage) {
+                          final today = Duration(
+                            milliseconds: DateTime.now().millisecondsSinceEpoch,
+                          ).inDays;
 
-                      final dayIndex = (today - creationDay + 1 + pageImage - 366) % 14;
-                      return ListView(
-                        physics: const BouncingScrollPhysics(
-                          parent: AlwaysScrollableScrollPhysics(),
-                        ),
-                        children: [
-                          LabeledText(
-                            label: "Неделя",
-                            text: widget.table!.config.weekTypes[dayIndex ~/ 7],
-                          ),
-                          if (widget.table!.days[dayIndex].lessons.where((lesson) => !lesson.isEmpty).isEmpty)
-                            Padding(
-                              padding: const EdgeInsets.only(left: 16, right: 16, top: 8),
-                              child: Container(
-                                height: 96,
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                  color: colors.backgroundSecondary,
-                                  borderRadius: BorderRadiusStyles.large,
-                                ),
-                                child: Text(
-                                  "Сегодня пар нет",
-                                  style: textStyles.label!.copyWith(
-                                    color: colors.disable,
-                                  ),
-                                ),
+                          final dayIndex = (today - creationDay + 1 + pageImage - 366) % 14;
+                          return ListView(
+                            physics: const BouncingScrollPhysics(
+                              parent: AlwaysScrollableScrollPhysics(),
+                            ),
+                            children: [
+                              LabeledText(
+                                label: "Неделя",
+                                text: widget.table!.config.weekTypes[dayIndex ~/ 7],
                               ),
-                            )
-                          else
-                            for (int index = 0; index < widget.table!.days[dayIndex].lessons.length; index++)
-                              if (!widget.table!.days[dayIndex].lessons[index].isEmpty)
+                              if (widget.table!.days[dayIndex].lessons.where((lesson) => !lesson.isEmpty).isEmpty)
                                 Padding(
-                                  key: ValueKey(index),
-                                  padding: const EdgeInsets.only(
-                                    bottom: 12,
-                                    left: 16,
-                                    right: 16,
-                                  ),
-                                  child: LessonCard(
-                                    index: index + 1,
-                                    interval: widget.table!.config.timeIntervals[index],
-                                    lesson: widget.table!.days[dayIndex].lessons[index],
-                                    isToday: pageImage == 366,
+                                  padding: const EdgeInsets.only(left: 16, right: 16, top: 8),
+                                  child: Container(
+                                    height: 96,
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      color: colors.backgroundSecondary,
+                                      borderRadius: BorderRadiusStyles.large,
+                                    ),
+                                    child: Text(
+                                      "Сегодня пар нет",
+                                      style: textStyles.label!.copyWith(
+                                        color: colors.disable,
+                                      ),
+                                    ),
                                   ),
                                 )
-                        ],
-                      );
-                    },
-                  ),
+                              else
+                                for (int index = 0; index < widget.table!.days[dayIndex].lessons.length; index++)
+                                  if (!widget.table!.days[dayIndex].lessons[index].isEmpty)
+                                    Padding(
+                                      key: ValueKey(index),
+                                      padding: const EdgeInsets.only(
+                                        bottom: 12,
+                                        left: 16,
+                                        right: 16,
+                                      ),
+                                      child: LessonCard(
+                                        index: index + 1,
+                                        interval: widget.table!.config.timeIntervals[index],
+                                        lesson: widget.table!.days[dayIndex].lessons[index],
+                                        isToday: pageImage == 366,
+                                      ),
+                                    )
+                            ],
+                          );
+                        },
+                      ),
+                    )
+                  ],
                 )
-              ],
-            )
-          : Center(
-              child: Text(
-                'Выберите расписание',
-                style: textStyles.label!.copyWith(color: colors.disable),
-              ),
-            ),
+              : Center(
+                  child: Text(
+                    'Выберите расписание',
+                    style: textStyles.label!.copyWith(color: colors.disable),
+                  ),
+                ),
+        ),
+      ),
     );
   }
 
