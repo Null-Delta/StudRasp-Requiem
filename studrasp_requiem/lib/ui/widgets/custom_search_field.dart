@@ -260,17 +260,17 @@ class SearchField<T> extends StatefulWidget {
     this.textInputAction,
     this.validator,
   })  : assert(
-            (initialValue != null &&
-                    suggestions.containsObject(initialValue)) ||
-                initialValue == null,
-            'Initial value should either be null or should be present in suggestions list.'),
+          (initialValue != null && suggestions.containsObject(initialValue)) ||
+              initialValue == null,
+          'Initial value should either be null or should be present in suggestions list.',
+        ),
         super(key: key);
 
   @override
-  _SearchFieldState<T> createState() => _SearchFieldState();
+  SearchFieldState<T> createState() => SearchFieldState();
 }
 
-class _SearchFieldState<T> extends State<SearchField<T>> {
+class SearchFieldState<T> extends State<SearchField<T>> {
   final StreamController<List<SearchFieldListItem<T>?>?> suggestionStream =
       StreamController<List<SearchFieldListItem<T>?>?>.broadcast();
   FocusNode? _focus;
@@ -382,8 +382,10 @@ class _SearchFieldState<T> extends State<SearchField<T>> {
   Widget _suggestionsBuilder() {
     return StreamBuilder<List<SearchFieldListItem<T>?>?>(
       stream: suggestionStream.stream,
-      builder: (BuildContext context,
-          AsyncSnapshot<List<SearchFieldListItem<T>?>?> snapshot) {
+      builder: (
+        BuildContext context,
+        AsyncSnapshot<List<SearchFieldListItem<T>?>?> snapshot,
+      ) {
         if (snapshot.data == null || !isSuggestionExpanded) {
           return const SizedBox();
         } else if (snapshot.data!.isEmpty) {

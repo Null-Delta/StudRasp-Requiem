@@ -4,7 +4,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../gen/assets.gen.dart';
 import '../../models/timetable/timetable_model.dart';
 import '../../providers/current_timetable.dart';
 import '../../providers/providers.dart';
@@ -84,7 +83,6 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
           timeTable.creationDate.weekday +
           1;
     }
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: colors.backgroundPrimary,
@@ -153,7 +151,6 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
                     ref.read(selectedDuration.notifier).update((state) {
                       return const Duration();
                     });
-
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -200,10 +197,6 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
                         milliseconds: DateTime.now().startOfDay().millisecondsSinceEpoch,
                       ).inDays;
 
-                      print(today);
-                      print(creationDay);
-                      print(today - creationDay);
-
                       final dayIndex = (today - creationDay + pageImage - 366) % 14;
                       return ListView(
                         physics: const BouncingScrollPhysics(
@@ -216,7 +209,11 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
                           ),
                           if (timeTable.days[dayIndex].lessons.where((lesson) => !lesson.isEmpty).isEmpty)
                             Padding(
-                              padding: const EdgeInsets.only(left: 16, right: 16, top: 8),
+                              padding: const EdgeInsets.only(
+                                left: 16,
+                                right: 16,
+                                top: 8,
+                              ),
                               child: Container(
                                 height: 96,
                                 alignment: Alignment.center,

@@ -55,11 +55,19 @@ class $AssetsImagesGen {
   /// File path: assets/images/command.svg
   SvgGenImage get command => const SvgGenImage('assets/images/command.svg');
 
+  /// File path: assets/images/delta_null.jpg
+  AssetGenImage get deltaNull =>
+      const AssetGenImage('assets/images/delta_null.jpg');
+
   /// File path: assets/images/download.svg
   SvgGenImage get download => const SvgGenImage('assets/images/download.svg');
 
   /// File path: assets/images/hamburger.svg
   SvgGenImage get hamburger => const SvgGenImage('assets/images/hamburger.svg');
+
+  /// File path: assets/images/i_am_girya.jpg
+  AssetGenImage get iAmGirya =>
+      const AssetGenImage('assets/images/i_am_girya.jpg');
 
   /// File path: assets/images/more_horizontal.svg
   SvgGenImage get moreHorizontal =>
@@ -70,6 +78,10 @@ class $AssetsImagesGen {
 
   /// File path: assets/images/settings.svg
   SvgGenImage get settings => const SvgGenImage('assets/images/settings.svg');
+
+  /// File path: assets/images/star_proxima.jpg
+  AssetGenImage get starProxima =>
+      const AssetGenImage('assets/images/star_proxima.jpg');
 
   /// File path: assets/images/stud_rasp_dark_icon.png
   AssetGenImage get studRaspDarkIcon =>
