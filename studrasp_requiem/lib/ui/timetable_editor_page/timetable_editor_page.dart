@@ -33,15 +33,9 @@ class TimetableEditorPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    print(1);
-    return ProviderScope(
-      overrides: [
-        currentEditingTimetable.overrideWithValue(
-          StateController(timeTable ?? Timetable.empty(AppUser.empty())),
-        ),
-      ],
-      child: _TimetableEditor(),
-    );
+    ref.read(currentEditingTimetable.notifier).state =
+        timeTable ?? Timetable.empty(ref.read(userAuth));
+    return _TimetableEditor();
   }
 }
 
@@ -142,12 +136,9 @@ class _TimetableEditorPageState extends ConsumerState<_TimetableEditor> {
           onPressed: () {
             if (ref.read(currentEditingTimetable) !=
                 Timetable.empty(ref.read(userAuth))) {
-              print(1);
               ref
-                  .read(globalRepositoryStore)
-                  .saveTimetable(ref.read(currentEditingTimetable))
-                  .then((value) async =>
-                      await ref.read(myTimetables.notifier).update());
+                  .read(myTimetables.notifier)
+                  .save(ref.read(currentEditingTimetable));
             }
             Navigator.of(context).pop();
           },

@@ -163,7 +163,6 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
                     ref.read(selectedDuration.notifier).update((state) {
                       return const Duration();
                     });
-
                     Navigator.push(
                       context,
                       MaterialPageRoute(

@@ -24,6 +24,11 @@ class MyTimetablesNotifier extends StateNotifier<List<Timetable>> {
   final TimetableGlobalSavesRepository timetableGlobalSavesRepository;
   final AppUser appUser;
 
+  Future<void> save(Timetable timetable) async {
+    await timetableGlobalSavesRepository.saveTimetable(timetable);
+    update();
+  }
+
   Future<void> update() async {
     state =
         await timetableGlobalSavesRepository.getOwnedTimetables(appUser.id) ??
