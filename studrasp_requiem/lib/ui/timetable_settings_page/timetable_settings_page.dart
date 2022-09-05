@@ -10,22 +10,25 @@ import '../../models/user/user_model.dart';
 import '../../providers/providers.dart';
 import '../../styles/build_context_extension.dart';
 import '../search_page/search_page.dart';
-import 'action_header.dart';
-import 'editor_card.dart';
-import 'labeled_text.dart';
-import 'lesson_interval_picker.dart';
+import 'widgets/action_header.dart';
+import 'widgets/editor_card.dart';
+import 'widgets/labeled_text.dart';
+import 'widgets/lesson_interval_picker.dart';
 
 class TimetableSettingsPage extends ConsumerStatefulWidget {
   const TimetableSettingsPage({Key? key}) : super(key: key);
 
   @override
-  ConsumerState<TimetableSettingsPage> createState() => _TimeTableSettingsPageState();
+  ConsumerState<TimetableSettingsPage> createState() =>
+      _TimeTableSettingsPageState();
 }
 
 class _TimeTableSettingsPageState extends ConsumerState<TimetableSettingsPage> {
   final TextEditingController nameFieldController = TextEditingController();
-  final TextEditingController firstWeekFieldController = TextEditingController();
-  final TextEditingController secondWeekFieldController = TextEditingController();
+  final TextEditingController firstWeekFieldController =
+      TextEditingController();
+  final TextEditingController secondWeekFieldController =
+      TextEditingController();
 
   List<LessonIntervalController> lessonControllers = [];
   List<AppUser> editors = [];
@@ -128,7 +131,8 @@ class _TimeTableSettingsPageState extends ConsumerState<TimetableSettingsPage> {
           onPressed: () {
             saveChanges();
           },
-          icon: Assets.images.circleChevronLeft.svg(color: colors.accentPrimary),
+          icon:
+              Assets.images.circleChevronLeft.svg(color: colors.accentPrimary),
           splashRadius: 24,
         ),
         title: Text(
@@ -159,7 +163,19 @@ class _TimeTableSettingsPageState extends ConsumerState<TimetableSettingsPage> {
                 ),
               ),
               const SizedBox(height: 12),
-              const ActionHeader(title: "Название недель"),
+              ActionHeader(
+                title: "Название недель",
+                action: IconButton(
+                  icon: const Icon(Icons.swap_horiz),
+                  splashRadius: 24,
+                  onPressed: () {
+                    String tmp = firstWeekFieldController.text;
+                    firstWeekFieldController.text =
+                        secondWeekFieldController.text;
+                    secondWeekFieldController.text = tmp;
+                  },
+                ),
+              ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: SizedBox(

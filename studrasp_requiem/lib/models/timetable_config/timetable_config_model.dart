@@ -15,7 +15,8 @@ class TimetableConfig with _$TimetableConfig {
     required List<String> lessonTypes,
   }) = _TimeTableConfig;
 
-  factory TimetableConfig.fromJson(Map<String, dynamic> json) => _$TimetableConfigFromJson(json);
+  factory TimetableConfig.fromJson(Map<String, dynamic> json) =>
+      _$TimetableConfigFromJson(json);
 
   factory TimetableConfig.empty() {
     return TimetableConfig(

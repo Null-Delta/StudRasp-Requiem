@@ -8,9 +8,11 @@ ButtonStyle tabButton(
   Size size = const Size(36, 36),
 }) =>
     ElevatedButton.styleFrom(
-      primary: isSelected ? colors.accentPrimary : colors.backgroundPrimary,
+      backgroundColor:
+          isSelected ? colors.accentPrimary : colors.backgroundPrimary,
       shadowColor: Colors.transparent,
-      onSurface: colors.backgroundPrimary,
+      disabledForegroundColor: colors.backgroundPrimary!.withOpacity(0.38),
+      disabledBackgroundColor: colors.backgroundPrimary!.withOpacity(0.12),
       surfaceTintColor: colors.backgroundPrimary,
       elevation: 0,
       maximumSize: size,

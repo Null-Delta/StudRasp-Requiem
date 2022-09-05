@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../models/user/user_model.dart';
-import '../../styles/build_context_extension.dart';
+import '../../../models/user/user_model.dart';
+import '../../../styles/build_context_extension.dart';
 
 class EditorCard extends StatelessWidget {
   final AppUser user;

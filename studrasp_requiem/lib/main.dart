@@ -10,7 +10,6 @@ import 'support/error_handler.dart';
 import 'ui/my_app.dart';
 
 import 'firebase_options.dart';
-import 'package:intl/date_symbol_data_local.dart';
 
 void main() {
   Intl.defaultLocale = 'ru_RU';
