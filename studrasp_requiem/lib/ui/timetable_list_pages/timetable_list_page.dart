@@ -5,8 +5,6 @@ import '../../models/timetable/timetable_model.dart';
 import '../../providers/current_timetable.dart';
 import '../../providers/providers.dart';
 import '../../styles/build_context_extension.dart';
-import '../../styles/widget_styles.dart';
-import '../timetable_editor_page/timetable_editor_page.dart';
 import 'widgets/time_table_card.dart';
 
 class TimetableListPage extends ConsumerStatefulWidget {
@@ -17,10 +15,9 @@ class TimetableListPage extends ConsumerStatefulWidget {
 }
 
 class _TimetableListPageState extends ConsumerState<TimetableListPage> {
-  ScrollController savedTimeTablesContoller = ScrollController();
+  ScrollController savedTimeTablesController = ScrollController();
 
   List<Timetable> savedTables = [];
-  List<Timetable> myTables = [];
 
   bool showDivider = false;
 
@@ -33,18 +30,19 @@ class _TimetableListPageState extends ConsumerState<TimetableListPage> {
   Future<void> loadSavedTables(List<String> list) async {
     final repository = ref.read(globalRepositoryStore);
 
-    final newList = await repository.getTimetablesOnId(list.isEmpty ? [''] : list) ?? [];
+    final newList =
+        await repository.getTimetablesOnId(list.isEmpty ? [''] : list) ?? [];
     setState(() {
       savedTables = newList;
     });
   }
 
   void onScroll() {
-    if (savedTimeTablesContoller.offset > 0 && !showDivider) {
+    if (savedTimeTablesController.offset > 0 && !showDivider) {
       setState(() {
         showDivider = true;
       });
-    } else if (savedTimeTablesContoller.offset <= 0 && showDivider) {
+    } else if (savedTimeTablesController.offset <= 0 && showDivider) {
       setState(() {
         showDivider = false;
       });
@@ -56,7 +54,7 @@ class _TimetableListPageState extends ConsumerState<TimetableListPage> {
     final colors = context.colors;
     final textStyles = context.textStyles;
 
-    savedTimeTablesContoller.addListener(onScroll);
+    savedTimeTablesController.addListener(onScroll);
 
     return DefaultTabController(
       length: 2,
@@ -69,7 +67,8 @@ class _TimetableListPageState extends ConsumerState<TimetableListPage> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              icon: Assets.images.circleChevronLeft.svg(color: colors.accentPrimary),
+              icon: Assets.images.circleChevronLeft
+                  .svg(color: colors.accentPrimary),
               splashRadius: 24,
             ),
           ),
@@ -105,7 +104,8 @@ class _TimetableListPageState extends ConsumerState<TimetableListPage> {
                             height: 96,
                             child: Text(
                               "Список пуст",
-                              style: textStyles.label!.copyWith(color: colors.disable),
+                              style: textStyles.label!
+                                  .copyWith(color: colors.disable),
                             ),
                           ),
                         ],
@@ -114,19 +114,22 @@ class _TimetableListPageState extends ConsumerState<TimetableListPage> {
                         physics: const BouncingScrollPhysics(
                           parent: AlwaysScrollableScrollPhysics(),
                         ),
-                        controller: savedTimeTablesContoller,
+                        controller: savedTimeTablesController,
                         itemBuilder: (context, index) {
                           return TimetableCard(
                             timeTable: savedTables[index],
                             button: PopupMenuButton(
                               iconSize: 24,
-                              icon: Assets.images.moreHorizontal.svg(color: colors.accentPrimary),
+                              icon: Assets.images.moreHorizontal
+                                  .svg(color: colors.accentPrimary),
                               itemBuilder: (context) {
                                 return [
                                   PopupMenuItem(
                                     child: const Text("Использовать"),
                                     onTap: () {
-                                      ref.read(localStorage.notifier).save(savedTables[index]);
+                                      ref
+                                          .read(localStorage.notifier)
+                                          .save(savedTables[index]);
                                       Navigator.pop(context);
                                     },
                                   ),
@@ -135,9 +138,13 @@ class _TimetableListPageState extends ConsumerState<TimetableListPage> {
                                     child: const Text("Удалить"),
                                     onTap: () {
                                       final id = savedTables[index].id;
-                                      ref.read(localStorage.notifier).removeFromSavedTimeTables(id);
+                                      ref
+                                          .read(localStorage.notifier)
+                                          .removeFromSavedTimeTables(id);
                                       setState(() {
-                                        savedTables.removeWhere((table) => table.id == id);
+                                        savedTables.removeWhere(
+                                          (table) => table.id == id,
+                                        );
                                       });
                                     },
                                   ),
@@ -145,7 +152,9 @@ class _TimetableListPageState extends ConsumerState<TimetableListPage> {
                               },
                             ),
                             onTap: () {
-                              ref.read(localStorage.notifier).save(savedTables[index]);
+                              ref
+                                  .read(localStorage.notifier)
+                                  .save(savedTables[index]);
                               Navigator.pop(context);
                             },
                           );
