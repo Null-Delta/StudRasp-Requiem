@@ -171,8 +171,8 @@ class _AuthPageState extends ConsumerState<AuthPage>
                 onPressed: switchAuthMode,
                 style: ElevatedButton.styleFrom(
                   textStyle: textStyles.subtitle,
-                  primary: colors.backgroundPrimary,
-                  onPrimary: colors.accentPrimary,
+                  backgroundColor: colors.backgroundPrimary,
+                  foregroundColor: colors.accentPrimary,
                   side: BorderSide(
                     color: colors.separator!,
                   ),
