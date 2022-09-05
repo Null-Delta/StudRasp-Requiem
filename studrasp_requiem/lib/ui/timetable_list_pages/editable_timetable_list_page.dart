@@ -82,7 +82,7 @@ class _EditableTimetableListPageState extends ConsumerState<EditableTimetableLis
               onPressed: () {
                 goToEditorPage();
               },
-              icon: Assets.images.iconEditOutline.svg(color: colors.accentPrimary),
+              icon: Assets.images.iconPlusOutline.svg(color: colors.accentPrimary),
               color: colors.accentPrimary,
               splashRadius: 24,
             ),
@@ -110,14 +110,17 @@ class _EditableTimetableListPageState extends ConsumerState<EditableTimetableLis
               child: myTables.isEmpty
                   ? ListView(
                       children: [
-                        Spacer(),
                         Container(
                           alignment: Alignment.center,
                           height: 256,
                           child: DecoratedBox(
                             decoration: BoxDecoration(
-                              color: colors.separator,
-                              borderRadius: BorderRadiusStyles.large,
+                              color: colors.backgroundPrimary,
+                              border: Border.all(
+                                color: colors.separator!,
+                                width: 1,
+                              ),
+                              borderRadius: BorderRadiusStyles.normal,
                             ),
                             child: TextButton(
                               onPressed: () {

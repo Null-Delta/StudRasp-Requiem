@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 
 import '../../styles/build_context_extension.dart';
@@ -13,28 +15,58 @@ class SearchTextField extends StatelessWidget {
   const SearchTextField({Key? key, required this.values, required this.controller, this.hint, this.isTop = false})
       : super(key: key);
 
+  Point<int> getSubString(String text) {
+    final point = Point(
+      text.indexOf(controller.text),
+      text.indexOf(controller.text) + controller.text.length,
+    );
+
+    if (point.x < 0) {
+      return const Point(0, 0);
+    } else {
+      return point;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
     final textStyles = context.textStyles;
 
+    // controller.addListener(() {
+    //   (context as Element).markNeedsBuild();
+    // });
+
     return SearchField(
       controller: controller,
       showListTop: isTop,
-      suggestions: values
-          .map(
-            (e) => SearchFieldListItem(
-              e,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: Text(
-                  e,
-                  style: textStyles.label,
-                ),
+      suggestions: values.map((e) {
+        return SearchFieldListItem(e, widgetBuilder: () {
+          final offset = getSubString(e);
+
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            child: RichText(
+              text: TextSpan(
+                children: [
+                  TextSpan(
+                    text: e.substring(0, offset.x),
+                    style: textStyles.label!.copyWith(color: colors.disable),
+                  ),
+                  TextSpan(
+                    text: e.substring(offset.x, offset.y),
+                    style: textStyles.label!.copyWith(color: colors.accentPrimary),
+                  ),
+                  TextSpan(
+                    text: e.substring(offset.y),
+                    style: textStyles.label!.copyWith(color: colors.disable),
+                  ),
+                ],
               ),
             ),
-          )
-          .toList(),
+          );
+        });
+      }).toList(),
       itemHeight: 42,
       marginColor: colors.separator,
       searchStyle: textStyles.label,
@@ -45,8 +77,8 @@ class SearchTextField extends StatelessWidget {
         color: colors.backgroundPrimary,
         boxShadow: [
           BoxShadow(
-            color: colors.shadow!.withOpacity(0.5),
-            blurRadius: 32.0,
+            color: colors.shadow!.withOpacity(1),
+            blurRadius: 64.0,
             spreadRadius: 0.1,
           ),
         ],
