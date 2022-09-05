@@ -6,6 +6,7 @@ import '../../providers/current_timetable.dart';
 import '../../providers/my_timetables.dart';
 import '../../providers/providers.dart';
 import '../../styles/build_context_extension.dart';
+import '../../styles/widget_styles.dart';
 import '../my_app.dart';
 import '../timetable_editor_page/timetable_editor_page.dart';
 import 'widgets/time_table_card.dart';
@@ -14,12 +15,10 @@ class EditableTimetableListPage extends ConsumerStatefulWidget {
   const EditableTimetableListPage({Key? key}) : super(key: key);
 
   @override
-  ConsumerState<EditableTimetableListPage> createState() =>
-      _EditableTimetableListPageState();
+  ConsumerState<EditableTimetableListPage> createState() => _EditableTimetableListPageState();
 }
 
-class _EditableTimetableListPageState
-    extends ConsumerState<EditableTimetableListPage> {
+class _EditableTimetableListPageState extends ConsumerState<EditableTimetableListPage> {
   ScrollController myTimeTablesController = ScrollController();
 
   bool showDivider = false;
@@ -73,8 +72,7 @@ class _EditableTimetableListPageState
               onPressed: () {
                 Navigator.pop(context);
               },
-              icon: Assets.images.circleChevronLeft
-                  .svg(color: colors.accentPrimary),
+              icon: Assets.images.circleChevronLeft.svg(color: colors.accentPrimary),
               splashRadius: 24,
             ),
           ),
@@ -84,8 +82,7 @@ class _EditableTimetableListPageState
               onPressed: () {
                 goToEditorPage();
               },
-              icon: Assets.images.iconEditOutline
-                  .svg(color: colors.accentPrimary),
+              icon: Assets.images.iconEditOutline.svg(color: colors.accentPrimary),
               color: colors.accentPrimary,
               splashRadius: 24,
             ),
@@ -113,16 +110,14 @@ class _EditableTimetableListPageState
               child: myTables.isEmpty
                   ? ListView(
                       children: [
+                        Spacer(),
                         Container(
                           alignment: Alignment.center,
-                          height: 128,
+                          height: 256,
                           child: DecoratedBox(
                             decoration: BoxDecoration(
-                              color: colors.accentPrimary,
-                              border: Border.all(),
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(8),
-                              ),
+                              color: colors.separator,
+                              borderRadius: BorderRadiusStyles.large,
                             ),
                             child: TextButton(
                               onPressed: () {
@@ -135,10 +130,12 @@ class _EditableTimetableListPageState
                                   ),
                                 );
                               },
-                              child: Text(
-                                "Создать первое расписание",
-                                style: textStyles.label!
-                                    .copyWith(color: colors.backgroundPrimary),
+                              child: Padding(
+                                padding: const EdgeInsets.all(16),
+                                child: Text(
+                                  "Создать первое расписание",
+                                  style: textStyles.label,
+                                ),
                               ),
                             ),
                           ),
@@ -155,8 +152,7 @@ class _EditableTimetableListPageState
                           timeTable: myTables[index],
                           button: PopupMenuButton(
                             iconSize: 24,
-                            icon: Assets.images.moreHorizontal
-                                .svg(color: colors.accentPrimary),
+                            icon: Assets.images.moreHorizontal.svg(color: colors.accentPrimary),
                             onSelected: (value) {
                               if (value == 0) {
                                 Navigator.pop(context);
@@ -169,9 +165,7 @@ class _EditableTimetableListPageState
                                 PopupMenuItem(
                                   value: 0,
                                   onTap: () {
-                                    ref
-                                        .read(localStorage.notifier)
-                                        .save(myTables[index]);
+                                    ref.read(localStorage.notifier).save(myTables[index]);
                                   },
                                   child: const Text("Использовать"),
                                 ),
@@ -184,9 +178,7 @@ class _EditableTimetableListPageState
                                   child: const Text("Удалить"),
                                   onTap: () {
                                     final id = myTables[index].id;
-                                    ref
-                                        .read(globalRepositoryStore)
-                                        .deleteTimetable(id);
+                                    ref.read(globalRepositoryStore).deleteTimetable(id);
                                     setState(() {
                                       myTables.removeWhere(
                                         (table) => table.id == id,
@@ -198,9 +190,7 @@ class _EditableTimetableListPageState
                             },
                           ),
                           onTap: () {
-                            ref
-                                .read(localStorage.notifier)
-                                .save(myTables[index]);
+                            ref.read(localStorage.notifier).save(myTables[index]);
                             goToMainPage();
                           },
                         );
