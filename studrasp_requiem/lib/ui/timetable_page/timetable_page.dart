@@ -146,31 +146,14 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
           ? Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                InkWell(
-                  onTap: () {
-                    ref.read(selectedDuration.notifier).update((state) {
-                      return const Duration();
-                    });
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return TimetableEditorPage(
-                            timeTable: timeTable,
-                          );
-                        },
-                      ),
-                    );
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Text(
-                      timeTable.name,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: textStyles.largeTitle,
-                      textAlign: TextAlign.start,
-                    ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Text(
+                    timeTable.name,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: textStyles.largeTitle,
+                    textAlign: TextAlign.start,
                   ),
                 ),
                 const WeekTimeline(),
