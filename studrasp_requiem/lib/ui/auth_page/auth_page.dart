@@ -63,11 +63,9 @@ class _AuthPageState extends ConsumerState<AuthPage>
         validationController.state['password']!;
 
     if (isValidate) {
-      print(
-        await ref
-            .read(userAuth.notifier)
-            .auth(email: email.text, password: password.text),
-      );
+      await ref
+          .read(userAuth.notifier)
+          .auth(email: email.text, password: password.text);
     }
   }
 
@@ -75,13 +73,11 @@ class _AuthPageState extends ConsumerState<AuthPage>
     ref.read(_activeValidatorProvider.notifier).state = true;
 
     if (validationController.isValidate()) {
-      print(
-        await ref.read(userAuth.notifier).reg(
-              name: name.text,
-              email: email.text,
-              password: password.text,
-            ),
-      );
+      await ref.read(userAuth.notifier).reg(
+            name: name.text,
+            email: email.text,
+            password: password.text,
+          );
     }
   }
 
