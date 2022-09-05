@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../styles/build_context_extension.dart';
+import '../../../styles/build_context_extension.dart';
 
 class LabeledText extends StatelessWidget {
   final String label;

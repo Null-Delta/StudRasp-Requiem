@@ -19,7 +19,7 @@ import '../../support/fast_swipe_physics.dart';
 import '../lesson_card/card_styles/editable_lesson_card.dart';
 import '../lesson_card/card_styles/empty_lesson_card.dart';
 import '../lesson_editor_page/lesson_editor_page.dart';
-import '../timetable_settings_page/labeled_text.dart';
+import '../timetable_settings_page/widgets/labeled_text.dart';
 import '../timetable_settings_page/timetable_settings_page.dart';
 import '../widgets/popup_menu_action.dart';
 import '../widgets/week_timeline.dart';

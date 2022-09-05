@@ -2,9 +2,9 @@ import 'package:day_night_time_picker/day_night_time_picker.dart';
 import 'package:day_night_time_picker/lib/constants.dart';
 import 'package:flutter/material.dart';
 
-import '../../models/time_interval/time_interval_model.dart';
-import '../../styles/build_context_extension.dart';
-import '../../support/date_time_converter.dart';
+import '../../../models/time_interval/time_interval_model.dart';
+import '../../../styles/build_context_extension.dart';
+import '../../../support/date_time_converter.dart';
 
 class LessonIntervalController extends ValueNotifier<TimeInterval> {
   LessonIntervalController(super.state);
