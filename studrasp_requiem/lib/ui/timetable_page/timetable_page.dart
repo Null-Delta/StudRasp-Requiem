@@ -8,18 +8,17 @@ import '../../models/timetable/timetable_model.dart';
 import '../../providers/current_timetable.dart';
 import '../../providers/providers.dart';
 import '../../styles/colors.dart';
-import '../../styles/widget_styles.dart';
 import '../../support/date_time_converter.dart';
 import '../../support/fast_swipe_physics.dart';
 import '../lesson_card/card_styles/lesson_card.dart';
 import '../search_page/search_page.dart';
-import '../timetable_editor_page/timetable_editor_page.dart';
 import '../timetable_list_pages/timetable_list_page.dart';
 import '../timetable_list_pages/widgets/searched_table_card.dart';
 import '../timetable_settings_page/widgets/labeled_text.dart';
 import '../widgets/week_timeline.dart';
 
 import '../../styles/build_context_extension.dart';
+import 'widgets/lesson_placeholder.dart';
 
 class TimetablePage extends ConsumerStatefulWidget {
   const TimetablePage({Key? key, required this.timetable}) : super(key: key);
@@ -31,7 +30,8 @@ class TimetablePage extends ConsumerStatefulWidget {
 }
 
 class _TimetablePageState extends ConsumerState<TimetablePage> {
-  final dayPageController = PageController(initialPage: 366);
+  static const initialPage = 366;
+  final dayPageController = PageController(initialPage: initialPage);
   Timer? timer;
 
   @override
@@ -81,10 +81,9 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
     int creationDay = 0;
     if (timeTable != null) {
       creationDay = Duration(
-                  milliseconds: timeTable.creationDate
-                      .startOfDay()
-                      .millisecondsSinceEpoch)
-              .inDays -
+            milliseconds:
+                timeTable.creationDate.startOfDay().millisecondsSinceEpoch,
+          ).inDays -
           timeTable.creationDate.weekday +
           1;
     }
@@ -185,14 +184,14 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
                       }
                     },
                     itemCount: 1000,
-                    itemBuilder: (context, pageImage) {
+                    itemBuilder: (context, pageIndex) {
                       final today = Duration(
                         milliseconds:
                             DateTime.now().startOfDay().millisecondsSinceEpoch,
                       ).inDays;
 
                       final dayIndex =
-                          (today - creationDay + pageImage - 366) % 14;
+                          (today - creationDay + pageIndex - 366) % 14;
                       return ListView(
                         physics: const BouncingScrollPhysics(
                           parent: AlwaysScrollableScrollPhysics(),
@@ -211,19 +210,8 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
                                 right: 16,
                                 top: 8,
                               ),
-                              child: Container(
-                                height: 96,
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                  color: colors.backgroundSecondary,
-                                  borderRadius: BorderRadiusStyles.large,
-                                ),
-                                child: Text(
-                                  "Сегодня пар нет",
-                                  style: textStyles.label!.copyWith(
-                                    color: colors.disable,
-                                  ),
-                                ),
+                              child: LessonPlaceholder(
+                                offset: pageIndex - initialPage,
                               ),
                             )
                           else
@@ -245,7 +233,7 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
                                         timeTable.config.timeIntervals[index],
                                     lesson:
                                         timeTable.days[dayIndex].lessons[index],
-                                    isToday: pageImage == 366,
+                                    isToday: pageIndex == 366,
                                   ),
                                 )
                         ],
