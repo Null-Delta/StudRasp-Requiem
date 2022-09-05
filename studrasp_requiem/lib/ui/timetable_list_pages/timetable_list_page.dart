@@ -125,7 +125,7 @@ class _TimetableListPageState extends ConsumerState<TimetableListPage> {
                               ),
                               position: PopupMenuPosition.under,
                               iconSize: 24,
-                              elevation: 16,
+                              elevation: 8,
                               splashRadius: 1,
                               icon: Assets.images.moreHorizontal.svg(color: colors.accentPrimary),
                               onSelected: (value) {
@@ -155,7 +155,8 @@ class _TimetableListPageState extends ConsumerState<TimetableListPage> {
                                     value: 1,
                                     child: PopupMenuAction(
                                       text: 'Удалить',
-                                      icon: Icon(Icons.delete, color: colors.destructive),
+                                      svgIcon: Assets.images.trashFull
+                                          .svg(color: colors.destructive),
                                       style: PopupMenuActionStyle.destructive,
                                     ),
                                   ),
