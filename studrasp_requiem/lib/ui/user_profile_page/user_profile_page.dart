@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../providers/user_auth.dart';
 import '../../styles/build_context_extension.dart';
+import '../timetable_list_pages/editable_timetable_list_page.dart';
 import '../timetable_list_pages/timetable_list_page.dart';
 import '../widgets/app_avatar.dart';
 
@@ -10,7 +11,8 @@ class UserProfilePage extends ConsumerStatefulWidget {
   const UserProfilePage({Key? key}) : super(key: key);
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _UserProfilePageState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _UserProfilePageState();
 }
 
 class _UserProfilePageState extends ConsumerState<UserProfilePage> {
@@ -23,7 +25,7 @@ class _UserProfilePageState extends ConsumerState<UserProfilePage> {
       context,
       MaterialPageRoute(
         builder: (context) {
-          return const TimetableListPage();
+          return const EditableTimetableListPage();
         },
       ),
     );
@@ -60,7 +62,9 @@ class _UserProfilePageState extends ConsumerState<UserProfilePage> {
               Text(user.email, style: textStyle.subtitle),
               const SizedBox(height: 4),
               Text(
-                user.isVerified ? 'Почта подтверждена' : 'Почта не подтверждена',
+                user.isVerified
+                    ? 'Почта подтверждена'
+                    : 'Почта не подтверждена',
                 style: textStyle.label!.copyWith(
                   color: colors.disable,
                 ),

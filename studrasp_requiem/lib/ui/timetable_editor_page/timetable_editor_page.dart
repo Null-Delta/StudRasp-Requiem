@@ -134,8 +134,8 @@ class _TimetableEditorPageState extends ConsumerState<_TimetableEditor> {
         leading: IconButton(
           padding: EdgeInsets.zero,
           onPressed: () {
-            if (ref.read(currentEditingTimetable) !=
-                Timetable.empty(ref.read(userAuth))) {
+            final Timetable newTimetable = ref.read(currentEditingTimetable);
+            if (!newTimetable.isEmpty) {
               ref
                   .read(myTimetables.notifier)
                   .save(ref.read(currentEditingTimetable));

@@ -27,7 +27,8 @@ class Timetable with _$Timetable {
     required bool isPublished,
   }) = _Timetable;
 
-  factory Timetable.fromJson(Map<String, dynamic> json) => _$TimetableFromJson(json);
+  factory Timetable.fromJson(Map<String, dynamic> json) =>
+      _$TimetableFromJson(json);
 
   //нужно получение данного пользователя
   factory Timetable.empty(AppUser user) {
@@ -45,6 +46,17 @@ class Timetable with _$Timetable {
     );
   }
 
+  bool get isEmpty {
+    for (var day in days) {
+      for (var lesson in day.lessons) {
+        if (!lesson.isEmpty) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
   factory Timetable.random(AppUser user) {
     return Timetable(
       id: '',
@@ -54,7 +66,10 @@ class Timetable with _$Timetable {
           Day(
             lessons: [
               for (int i = 0; i < 8; i++)
-                if (Random().nextInt(2) == 0) Lesson.random() else Lesson.empty()
+                if (Random().nextInt(2) == 0)
+                  Lesson.random()
+                else
+                  Lesson.empty()
             ],
           )
       ],
