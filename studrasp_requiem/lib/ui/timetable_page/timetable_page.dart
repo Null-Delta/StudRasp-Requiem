@@ -8,6 +8,7 @@ import '../../models/timetable/timetable_model.dart';
 import '../../providers/current_timetable.dart';
 import '../../providers/providers.dart';
 import '../../styles/colors.dart';
+import '../../styles/widget_styles.dart';
 import '../../support/date_time_converter.dart';
 import '../../support/fast_swipe_physics.dart';
 import '../lesson_card/card_styles/lesson_card.dart';
@@ -255,9 +256,31 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
               ],
             )
           : Center(
-              child: Text(
-                'Выберите расписание',
-                style: textStyles.label!.copyWith(color: colors.disable),
+              child: Container(
+                alignment: Alignment.center,
+                height: 256,
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: colors.backgroundPrimary,
+                    border: Border.all(
+                      color: colors.separator!,
+                      width: 1,
+                    ),
+                    borderRadius: BorderRadiusStyles.normal,
+                  ),
+                  child: TextButton(
+                    onPressed: () {
+                      openSearchPage(colors);
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Text(
+                        "Создать первое расписание",
+                        style: textStyles.label,
+                      ),
+                    ),
+                  ),
+                ),
               ),
             ),
     );
