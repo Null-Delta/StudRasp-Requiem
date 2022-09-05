@@ -75,7 +75,7 @@ class _MyAppState extends ConsumerState<MyApp> {
       routeInformationProvider: _router.routeInformationProvider,
       routerDelegate: _router.routerDelegate,
       routeInformationParser: _router.routeInformationParser,
-      title: 'Flutter Demo',
+      title: 'StudRasp',
       themeMode: ThemeMode.system,
       theme: AppTheme.getTheme(lightColors),
       darkTheme: AppTheme.getTheme(darkColors),

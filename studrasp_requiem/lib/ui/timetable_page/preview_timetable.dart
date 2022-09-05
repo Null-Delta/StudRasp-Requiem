@@ -83,7 +83,7 @@ class _TimetablePreviewState extends ConsumerState<TimetablePreview> {
 
     return Container(
       alignment: Alignment.center,
-      color: colors.separator,
+      color: colors.backgroundSecondary,
       child: Container(
         constraints: const BoxConstraints(maxWidth: 500),
         child: Scaffold(
