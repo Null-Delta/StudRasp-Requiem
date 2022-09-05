@@ -114,8 +114,6 @@ class _LessonEditorPageState extends ConsumerState<LessonEditorPage> {
     final colors = Theme.of(context).extension<AppColors>()!;
     final textStyles = Theme.of(context).extension<AppTextStyles>()!;
 
-    final lesson = ref.watch(currentEditingLesson).lesson;
-
     return Scaffold(
       appBar: AppBar(
         title: Text(

@@ -10,7 +10,6 @@ import '../../models/lesson/editable_lesson.dart';
 import '../../models/lesson/lesson_model.dart';
 import '../../models/time_interval/time_interval_model.dart';
 import '../../models/timetable/timetable_model.dart';
-import '../../models/user/user_model.dart';
 import '../../providers/my_timetables.dart';
 import '../../providers/providers.dart';
 import '../../providers/user_auth.dart';
@@ -35,7 +34,7 @@ class TimetableEditorPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     ref.read(currentEditingTimetable.notifier).state =
         timeTable ?? Timetable.empty(ref.read(userAuth));
-    return _TimetableEditor();
+    return const _TimetableEditor();
   }
 }
 

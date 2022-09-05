@@ -8,7 +8,6 @@ import '../../providers/providers.dart';
 import '../../styles/build_context_extension.dart';
 import '../my_app.dart';
 import '../timetable_editor_page/timetable_editor_page.dart';
-import '../timetable_page/timetable_page.dart';
 import 'widgets/time_table_card.dart';
 
 class EditableTimetableListPage extends ConsumerStatefulWidget {
@@ -190,7 +189,8 @@ class _EditableTimetableListPageState
                                         .deleteTimetable(id);
                                     setState(() {
                                       myTables.removeWhere(
-                                          (table) => table.id == id);
+                                        (table) => table.id == id,
+                                      );
                                     });
                                   },
                                 ),

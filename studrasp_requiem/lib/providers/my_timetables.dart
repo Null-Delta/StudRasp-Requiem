@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../models/timetable/timetable_model.dart';
@@ -17,8 +16,11 @@ final myTimetables =
 });
 
 class MyTimetablesNotifier extends StateNotifier<List<Timetable>> {
-  MyTimetablesNotifier(super.state,
-      {required this.timetableGlobalSavesRepository, required this.appUser}) {
+  MyTimetablesNotifier(
+    super.state, {
+    required this.timetableGlobalSavesRepository,
+    required this.appUser,
+  }) {
     update();
   }
   final TimetableGlobalSavesRepository timetableGlobalSavesRepository;

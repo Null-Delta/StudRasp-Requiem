@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../providers/user_auth.dart';
 import '../../styles/build_context_extension.dart';
 import '../timetable_list_pages/editable_timetable_list_page.dart';
-import '../timetable_list_pages/timetable_list_page.dart';
 import '../widgets/app_avatar.dart';
 
 class UserProfilePage extends ConsumerStatefulWidget {

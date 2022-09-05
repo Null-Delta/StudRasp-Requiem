@@ -3,11 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../gen/assets.gen.dart';
 import '../../models/timetable/timetable_model.dart';
 import '../../providers/current_timetable.dart';
-import '../../providers/my_timetables.dart';
 import '../../providers/providers.dart';
 import '../../styles/build_context_extension.dart';
-import '../../styles/widget_styles.dart';
-import '../timetable_editor_page/timetable_editor_page.dart';
 import 'widgets/time_table_card.dart';
 
 class TimetableListPage extends ConsumerStatefulWidget {
@@ -146,7 +143,8 @@ class _TimetableListPageState extends ConsumerState<TimetableListPage> {
                                           .removeFromSavedTimeTables(id);
                                       setState(() {
                                         savedTables.removeWhere(
-                                            (table) => table.id == id);
+                                          (table) => table.id == id,
+                                        );
                                       });
                                     },
                                   ),

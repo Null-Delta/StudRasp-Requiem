@@ -4,7 +4,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../gen/assets.gen.dart';
 import '../../models/timetable/timetable_model.dart';
 import '../../providers/current_timetable.dart';
 import '../../providers/providers.dart';
@@ -116,7 +115,8 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
                 final selected =
                     Duration(milliseconds: date.millisecondsSinceEpoch).inDays;
                 ref.read(selectedDuration.notifier).state = Duration(
-                    days: selected - Duration(milliseconds: now).inDays);
+                  days: selected - Duration(milliseconds: now).inDays,
+                );
                 ref.read(needSwipeDays.notifier).state = true;
               }
             });
@@ -225,7 +225,10 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
                               .isEmpty)
                             Padding(
                               padding: const EdgeInsets.only(
-                                  left: 16, right: 16, top: 8),
+                                left: 16,
+                                right: 16,
+                                top: 8,
+                              ),
                               child: Container(
                                 height: 96,
                                 alignment: Alignment.center,
