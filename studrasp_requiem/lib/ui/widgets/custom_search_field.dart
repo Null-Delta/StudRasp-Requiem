@@ -33,16 +33,14 @@ class SearchFieldListItem<T> {
 
   /// The widget to be shown in the searchField
   /// if not specified, Text widget with default styling will be used
-  final Widget? child;
+  final Widget Function()? widgetBuilder;
 
-  SearchFieldListItem(this.searchKey, {this.child, this.item, this.key});
+  SearchFieldListItem(this.searchKey, {this.widgetBuilder, this.item, this.key});
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        other is SearchFieldListItem &&
-            runtimeType == other.runtimeType &&
-            searchKey == other.searchKey;
+        other is SearchFieldListItem && runtimeType == other.runtimeType && searchKey == other.searchKey;
   }
 
   @override
@@ -260,8 +258,7 @@ class SearchField<T> extends StatefulWidget {
     this.textInputAction,
     this.validator,
   })  : assert(
-          (initialValue != null && suggestions.containsObject(initialValue)) ||
-              initialValue == null,
+          (initialValue != null && suggestions.containsObject(initialValue)) || initialValue == null,
           'Initial value should either be null or should be present in suggestions list.',
         ),
         super(key: key);
@@ -344,8 +341,7 @@ class SearchFieldState<T> extends State<SearchField<T>> {
     initialize();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _overlayEntry = _createOverlay();
-      if (widget.initialValue == null ||
-          widget.initialValue!.searchKey.isEmpty) {
+      if (widget.initialValue == null || widget.initialValue!.searchKey.isEmpty) {
         suggestionStream.sink.add(null);
       } else {
         searchController!.text = widget.initialValue!.searchKey;
@@ -373,6 +369,7 @@ class SearchFieldState<T> extends State<SearchField<T>> {
         setState(() {});
       }
     }
+
     if (oldWidget.suggestions != widget.suggestions) {
       suggestionStream.sink.add(widget.suggestions);
     }
@@ -400,6 +397,7 @@ class SearchFieldState<T> extends State<SearchField<T>> {
           }
           final onSurfaceColor = Theme.of(context).colorScheme.onSurface;
           return AnimatedContainer(
+            clipBehavior: Clip.antiAlias,
             duration: isUp ? Duration.zero : const Duration(milliseconds: 300),
             height: _totalHeight,
             alignment: Alignment.centerLeft,
@@ -420,66 +418,64 @@ class SearchFieldState<T> extends State<SearchField<T>> {
                     ),
                   ],
                 ),
-            child: ListView.builder(
-              reverse: isUp,
-              padding: EdgeInsets.zero,
-              itemCount: snapshot.data!.length,
-              physics: snapshot.data!.length == 1
-                  ? const NeverScrollableScrollPhysics()
-                  : const ScrollPhysics(),
-              itemBuilder: (context, index) => InkWell(
-                onTap: () {
-                  searchController!.text = snapshot.data![index]!.searchKey;
-                  searchController!.selection = TextSelection.fromPosition(
-                    TextPosition(
-                      offset: searchController!.text.length,
-                    ),
-                  );
+            child: Material(
+              type: MaterialType.transparency,
+              child: ListView.builder(
+                reverse: isUp,
+                padding: EdgeInsets.zero,
+                itemCount: snapshot.data!.length,
+                physics: snapshot.data!.length == 1 ? const NeverScrollableScrollPhysics() : const ScrollPhysics(),
+                itemBuilder: (context, index) => InkWell(
+                  onTap: () {
+                    searchController!.text = snapshot.data![index]!.searchKey;
+                    searchController!.selection = TextSelection.fromPosition(
+                      TextPosition(
+                        offset: searchController!.text.length,
+                      ),
+                    );
 
-                  // suggestion action to switch focus to next focus node
-                  if (widget.suggestionAction != null) {
-                    if (widget.suggestionAction == SuggestionAction.next) {
-                      _focus!.nextFocus();
-                    } else if (widget.suggestionAction ==
-                        SuggestionAction.unfocus) {
-                      _focus!.unfocus();
+                    // suggestion action to switch focus to next focus node
+                    if (widget.suggestionAction != null) {
+                      if (widget.suggestionAction == SuggestionAction.next) {
+                        _focus!.nextFocus();
+                      } else if (widget.suggestionAction == SuggestionAction.unfocus) {
+                        _focus!.unfocus();
+                      }
                     }
-                  }
 
-                  // hide the suggestions
-                  suggestionStream.sink.add(null);
-                  if (widget.onSuggestionTap != null) {
-                    widget.onSuggestionTap!(snapshot.data![index]!);
-                  }
-                },
-                child: Container(
-                  height: widget.itemHeight,
-                  width: double.infinity,
-                  alignment: Alignment.centerLeft,
-                  decoration: widget.suggestionItemDecoration?.copyWith(
-                        border: widget.suggestionItemDecoration?.border ??
-                            Border(
-                              bottom: BorderSide(
-                                color: widget.marginColor ??
-                                    onSurfaceColor.withOpacity(0.1),
-                              ),
-                            ),
-                      ) ??
-                      BoxDecoration(
-                        border: index == snapshot.data!.length - 1
-                            ? null
-                            : Border(
+                    // hide the suggestions
+                    suggestionStream.sink.add(null);
+                    if (widget.onSuggestionTap != null) {
+                      widget.onSuggestionTap!(snapshot.data![index]!);
+                    }
+                  },
+                  child: Container(
+                    height: widget.itemHeight,
+                    width: double.infinity,
+                    alignment: Alignment.centerLeft,
+                    decoration: widget.suggestionItemDecoration?.copyWith(
+                          border: widget.suggestionItemDecoration?.border ??
+                              Border(
                                 bottom: BorderSide(
-                                  color: widget.marginColor ??
-                                      onSurfaceColor.withOpacity(0.1),
+                                  color: widget.marginColor ?? onSurfaceColor.withOpacity(0.1),
                                 ),
                               ),
-                      ),
-                  child: snapshot.data![index]!.child ??
-                      Text(
-                        snapshot.data![index]!.searchKey,
-                        style: widget.suggestionStyle,
-                      ),
+                        ) ??
+                        BoxDecoration(
+                          border: index == snapshot.data!.length - 1
+                              ? null
+                              : Border(
+                                  bottom: BorderSide(
+                                    color: widget.marginColor ?? onSurfaceColor.withOpacity(0.1),
+                                  ),
+                                ),
+                        ),
+                    child: snapshot.data![index]!.widgetBuilder?.call() ??
+                        Text(
+                          snapshot.data![index]!.searchKey,
+                          style: widget.suggestionStyle,
+                        ),
+                  ),
                 ),
               ),
             ),
@@ -499,8 +495,7 @@ class SearchFieldState<T> extends State<SearchField<T>> {
   ) {
     if (mounted) {
       final size = MediaQuery.of(context).size;
-      final isSpaceAvailable = size.height >
-          textFieldOffset.dy + textFieldSize.height + _totalHeight;
+      final isSpaceAvailable = size.height > textFieldOffset.dy + textFieldSize.height + _totalHeight;
 
       if (widget.showListTop) {
         isUp = true;
@@ -536,8 +531,7 @@ class SearchFieldState<T> extends State<SearchField<T>> {
   }
 
   OverlayEntry _createOverlay() {
-    final textFieldRenderBox =
-        key.currentContext!.findRenderObject() as RenderBox;
+    final textFieldRenderBox = key.currentContext!.findRenderObject() as RenderBox;
     final textFieldSize = textFieldRenderBox.size;
     final offset = textFieldRenderBox.localToGlobal(Offset.zero);
     return OverlayEntry(
@@ -555,9 +549,7 @@ class SearchFieldState<T> extends State<SearchField<T>> {
             left: offset.dx,
             width: textFieldSize.width,
             child: CompositedTransformFollower(
-              offset: widget.offset ??
-                  getYOffset(offset, textFieldSize, count) ??
-                  Offset.zero,
+              offset: widget.offset ?? getYOffset(offset, textFieldSize, count) ?? Offset.zero,
               link: _layerLink,
               child: Material(child: _suggestionsBuilder()),
             ),
@@ -591,8 +583,7 @@ class SearchFieldState<T> extends State<SearchField<T>> {
             },
             onTap: () {
               /// only call if SuggestionState = [Suggestion.expand]
-              if (!isSuggestionExpanded &&
-                  widget.suggestionState == Suggestion.expand) {
+              if (!isSuggestionExpanded && widget.suggestionState == Suggestion.expand) {
                 suggestionStream.sink.add(widget.suggestions);
                 if (mounted) {
                   setState(() {
@@ -609,8 +600,7 @@ class SearchFieldState<T> extends State<SearchField<T>> {
             textInputAction: widget.textInputAction,
             keyboardType: widget.inputType,
             decoration:
-                widget.searchInputDecoration?.copyWith(hintText: widget.hint) ??
-                    InputDecoration(hintText: widget.hint),
+                widget.searchInputDecoration?.copyWith(hintText: widget.hint) ?? InputDecoration(hintText: widget.hint),
             onChanged: (query) {
               final searchResult = <SearchFieldListItem<T>>[];
               if (query.isEmpty) {
@@ -619,9 +609,7 @@ class SearchFieldState<T> extends State<SearchField<T>> {
                 return;
               }
               for (final suggestion in widget.suggestions) {
-                if (suggestion.searchKey
-                    .toLowerCase()
-                    .contains(query.toLowerCase())) {
+                if (suggestion.searchKey.toLowerCase().contains(query.toLowerCase())) {
                   searchResult.add(suggestion);
                 }
               }

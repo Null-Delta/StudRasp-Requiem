@@ -151,8 +151,6 @@ class _TimetableEditorPageState extends ConsumerState<_TimetableEditor> {
           IconButton(
             padding: EdgeInsets.zero,
             onPressed: () {
-              // временно переход в настройки
-
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) {
@@ -313,17 +311,15 @@ class _TimetableEditorPageState extends ConsumerState<_TimetableEditor> {
                             padding: const EdgeInsets.only(bottom: 12),
                             child: EditableLessonCard(
                               index: index + 1,
-                              // взять из заданного времени
                               interval: TimeInterval(
                                 from: config.timeIntervals[index].from,
                                 to: config.timeIntervals[index].to,
                               ),
                               lesson: days[dayIndex].lessons[index],
                               actions: [
-                                // реализовать действия
                                 PopupMenuAction(
                                   text: "Изменить",
-                                  icon: Assets.images.iconEditOutline
+                                  svgIcon: Assets.images.iconEditOutline
                                       .svg(color: colors.accentPrimary),
                                   action: () {
                                     ref
@@ -335,21 +331,26 @@ class _TimetableEditorPageState extends ConsumerState<_TimetableEditor> {
                                       number: index,
                                       lesson: days[dayIndex].lessons[index],
                                     );
-
-                                    context.go(context.namedLocation('lesson'));
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            const LessonEditorPage(),
+                                      ),
+                                    );
                                   },
                                 ),
                                 PopupMenuAction(
                                   text: "Копировать пару",
-                                  icon: Assets.images.command
+                                  svgIcon: Assets.images.command
                                       .svg(color: colors.accentPrimary),
                                   action: () {
                                     copyLesson(days[dayIndex].lessons[index]);
                                   },
                                 ),
                                 PopupMenuAction(
-                                  text: "Удалить",
-                                  icon: Assets.images.trashFull
+                                  text: "Очистить",
+                                  svgIcon: Assets.images.trashFull
                                       .svg(color: colors.accentPrimary),
                                   action: () {
                                     deleteLesson(dayIndex, index);
@@ -358,7 +359,7 @@ class _TimetableEditorPageState extends ConsumerState<_TimetableEditor> {
                                 ),
                               ],
                             ),
-                          )
+                          ),
                     ],
                   );
                 },

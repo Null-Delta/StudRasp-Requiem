@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/timetable/timetable_model.dart';
@@ -72,21 +73,32 @@ class _MyAppState extends ConsumerState<MyApp> {
 
     ref.read(userAuth);
 
-    return MaterialApp.router(
-      routeInformationProvider: _router.routeInformationProvider,
-      routerDelegate: _router.routerDelegate,
-      routeInformationParser: _router.routeInformationParser,
-      localizationsDelegates: [
-        GlobalMaterialLocalizations.delegate,
-      ],
-      supportedLocales: [
-        const Locale('ru'),
-        const Locale('en'),
-      ],
-      title: 'StudRasp',
-      themeMode: ThemeMode.system,
-      theme: AppTheme.getTheme(lightColors),
-      darkTheme: AppTheme.getTheme(darkColors),
+    return Container(
+      color: SchedulerBinding.instance.window.platformBrightness == Brightness.dark
+          ? darkColors.backgroundSecondary
+          : lightColors.backgroundSecondary,
+      alignment: Alignment.center,
+      child: Container(
+        clipBehavior: Clip.antiAlias,
+        decoration: const BoxDecoration(),
+        constraints: const BoxConstraints(maxWidth: 500),
+        child: MaterialApp.router(
+          routeInformationProvider: _router.routeInformationProvider,
+          routerDelegate: _router.routerDelegate,
+          routeInformationParser: _router.routeInformationParser,
+          localizationsDelegates: const [
+            GlobalMaterialLocalizations.delegate,
+          ],
+          supportedLocales: const [
+            Locale('ru'),
+            Locale('en'),
+          ],
+          title: 'StudRasp',
+          themeMode: ThemeMode.system,
+          theme: AppTheme.getTheme(lightColors),
+          darkTheme: AppTheme.getTheme(darkColors),
+        ),
+      ),
     );
   }
 }
@@ -109,7 +121,9 @@ class _HomePageState extends ConsumerState<HomePage> {
   Widget build(BuildContext context) {
     final colors = context.colors;
     final pages = [
-      TimetablePage(timetable: ref.watch(localStorage.select((value) => value.currentTimetable))),
+      TimetablePage(
+        timetable: ref.watch(localStorage.select((value) => value.currentTimetable)),
+      ),
       const AuthUserPage(),
     ];
     return Scaffold(
