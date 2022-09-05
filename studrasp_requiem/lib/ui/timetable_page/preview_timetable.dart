@@ -79,10 +79,9 @@ class _TimetablePreviewState extends ConsumerState<TimetablePreview> {
     int creationDay = 0;
     if (widget.table != null) {
       creationDay = Duration(
-                  milliseconds: widget.table!.creationDate
-                      .startOfDay()
-                      .millisecondsSinceEpoch)
-              .inDays -
+            milliseconds:
+                widget.table!.creationDate.startOfDay().millisecondsSinceEpoch,
+          ).inDays -
           widget.table!.creationDate.weekday +
           1;
     }
@@ -124,7 +123,8 @@ class _TimetablePreviewState extends ConsumerState<TimetablePreview> {
                         Duration(milliseconds: date.millisecondsSinceEpoch)
                             .inDays;
                     ref.read(selectedDuration.notifier).state = Duration(
-                        days: selected - Duration(milliseconds: now).inDays);
+                      days: selected - Duration(milliseconds: now).inDays,
+                    );
                     ref.read(needSwipeDays.notifier).state = true;
                   }
                 });
@@ -188,7 +188,10 @@ class _TimetablePreviewState extends ConsumerState<TimetablePreview> {
                                   .isEmpty)
                                 Padding(
                                   padding: const EdgeInsets.only(
-                                      left: 16, right: 16, top: 8),
+                                    left: 16,
+                                    right: 16,
+                                    top: 8,
+                                  ),
                                   child: Container(
                                     height: 96,
                                     alignment: Alignment.center,

@@ -19,10 +19,12 @@ class EditableTimetableListPage extends ConsumerStatefulWidget {
   const EditableTimetableListPage({Key? key}) : super(key: key);
 
   @override
-  ConsumerState<EditableTimetableListPage> createState() => _EditableTimetableListPageState();
+  ConsumerState<EditableTimetableListPage> createState() =>
+      _EditableTimetableListPageState();
 }
 
-class _EditableTimetableListPageState extends ConsumerState<EditableTimetableListPage> {
+class _EditableTimetableListPageState
+    extends ConsumerState<EditableTimetableListPage> {
   ScrollController myTimeTablesController = ScrollController();
 
   bool showDivider = false;
@@ -59,10 +61,11 @@ class _EditableTimetableListPageState extends ConsumerState<EditableTimetableLis
 
   Future<void> shareTimetable(Timetable timetable) async {
     await FlutterShare.share(
-        title: 'Поделиться расписанием',
-        text: 'Расписание ${timetable.name}',
-        linkUrl: 'https://studrasp-4e58d.web.app/#/timetable/${timetable.id}',
-        chooserTitle: 'Поделиться расписанием');
+      title: 'Поделиться расписанием',
+      text: 'Расписание ${timetable.name}',
+      linkUrl: 'https://studrasp-4e58d.web.app/#/timetable/${timetable.id}',
+      chooserTitle: 'Поделиться расписанием',
+    );
   }
 
   @override
@@ -84,7 +87,8 @@ class _EditableTimetableListPageState extends ConsumerState<EditableTimetableLis
               onPressed: () {
                 Navigator.pop(context);
               },
-              icon: Assets.images.circleChevronLeft.svg(color: colors.accentPrimary),
+              icon: Assets.images.circleChevronLeft
+                  .svg(color: colors.accentPrimary),
               splashRadius: 24,
             ),
           ),
@@ -94,7 +98,8 @@ class _EditableTimetableListPageState extends ConsumerState<EditableTimetableLis
               onPressed: () {
                 goToEditorPage();
               },
-              icon: Assets.images.iconEditOutline.svg(color: colors.accentPrimary),
+              icon: Assets.images.iconEditOutline
+                  .svg(color: colors.accentPrimary),
               color: colors.accentPrimary,
               splashRadius: 24,
             ),
@@ -122,7 +127,7 @@ class _EditableTimetableListPageState extends ConsumerState<EditableTimetableLis
               child: myTables.isEmpty
                   ? ListView(
                       children: [
-                        Spacer(),
+                        const Spacer(),
                         Container(
                           alignment: Alignment.center,
                           height: 256,
@@ -164,7 +169,8 @@ class _EditableTimetableListPageState extends ConsumerState<EditableTimetableLis
                           timeTable: myTables[index],
                           button: PopupMenuButton(
                             iconSize: 24,
-                            icon: Assets.images.moreHorizontal.svg(color: colors.accentPrimary),
+                            icon: Assets.images.moreHorizontal
+                                .svg(color: colors.accentPrimary),
                             onSelected: (value) {
                               if (value == 0) {
                                 Navigator.pop(context);
@@ -179,7 +185,9 @@ class _EditableTimetableListPageState extends ConsumerState<EditableTimetableLis
                                 PopupMenuItem(
                                   value: 0,
                                   onTap: () {
-                                    ref.read(localStorage.notifier).save(myTables[index]);
+                                    ref
+                                        .read(localStorage.notifier)
+                                        .save(myTables[index]);
                                   },
                                   child: const Text("Использовать"),
                                 ),
@@ -197,7 +205,9 @@ class _EditableTimetableListPageState extends ConsumerState<EditableTimetableLis
                                   child: const Text("Удалить"),
                                   onTap: () {
                                     final id = myTables[index].id;
-                                    ref.read(globalRepositoryStore).deleteTimetable(id);
+                                    ref
+                                        .read(globalRepositoryStore)
+                                        .deleteTimetable(id);
                                     setState(() {
                                       myTables.removeWhere(
                                         (table) => table.id == id,
@@ -209,7 +219,9 @@ class _EditableTimetableListPageState extends ConsumerState<EditableTimetableLis
                             },
                           ),
                           onTap: () {
-                            ref.read(localStorage.notifier).save(myTables[index]);
+                            ref
+                                .read(localStorage.notifier)
+                                .save(myTables[index]);
                             goToMainPage();
                           },
                         );

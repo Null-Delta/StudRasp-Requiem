@@ -151,8 +151,6 @@ class _TimetableEditorPageState extends ConsumerState<_TimetableEditor> {
           IconButton(
             padding: EdgeInsets.zero,
             onPressed: () {
-              // временно переход в настройки
-
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) {
@@ -313,14 +311,12 @@ class _TimetableEditorPageState extends ConsumerState<_TimetableEditor> {
                             padding: const EdgeInsets.only(bottom: 12),
                             child: EditableLessonCard(
                               index: index + 1,
-                              // взять из заданного времени
                               interval: TimeInterval(
                                 from: config.timeIntervals[index].from,
                                 to: config.timeIntervals[index].to,
                               ),
                               lesson: days[dayIndex].lessons[index],
                               actions: [
-                                // реализовать действия
                                 PopupMenuAction(
                                   text: "Изменить",
                                   icon: Assets.images.iconEditOutline
@@ -335,8 +331,13 @@ class _TimetableEditorPageState extends ConsumerState<_TimetableEditor> {
                                       number: index,
                                       lesson: days[dayIndex].lessons[index],
                                     );
-
-                                    context.go(context.namedLocation('lesson'));
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            const LessonEditorPage(),
+                                      ),
+                                    );
                                   },
                                 ),
                                 PopupMenuAction(

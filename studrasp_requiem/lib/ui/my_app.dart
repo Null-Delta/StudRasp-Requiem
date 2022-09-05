@@ -37,7 +37,10 @@ class _MyAppState extends ConsumerState<MyApp> {
         path: '/timetable/:tid',
         builder: (BuildContext context, GoRouterState state) {
           return FutureBuilder<List<Timetable>?>(
-            future: ref.read(globalRepositoryStore.notifier).state.getTimetablesOnId([state.params['tid']!]),
+            future: ref
+                .read(globalRepositoryStore.notifier)
+                .state
+                .getTimetablesOnId([state.params['tid']!]),
             builder: (context, snap) {
               if (snap.hasData) {
                 return TimetablePreview(
@@ -76,12 +79,12 @@ class _MyAppState extends ConsumerState<MyApp> {
       routeInformationProvider: _router.routeInformationProvider,
       routerDelegate: _router.routerDelegate,
       routeInformationParser: _router.routeInformationParser,
-      localizationsDelegates: [
+      localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
       ],
-      supportedLocales: [
-        const Locale('ru'),
-        const Locale('en'),
+      supportedLocales: const [
+        Locale('ru'),
+        Locale('en'),
       ],
       title: 'StudRasp',
       themeMode: ThemeMode.system,
@@ -109,7 +112,10 @@ class _HomePageState extends ConsumerState<HomePage> {
   Widget build(BuildContext context) {
     final colors = context.colors;
     final pages = [
-      TimetablePage(timetable: ref.watch(localStorage.select((value) => value.currentTimetable))),
+      TimetablePage(
+        timetable:
+            ref.watch(localStorage.select((value) => value.currentTimetable)),
+      ),
       const AuthUserPage(),
     ];
     return Scaffold(

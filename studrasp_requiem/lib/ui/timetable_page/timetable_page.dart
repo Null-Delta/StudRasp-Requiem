@@ -13,7 +13,6 @@ import '../../support/date_time_converter.dart';
 import '../../support/fast_swipe_physics.dart';
 import '../lesson_card/card_styles/lesson_card.dart';
 import '../search_page/search_page.dart';
-import '../timetable_editor_page/timetable_editor_page.dart';
 import '../timetable_list_pages/timetable_list_page.dart';
 import '../timetable_list_pages/widgets/searched_table_card.dart';
 import '../timetable_settings_page/widgets/labeled_text.dart';
@@ -81,10 +80,9 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
     int creationDay = 0;
     if (timeTable != null) {
       creationDay = Duration(
-                  milliseconds: timeTable.creationDate
-                      .startOfDay()
-                      .millisecondsSinceEpoch)
-              .inDays -
+            milliseconds:
+                timeTable.creationDate.startOfDay().millisecondsSinceEpoch,
+          ).inDays -
           timeTable.creationDate.weekday +
           1;
     }

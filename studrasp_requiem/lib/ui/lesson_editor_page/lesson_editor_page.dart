@@ -38,6 +38,8 @@ class _LessonEditorPageState extends ConsumerState<LessonEditorPage> {
   late List<String> audiencesList;
   late List<String> lessonTypesList;
 
+  late String oldNameText = lesson.name;
+
   @override
   void initState() {
     super.initState();
@@ -83,6 +85,15 @@ class _LessonEditorPageState extends ConsumerState<LessonEditorPage> {
         .where((name) => name.isNotEmpty)
         .toSet()
         .toList();
+
+    name.addListener(checkIsCanBeSaved);
+  }
+
+  void checkIsCanBeSaved() {
+    if (name.text.isEmpty && oldNameText.isNotEmpty ||
+        name.text.isNotEmpty && oldNameText.isEmpty) {
+      setState(() {});
+    }
   }
 
   void saveChanges() {
@@ -123,7 +134,7 @@ class _LessonEditorPageState extends ConsumerState<LessonEditorPage> {
         leading: IconButton(
           padding: EdgeInsets.zero,
           onPressed: () {
-            saveChanges();
+            Navigator.of(context).pop();
           },
           icon: SvgPicture.asset(
             Assets.images.circleChevronLeft.path,
@@ -131,6 +142,23 @@ class _LessonEditorPageState extends ConsumerState<LessonEditorPage> {
           ),
           splashRadius: 24,
         ),
+        actions: [
+          IconButton(
+            padding: EdgeInsets.zero,
+            enableFeedback: name.text.isNotEmpty,
+            onPressed: () {
+              if (name.text.isNotEmpty) {
+                saveChanges();
+              }
+            },
+            icon: SvgPicture.asset(
+              Assets.images.circleCheckOutline.path,
+              color:
+                  name.text.isNotEmpty ? colors.accentPrimary : colors.disable,
+            ),
+            splashRadius: 24,
+          ),
+        ],
       ),
       body: ListView(
         children: [
