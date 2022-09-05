@@ -244,9 +244,31 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
               ],
             )
           : Center(
-              child: Text(
-                'Выберите расписание',
-                style: textStyles.label!.copyWith(color: colors.disable),
+              child: Container(
+                alignment: Alignment.center,
+                height: 256,
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: colors.backgroundPrimary,
+                    border: Border.all(
+                      color: colors.separator!,
+                      width: 1,
+                    ),
+                    borderRadius: BorderRadiusStyles.normal,
+                  ),
+                  child: TextButton(
+                    onPressed: () {
+                      openSearchPage(colors);
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Text(
+                        "Создать первое расписание",
+                        style: textStyles.label,
+                      ),
+                    ),
+                  ),
+                ),
               ),
             ),
     );

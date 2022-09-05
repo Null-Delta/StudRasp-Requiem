@@ -1,5 +1,4 @@
-import 'dart:io';
-
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../gen/assets.gen.dart';
@@ -13,6 +12,7 @@ import '../my_app.dart';
 import '../timetable_editor_page/timetable_editor_page.dart';
 import '../widgets/popup_menu_action.dart';
 import 'widgets/time_table_card.dart';
+import 'package:flutter/services.dart';
 
 import 'package:flutter_share/flutter_share.dart';
 
@@ -66,6 +66,14 @@ class _EditableTimetableListPageState
       text: 'Расписание ${timetable.name}',
       linkUrl: 'https://studrasp-4e58d.web.app/#/timetable/${timetable.id}',
       chooserTitle: 'Поделиться расписанием',
+    );
+  }
+
+  void copyLink(Timetable timetable) {
+    Clipboard.setData(
+      ClipboardData(
+        text: 'https://studrasp-4e58d.web.app/#/timetable/${timetable.id}',
+      ),
     );
   }
 
@@ -173,6 +181,7 @@ class _EditableTimetableListPageState
                         return TimetableCard(
                           timeTable: myTables[index],
                           button: PopupMenuButton(
+                            enabled: true,
                             padding: EdgeInsets.zero,
                             shape: const RoundedRectangleBorder(
                               borderRadius: BorderRadius.all(
@@ -204,7 +213,11 @@ class _EditableTimetableListPageState
                                   );
                                 });
                               } else if (value == 3) {
-                                shareTimetable(myTables[index]);
+                                if (kIsWeb) {
+                                  copyLink(myTables[index]);
+                                } else {
+                                  shareTimetable(myTables[index]);
+                                }
                               }
                             },
                             itemBuilder: (context) {
@@ -216,7 +229,15 @@ class _EditableTimetableListPageState
                                     icon: Icon(Icons.playlist_add_check),
                                   ),
                                 ),
-                                if (Platform.isAndroid || Platform.isIOS)
+                                if (kIsWeb)
+                                  const PopupMenuItem(
+                                    value: 3,
+                                    child: PopupMenuAction(
+                                      text: 'Скопировать ссылку',
+                                      icon: Icon(Icons.ios_share_outlined),
+                                    ),
+                                  )
+                                else
                                   const PopupMenuItem(
                                     value: 3,
                                     child: PopupMenuAction(
@@ -232,11 +253,14 @@ class _EditableTimetableListPageState
                                         .svg(color: colors.accentPrimary),
                                   ),
                                 ),
-                                const PopupMenuItem(
+                                PopupMenuItem(
                                   value: 2,
                                   child: PopupMenuAction(
                                     text: 'Удалить',
-                                    icon: Icon(Icons.delete),
+                                    icon: Icon(
+                                      Icons.delete,
+                                      color: colors.destructive,
+                                    ),
                                     style: PopupMenuActionStyle.destructive,
                                   ),
                                 ),

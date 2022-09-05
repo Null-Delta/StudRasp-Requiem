@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:go_router/go_router.dart';
 import '../../gen/assets.gen.dart';
 import '../../models/day/day_model.dart';
 import '../../models/lesson/editable_lesson.dart';

@@ -1,4 +1,4 @@
-import 'dart:html';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 
@@ -12,8 +12,13 @@ class SearchTextField extends StatelessWidget {
   final bool isTop;
   final TextEditingController controller;
 
-  const SearchTextField({Key? key, required this.values, required this.controller, this.hint, this.isTop = false})
-      : super(key: key);
+  const SearchTextField({
+    Key? key,
+    required this.values,
+    required this.controller,
+    this.hint,
+    this.isTop = false,
+  }) : super(key: key);
 
   Point<int> getSubString(String text) {
     final point = Point(
@@ -41,31 +46,35 @@ class SearchTextField extends StatelessWidget {
       controller: controller,
       showListTop: isTop,
       suggestions: values.map((e) {
-        return SearchFieldListItem(e, widgetBuilder: () {
-          final offset = getSubString(e);
+        return SearchFieldListItem(
+          e,
+          widgetBuilder: () {
+            final offset = getSubString(e);
 
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            child: RichText(
-              text: TextSpan(
-                children: [
-                  TextSpan(
-                    text: e.substring(0, offset.x),
-                    style: textStyles.label!.copyWith(color: colors.disable),
-                  ),
-                  TextSpan(
-                    text: e.substring(offset.x, offset.y),
-                    style: textStyles.label!.copyWith(color: colors.accentPrimary),
-                  ),
-                  TextSpan(
-                    text: e.substring(offset.y),
-                    style: textStyles.label!.copyWith(color: colors.disable),
-                  ),
-                ],
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              child: RichText(
+                text: TextSpan(
+                  children: [
+                    TextSpan(
+                      text: e.substring(0, offset.x),
+                      style: textStyles.label!.copyWith(color: colors.disable),
+                    ),
+                    TextSpan(
+                      text: e.substring(offset.x, offset.y),
+                      style: textStyles.label!
+                          .copyWith(color: colors.accentPrimary),
+                    ),
+                    TextSpan(
+                      text: e.substring(offset.y),
+                      style: textStyles.label!.copyWith(color: colors.disable),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          );
-        });
+            );
+          },
+        );
       }).toList(),
       itemHeight: 42,
       marginColor: colors.separator,

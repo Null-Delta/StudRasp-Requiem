@@ -159,11 +159,14 @@ class _TimetableListPageState extends ConsumerState<TimetableListPage> {
                                       icon: Icon(Icons.playlist_add_check),
                                     ),
                                   ),
-                                  const PopupMenuItem(
+                                  PopupMenuItem(
                                     value: 1,
                                     child: PopupMenuAction(
                                       text: 'Удалить',
-                                      icon: Icon(Icons.delete),
+                                      icon: Icon(
+                                        Icons.delete,
+                                        color: colors.destructive,
+                                      ),
                                       style: PopupMenuActionStyle.destructive,
                                     ),
                                   ),
