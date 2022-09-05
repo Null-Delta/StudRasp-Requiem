@@ -64,7 +64,7 @@ class AboutPage extends ConsumerWidget {
               ),
               const SizedBox(height: 16),
               Text(
-                'Удобное приложения для просмотра твоего расписания',
+                'Удобное приложение для просмотра твоего расписания',
                 style: textStyles.label!.copyWith(
                   color: colors.disable,
                 ),
