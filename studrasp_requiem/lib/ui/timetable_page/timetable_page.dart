@@ -9,6 +9,7 @@ import '../../providers/current_timetable.dart';
 import '../../providers/providers.dart';
 import '../../styles/colors.dart';
 import '../../styles/widget_styles.dart';
+import '../../support/date_time_converter.dart';
 import '../../support/fast_swipe_physics.dart';
 import '../lesson_card/card_styles/lesson_card.dart';
 import '../search_page/search_page.dart';
@@ -74,16 +75,13 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
       },
     );
 
-    final timeTable =
-        ref.watch(localStorage.select((value) => value.currentTimetable));
+    final timeTable = ref.watch(localStorage.select((value) => value.currentTimetable));
 
     int creationDay = 0;
     if (timeTable != null) {
-      creationDay =
-          Duration(milliseconds: timeTable.creationDate.millisecondsSinceEpoch)
-                  .inDays -
-              timeTable.creationDate.weekday +
-              1;
+      creationDay = Duration(milliseconds: timeTable.creationDate.startOfDay().millisecondsSinceEpoch).inDays -
+          timeTable.creationDate.weekday +
+          1;
     }
     return Scaffold(
       appBar: AppBar(
@@ -93,8 +91,7 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
           splashRadius: 24,
           onPressed: () {
             final selectedDate = DateTime.fromMillisecondsSinceEpoch(
-              ref.read(currentDate).millisecondsSinceEpoch +
-                  ref.read(selectedDuration).inMilliseconds,
+              ref.read(currentDate).millisecondsSinceEpoch + ref.read(selectedDuration).inMilliseconds,
             );
             showDatePicker(
               context: context,
@@ -104,19 +101,11 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
             ).then((date) {
               if (date != null) {
                 var now = Duration(
-                  milliseconds: ref.read(currentDate).millisecondsSinceEpoch,
-                ).inMilliseconds;
+                  milliseconds: ref.read(currentDate).startOfDay().millisecondsSinceEpoch,
+                ).inDays;
 
-                now -= ref.read(currentDate).hour * 3600 * 1000;
-                now -= ref.read(currentDate).minute * 60 * 1000;
-                now -= ref.read(currentDate).second * 1000;
-                now -= ref.read(currentDate).millisecond;
-
-                final selected =
-                    Duration(milliseconds: date.millisecondsSinceEpoch).inDays;
-                ref.read(selectedDuration.notifier).state = Duration(
-                  days: selected - Duration(milliseconds: now).inDays,
-                );
+                final selected = Duration(milliseconds: date.millisecondsSinceEpoch).inDays;
+                ref.read(selectedDuration.notifier).state = Duration(days: selected - now);
                 ref.read(needSwipeDays.notifier).state = true;
               }
             });
@@ -157,31 +146,14 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
           ? Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                InkWell(
-                  onTap: () {
-                    ref.read(selectedDuration.notifier).update((state) {
-                      return const Duration();
-                    });
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return TimetableEditorPage(
-                            timeTable: timeTable,
-                          );
-                        },
-                      ),
-                    );
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Text(
-                      timeTable.name,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: textStyles.largeTitle,
-                      textAlign: TextAlign.start,
-                    ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Text(
+                    timeTable.name,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: textStyles.largeTitle,
+                    textAlign: TextAlign.start,
                   ),
                 ),
                 const WeekTimeline(),
@@ -199,18 +171,16 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
                     dragStartBehavior: DragStartBehavior.down,
                     onPageChanged: (value) {
                       if (!ref.read(daysSwiping)) {
-                        ref.read(selectedDuration.notifier).state =
-                            Duration(days: value - 366);
+                        ref.read(selectedDuration.notifier).state = Duration(days: value - 366);
                       }
                     },
                     itemCount: 1000,
                     itemBuilder: (context, pageImage) {
                       final today = Duration(
-                        milliseconds: DateTime.now().millisecondsSinceEpoch,
+                        milliseconds: DateTime.now().startOfDay().millisecondsSinceEpoch,
                       ).inDays;
 
-                      final dayIndex =
-                          (today - creationDay + pageImage - 366) % 14;
+                      final dayIndex = (today - creationDay + pageImage - 366) % 14;
                       return ListView(
                         physics: const BouncingScrollPhysics(
                           parent: AlwaysScrollableScrollPhysics(),
@@ -220,9 +190,7 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
                             label: "Неделя",
                             text: timeTable.config.weekTypes[dayIndex ~/ 7],
                           ),
-                          if (timeTable.days[dayIndex].lessons
-                              .where((lesson) => !lesson.isEmpty)
-                              .isEmpty)
+                          if (timeTable.days[dayIndex].lessons.where((lesson) => !lesson.isEmpty).isEmpty)
                             Padding(
                               padding: const EdgeInsets.only(
                                 left: 16,
@@ -245,11 +213,8 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
                               ),
                             )
                           else
-                            for (int index = 0;
-                                index < timeTable.days[dayIndex].lessons.length;
-                                index++)
-                              if (!timeTable
-                                  .days[dayIndex].lessons[index].isEmpty)
+                            for (int index = 0; index < timeTable.days[dayIndex].lessons.length; index++)
+                              if (!timeTable.days[dayIndex].lessons[index].isEmpty)
                                 Padding(
                                   key: ValueKey(index),
                                   padding: const EdgeInsets.only(
@@ -259,10 +224,8 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
                                   ),
                                   child: LessonCard(
                                     index: index + 1,
-                                    interval:
-                                        timeTable.config.timeIntervals[index],
-                                    lesson:
-                                        timeTable.days[dayIndex].lessons[index],
+                                    interval: timeTable.config.timeIntervals[index],
+                                    lesson: timeTable.days[dayIndex].lessons[index],
                                     isToday: pageImage == 366,
                                   ),
                                 )

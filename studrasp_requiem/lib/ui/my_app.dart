@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/timetable/timetable_model.dart';
 import '../providers/current_timetable.dart';
@@ -75,6 +76,13 @@ class _MyAppState extends ConsumerState<MyApp> {
       routeInformationProvider: _router.routeInformationProvider,
       routerDelegate: _router.routerDelegate,
       routeInformationParser: _router.routeInformationParser,
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+      ],
+      supportedLocales: [
+        const Locale('ru'),
+        const Locale('en'),
+      ],
       title: 'StudRasp',
       themeMode: ThemeMode.system,
       theme: AppTheme.getTheme(lightColors),
