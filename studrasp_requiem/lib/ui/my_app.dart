@@ -6,6 +6,7 @@ import '../providers/providers.dart';
 import '../providers/user_auth.dart';
 import '../styles/build_context_extension.dart';
 import 'auth_page/auth_user_page.dart';
+import 'timetable_page/preview_timetable.dart';
 import 'timetable_page/timetable_page.dart';
 import '../styles/app_theme.dart';
 import '../styles/colors.dart';
@@ -38,8 +39,8 @@ class _MyAppState extends ConsumerState<MyApp> {
             future: ref.read(globalRepositoryStore.notifier).state.getTimetablesOnId([state.params['tid']!]),
             builder: (context, snap) {
               if (snap.hasData) {
-                return TimetablePage(
-                  timetable: snap.data!.isNotEmpty ? snap.data!.first : null,
+                return TimetablePreview(
+                  table: snap.data?[0],
                 );
               }
               if (snap.connectionState == ConnectionState.waiting) {
@@ -82,9 +83,11 @@ class _MyAppState extends ConsumerState<MyApp> {
   }
 }
 
-final indexInBottomNavigationBar = StateProvider<int>((ref) {
-  return 0;
-});
+final indexInBottomNavigationBar = StateProvider<int>(
+  (ref) {
+    return 0;
+  },
+);
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -96,13 +99,15 @@ class HomePage extends ConsumerStatefulWidget {
 class _HomePageState extends ConsumerState<HomePage> {
   @override
   Widget build(BuildContext context) {
-    final colors = Theme.of(context).extension<AppColors>()!;
+    final colors = context.colors;
     final pages = [
       TimetablePage(timetable: ref.watch(localStorage.select((value) => value.currentTimetable))),
       const AuthUserPage(),
     ];
     return Scaffold(
-      body: pages.elementAt(ref.watch(indexInBottomNavigationBar)),
+      body: pages.elementAt(
+        ref.watch(indexInBottomNavigationBar),
+      ),
       // ignore: use_decorated_box
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
