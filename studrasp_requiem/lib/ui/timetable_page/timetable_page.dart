@@ -275,7 +275,7 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
                     child: Padding(
                       padding: const EdgeInsets.all(16),
                       child: Text(
-                        "Создать первое расписание",
+                        "Найти расписание",
                         style: textStyles.label,
                       ),
                     ),
