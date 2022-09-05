@@ -12,10 +12,12 @@ class TimeInterval with _$TimeInterval {
 
   const TimeInterval._();
 
-  factory TimeInterval.fromJson(Map<String, dynamic> json) => _$TimeIntervalFromJson(json);
+  factory TimeInterval.fromJson(Map<String, dynamic> json) =>
+      _$TimeIntervalFromJson(json);
 
   bool constains(DateTime time) {
-    return (time.second + time.minute * 60 + time.hour * 3600 >= from.inSeconds) &&
+    return (time.second + time.minute * 60 + time.hour * 3600 >=
+            from.inSeconds) &&
         (time.second + time.minute * 60 + time.hour * 3600 < to.inSeconds);
   }
 }

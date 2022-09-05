@@ -91,7 +91,7 @@ class _LessonIntervalPickerState extends State<LessonIntervalPicker> {
               style: ElevatedButton.styleFrom(
                 minimumSize: const Size(54, 32),
                 side: BorderSide(color: colors.separator!, width: 1),
-                primary: colors.backgroundSecondary,
+                backgroundColor: colors.backgroundSecondary,
               ),
               child: Text(
                 widget.controller.interval.from.stringTime,
@@ -148,7 +148,7 @@ class _LessonIntervalPickerState extends State<LessonIntervalPicker> {
               style: ElevatedButton.styleFrom(
                 minimumSize: const Size(54, 32),
                 side: BorderSide(color: colors.separator!, width: 1),
-                primary: colors.backgroundSecondary,
+                backgroundColor: colors.backgroundSecondary,
               ),
               child: Text(
                 widget.controller.interval.to.stringTime,
