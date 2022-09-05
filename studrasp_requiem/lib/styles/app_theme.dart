@@ -8,8 +8,9 @@ import 'colors.dart';
 class AppTheme {
   AppTheme._();
   static ThemeData getTheme(AppColors colors) {
-    final theme =
-        colors is AppLightColors ? ThemeData.light() : ThemeData.dark();
+    final theme = colors is AppLightColors
+        ? ThemeData.light().copyWith(shadowColor: colors.shadow)
+        : ThemeData.dark().copyWith(shadowColor: colors.shadow);
 
     final textStyles = AppDefaultTextStyles(colors);
 

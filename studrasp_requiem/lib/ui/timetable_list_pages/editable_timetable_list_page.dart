@@ -257,10 +257,8 @@ class _EditableTimetableListPageState
                                   value: 2,
                                   child: PopupMenuAction(
                                     text: 'Удалить',
-                                    icon: Icon(
-                                      Icons.delete,
-                                      color: colors.destructive,
-                                    ),
+                                    svgIcon: Assets.images.trashFull
+                                        .svg(color: colors.destructive),
                                     style: PopupMenuActionStyle.destructive,
                                   ),
                                 ),
