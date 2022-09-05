@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../gen/assets.gen.dart';
@@ -9,6 +11,8 @@ import '../../styles/build_context_extension.dart';
 import '../my_app.dart';
 import '../timetable_editor_page/timetable_editor_page.dart';
 import 'widgets/time_table_card.dart';
+
+import 'package:flutter_share/flutter_share.dart';
 
 class EditableTimetableListPage extends ConsumerStatefulWidget {
   const EditableTimetableListPage({Key? key}) : super(key: key);
@@ -52,6 +56,14 @@ class _EditableTimetableListPageState
   void goToMainPage() {
     ref.read(indexInBottomNavigationBar.notifier).state = 0;
     Navigator.pop(context);
+  }
+
+  Future<void> shareTimetable(Timetable timetable) async {
+    await FlutterShare.share(
+        title: 'Поделиться расписанием',
+        text: 'Расписание ${timetable.name}',
+        linkUrl: 'https://studrasp-4e58d.web.app/#/timetable/${timetable.id}',
+        chooserTitle: 'Поделиться расписанием');
   }
 
   @override
@@ -162,7 +174,9 @@ class _EditableTimetableListPageState
                                 Navigator.pop(context);
                               } else if (value == 1) {
                                 goToEditorPage(myTables[index]);
-                              } else {}
+                              } else if (value == 3) {
+                                shareTimetable(myTables[index]);
+                              }
                             },
                             itemBuilder: (context) {
                               return [
@@ -175,6 +189,11 @@ class _EditableTimetableListPageState
                                   },
                                   child: const Text("Использовать"),
                                 ),
+                                if (Platform.isAndroid || Platform.isIOS)
+                                  const PopupMenuItem(
+                                    value: 3,
+                                    child: Text("Поделиться"),
+                                  ),
                                 const PopupMenuItem(
                                   value: 1,
                                   child: Text("Изменить"),
