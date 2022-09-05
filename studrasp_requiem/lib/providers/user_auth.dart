@@ -27,11 +27,24 @@ class UserAuthNotifier extends StateNotifier<AppUser> {
 
   Future<void> _init() async {
     FirebaseAuth.instance.authStateChanges().listen((user) {
+      print(user);
       if (user != null) {
         state = userToAppUser(user);
         print(user);
       }
     });
+  }
+
+  Future<void> checkVerify() async {
+    if (!state.isVerified) {
+      await FirebaseAuth.instance.currentUser?.reload();
+
+      final user = FirebaseAuth.instance.currentUser;
+
+      if (user != null && user.emailVerified) {
+        state = userToAppUser(user);
+      }
+    }
   }
 
   Future<String?> auth({

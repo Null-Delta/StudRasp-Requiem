@@ -10,6 +10,7 @@ class AuthUserPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    ref.read(userAuth.notifier).checkVerify();
     return ref.watch(userAuth).isRegistered
         ? const UserProfilePage()
         : const AuthPage();
