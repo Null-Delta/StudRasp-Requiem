@@ -7,16 +7,18 @@ enum PopupMenuActionStyle { normal, destructive }
 
 class PopupMenuAction extends StatelessWidget {
   final String text;
-  final SvgPicture icon;
-  final Function() action;
+  final SvgPicture? svgIcon;
+  final Icon? icon;
+  final Function()? action;
 
   final PopupMenuActionStyle style;
 
   const PopupMenuAction({
     Key? key,
     required this.text,
-    required this.icon,
-    required this.action,
+    this.svgIcon,
+    this.icon,
+    this.action,
     this.style = PopupMenuActionStyle.normal,
   }) : super(key: key);
 
@@ -32,14 +34,16 @@ class PopupMenuAction extends StatelessWidget {
           Text(
             text,
             style: textStyles.label!.copyWith(
-              color: style == PopupMenuActionStyle.destructive ? colors.destructive : colors.accentPrimary,
+              color: style == PopupMenuActionStyle.destructive
+                  ? colors.destructive
+                  : colors.accentPrimary,
             ),
           ),
           const Spacer(),
           SizedBox(
             width: 20,
             height: 20,
-            child: icon,
+            child: svgIcon ?? icon,
           )
         ],
       ),

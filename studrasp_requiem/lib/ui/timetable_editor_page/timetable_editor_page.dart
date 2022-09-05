@@ -319,7 +319,7 @@ class _TimetableEditorPageState extends ConsumerState<_TimetableEditor> {
                               actions: [
                                 PopupMenuAction(
                                   text: "Изменить",
-                                  icon: Assets.images.iconEditOutline
+                                  svgIcon: Assets.images.iconEditOutline
                                       .svg(color: colors.accentPrimary),
                                   action: () {
                                     ref
@@ -342,15 +342,15 @@ class _TimetableEditorPageState extends ConsumerState<_TimetableEditor> {
                                 ),
                                 PopupMenuAction(
                                   text: "Копировать пару",
-                                  icon: Assets.images.command
+                                  svgIcon: Assets.images.command
                                       .svg(color: colors.accentPrimary),
                                   action: () {
                                     copyLesson(days[dayIndex].lessons[index]);
                                   },
                                 ),
                                 PopupMenuAction(
-                                  text: "Удалить",
-                                  icon: Assets.images.trashFull
+                                  text: "Очистить",
+                                  svgIcon: Assets.images.trashFull
                                       .svg(color: colors.accentPrimary),
                                   action: () {
                                     deleteLesson(dayIndex, index);
@@ -359,7 +359,7 @@ class _TimetableEditorPageState extends ConsumerState<_TimetableEditor> {
                                 ),
                               ],
                             ),
-                          )
+                          ),
                     ],
                   );
                 },

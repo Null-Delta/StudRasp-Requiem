@@ -5,6 +5,7 @@ import '../../models/timetable/timetable_model.dart';
 import '../../providers/current_timetable.dart';
 import '../../providers/providers.dart';
 import '../../styles/build_context_extension.dart';
+import '../widgets/popup_menu_action.dart';
 import 'widgets/time_table_card.dart';
 
 class TimetableListPage extends ConsumerStatefulWidget {
@@ -119,34 +120,52 @@ class _TimetableListPageState extends ConsumerState<TimetableListPage> {
                           return TimetableCard(
                             timeTable: savedTables[index],
                             button: PopupMenuButton(
+                              padding: EdgeInsets.zero,
+                              shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(12),
+                                ),
+                              ),
+                              position: PopupMenuPosition.under,
                               iconSize: 24,
+                              elevation: 16,
+                              splashRadius: 1,
                               icon: Assets.images.moreHorizontal
                                   .svg(color: colors.accentPrimary),
+                              onSelected: (value) {
+                                if (value == 0) {
+                                  ref
+                                      .read(localStorage.notifier)
+                                      .save(savedTables[index]);
+                                  Navigator.pop(context);
+                                } else if (value == 1) {
+                                  final id = savedTables[index].id;
+                                  ref
+                                      .read(localStorage.notifier)
+                                      .removeFromSavedTimeTables(id);
+                                  setState(() {
+                                    savedTables.removeWhere(
+                                      (table) => table.id == id,
+                                    );
+                                  });
+                                }
+                              },
                               itemBuilder: (context) {
                                 return [
-                                  PopupMenuItem(
-                                    child: const Text("Использовать"),
-                                    onTap: () {
-                                      ref
-                                          .read(localStorage.notifier)
-                                          .save(savedTables[index]);
-                                      Navigator.pop(context);
-                                    },
+                                  const PopupMenuItem(
+                                    value: 0,
+                                    child: PopupMenuAction(
+                                      text: 'Использовать',
+                                      icon: Icon(Icons.playlist_add_check),
+                                    ),
                                   ),
-                                  PopupMenuItem(
+                                  const PopupMenuItem(
                                     value: 1,
-                                    child: const Text("Удалить"),
-                                    onTap: () {
-                                      final id = savedTables[index].id;
-                                      ref
-                                          .read(localStorage.notifier)
-                                          .removeFromSavedTimeTables(id);
-                                      setState(() {
-                                        savedTables.removeWhere(
-                                          (table) => table.id == id,
-                                        );
-                                      });
-                                    },
+                                    child: PopupMenuAction(
+                                      text: 'Удалить',
+                                      icon: Icon(Icons.delete),
+                                      style: PopupMenuActionStyle.destructive,
+                                    ),
                                   ),
                                 ];
                               },

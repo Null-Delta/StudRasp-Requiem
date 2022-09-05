@@ -11,6 +11,7 @@ import '../../styles/build_context_extension.dart';
 import '../../styles/widget_styles.dart';
 import '../my_app.dart';
 import '../timetable_editor_page/timetable_editor_page.dart';
+import '../widgets/popup_menu_action.dart';
 import 'widgets/time_table_card.dart';
 
 import 'package:flutter_share/flutter_share.dart';
@@ -19,10 +20,12 @@ class EditableTimetableListPage extends ConsumerStatefulWidget {
   const EditableTimetableListPage({Key? key}) : super(key: key);
 
   @override
-  ConsumerState<EditableTimetableListPage> createState() => _EditableTimetableListPageState();
+  ConsumerState<EditableTimetableListPage> createState() =>
+      _EditableTimetableListPageState();
 }
 
-class _EditableTimetableListPageState extends ConsumerState<EditableTimetableListPage> {
+class _EditableTimetableListPageState
+    extends ConsumerState<EditableTimetableListPage> {
   ScrollController myTimeTablesController = ScrollController();
 
   bool showDivider = false;
@@ -85,7 +88,8 @@ class _EditableTimetableListPageState extends ConsumerState<EditableTimetableLis
               onPressed: () {
                 Navigator.pop(context);
               },
-              icon: Assets.images.circleChevronLeft.svg(color: colors.accentPrimary),
+              icon: Assets.images.circleChevronLeft
+                  .svg(color: colors.accentPrimary),
               splashRadius: 24,
             ),
           ),
@@ -95,7 +99,8 @@ class _EditableTimetableListPageState extends ConsumerState<EditableTimetableLis
               onPressed: () {
                 goToEditorPage();
               },
-              icon: Assets.images.iconPlusOutline.svg(color: colors.accentPrimary),
+              icon: Assets.images.iconPlusOutline
+                  .svg(color: colors.accentPrimary),
               color: colors.accentPrimary,
               splashRadius: 24,
             ),
@@ -168,53 +173,80 @@ class _EditableTimetableListPageState extends ConsumerState<EditableTimetableLis
                         return TimetableCard(
                           timeTable: myTables[index],
                           button: PopupMenuButton(
+                            padding: EdgeInsets.zero,
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(12),
+                              ),
+                            ),
+                            position: PopupMenuPosition.under,
                             iconSize: 24,
-                            icon: Assets.images.moreHorizontal.svg(color: colors.accentPrimary),
+                            elevation: 16,
+                            splashRadius: 1,
+                            icon: Assets.images.moreHorizontal
+                                .svg(color: colors.accentPrimary),
                             onSelected: (value) {
                               if (value == 0) {
-                                Navigator.pop(context);
+                                ref
+                                    .read(localStorage.notifier)
+                                    .save(myTables[index]);
+                                goToMainPage();
                               } else if (value == 1) {
                                 goToEditorPage(myTables[index]);
+                              } else if (value == 2) {
+                                final id = myTables[index].id;
+                                ref
+                                    .read(globalRepositoryStore)
+                                    .deleteTimetable(id);
+                                setState(() {
+                                  myTables.removeWhere(
+                                    (table) => table.id == id,
+                                  );
+                                });
                               } else if (value == 3) {
                                 shareTimetable(myTables[index]);
                               }
                             },
                             itemBuilder: (context) {
                               return [
-                                PopupMenuItem(
+                                const PopupMenuItem(
                                   value: 0,
-                                  onTap: () {
-                                    ref.read(localStorage.notifier).save(myTables[index]);
-                                  },
-                                  child: const Text("Использовать"),
+                                  child: PopupMenuAction(
+                                    text: 'Использовать',
+                                    icon: Icon(Icons.playlist_add_check),
+                                  ),
                                 ),
                                 if (Platform.isAndroid || Platform.isIOS)
                                   const PopupMenuItem(
                                     value: 3,
-                                    child: Text("Поделиться"),
+                                    child: PopupMenuAction(
+                                      text: 'Поделиться',
+                                      icon: Icon(Icons.ios_share_outlined),
+                                    ),
                                   ),
-                                const PopupMenuItem(
-                                  value: 1,
-                                  child: Text("Изменить"),
-                                ),
                                 PopupMenuItem(
+                                  value: 1,
+                                  child: PopupMenuAction(
+                                    text: 'Изменить',
+                                    svgIcon: Assets.images.iconEditOutline
+                                        .svg(color: colors.accentPrimary),
+                                  ),
+                                ),
+                                const PopupMenuItem(
                                   value: 2,
-                                  child: const Text("Удалить"),
-                                  onTap: () {
-                                    final id = myTables[index].id;
-                                    ref.read(globalRepositoryStore).deleteTimetable(id);
-                                    setState(() {
-                                      myTables.removeWhere(
-                                        (table) => table.id == id,
-                                      );
-                                    });
-                                  },
+                                  child: PopupMenuAction(
+                                    text: 'Удалить',
+                                    icon: Icon(Icons.delete),
+                                    style: PopupMenuActionStyle.destructive,
+                                  ),
                                 ),
                               ];
                             },
                           ),
                           onTap: () {
-                            ref.read(localStorage.notifier).save(myTables[index]);
+                            ref
+                                .read(localStorage.notifier)
+                                .save(myTables[index]);
                             goToMainPage();
                           },
                         );

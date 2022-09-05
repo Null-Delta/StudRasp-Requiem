@@ -43,7 +43,8 @@ class EditableLessonCard extends StatelessWidget {
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.only(left: 12, right: 6, top: 6, bottom: 0),
+            padding:
+                const EdgeInsets.only(left: 12, right: 6, top: 6, bottom: 0),
             child: LessonHeader(
               index: index,
               interval: interval,
@@ -51,7 +52,7 @@ class EditableLessonCard extends StatelessWidget {
                 onSelected: (name) {
                   for (var action in actions) {
                     if (action.text == name) {
-                      action.action();
+                      action.action!();
                       return;
                     }
                   }
@@ -75,11 +76,10 @@ class EditableLessonCard extends StatelessWidget {
                 ),
                 position: PopupMenuPosition.under,
                 iconSize: 24,
-                color: colors.backgroundPrimary,
                 elevation: 16,
                 splashRadius: 1,
-                icon: Assets.images.moreHorizontal.svg(color: colors.accentPrimary),
-                constraints: const BoxConstraints(minWidth: 256),
+                icon: Assets.images.moreHorizontal
+                    .svg(color: colors.accentPrimary),
               ),
             ),
           ),
