@@ -86,7 +86,6 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
               timeTable.creationDate.weekday +
               1;
     }
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: colors.backgroundPrimary,
@@ -211,7 +210,7 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
                       ).inDays;
 
                       final dayIndex =
-                          (today - creationDay + 1 + pageImage - 366) % 14;
+                          (today - creationDay + pageImage - 366) % 14;
                       return ListView(
                         physics: const BouncingScrollPhysics(
                           parent: AlwaysScrollableScrollPhysics(),
