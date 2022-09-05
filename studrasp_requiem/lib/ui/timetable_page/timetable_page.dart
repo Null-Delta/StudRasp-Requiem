@@ -10,6 +10,7 @@ import '../../providers/current_timetable.dart';
 import '../../providers/providers.dart';
 import '../../styles/colors.dart';
 import '../../styles/widget_styles.dart';
+import '../../support/date_time_converter.dart';
 import '../../support/fast_swipe_physics.dart';
 import '../lesson_card/card_styles/lesson_card.dart';
 import '../search_page/search_page.dart';
@@ -79,7 +80,7 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
 
     int creationDay = 0;
     if (timeTable != null) {
-      creationDay = Duration(milliseconds: timeTable.creationDate.millisecondsSinceEpoch).inDays -
+      creationDay = Duration(milliseconds: timeTable.creationDate.startOfDay().millisecondsSinceEpoch).inDays -
           timeTable.creationDate.weekday +
           1;
     }
@@ -102,17 +103,11 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
             ).then((date) {
               if (date != null) {
                 var now = Duration(
-                  milliseconds: ref.read(currentDate).millisecondsSinceEpoch,
-                ).inMilliseconds;
-
-                now -= ref.read(currentDate).hour * 3600 * 1000;
-                now -= ref.read(currentDate).minute * 60 * 1000;
-                now -= ref.read(currentDate).second * 1000;
-                now -= ref.read(currentDate).millisecond;
+                  milliseconds: ref.read(currentDate).startOfDay().millisecondsSinceEpoch,
+                ).inDays;
 
                 final selected = Duration(milliseconds: date.millisecondsSinceEpoch).inDays;
-                ref.read(selectedDuration.notifier).state =
-                    Duration(days: selected - Duration(milliseconds: now).inDays);
+                ref.read(selectedDuration.notifier).state = Duration(days: selected - now);
                 ref.read(needSwipeDays.notifier).state = true;
               }
             });
@@ -202,10 +197,14 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
                     itemCount: 1000,
                     itemBuilder: (context, pageImage) {
                       final today = Duration(
-                        milliseconds: DateTime.now().millisecondsSinceEpoch,
+                        milliseconds: DateTime.now().startOfDay().millisecondsSinceEpoch,
                       ).inDays;
 
-                      final dayIndex = (today - creationDay + 1 + pageImage - 366) % 14;
+                      print(today);
+                      print(creationDay);
+                      print(today - creationDay);
+
+                      final dayIndex = (today - creationDay + pageImage - 366) % 14;
                       return ListView(
                         physics: const BouncingScrollPhysics(
                           parent: AlwaysScrollableScrollPhysics(),

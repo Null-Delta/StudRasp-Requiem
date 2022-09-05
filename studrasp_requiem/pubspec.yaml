@@ -32,7 +32,6 @@ dependencies:
   firebase_auth: ^3.7.0
   cloud_firestore: ^3.0.0
   device_info_plus: ^3.2.3
-
   day_night_time_picker: ^1.1.2
 
 

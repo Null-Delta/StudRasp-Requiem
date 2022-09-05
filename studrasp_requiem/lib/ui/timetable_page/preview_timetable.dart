@@ -8,6 +8,7 @@ import '../../providers/current_timetable.dart';
 import '../../providers/providers.dart';
 import '../../styles/colors.dart';
 import '../../styles/widget_styles.dart';
+import '../../support/date_time_converter.dart';
 import '../../support/fast_swipe_physics.dart';
 import '../lesson_card/card_styles/lesson_card.dart';
 import '../search_page/search_page.dart';
@@ -76,7 +77,7 @@ class _TimetablePreviewState extends ConsumerState<TimetablePreview> {
 
     int creationDay = 0;
     if (widget.table != null) {
-      creationDay = Duration(milliseconds: widget.table!.creationDate.millisecondsSinceEpoch).inDays -
+      creationDay = Duration(milliseconds: widget.table!.creationDate.startOfDay().millisecondsSinceEpoch).inDays -
           widget.table!.creationDate.weekday +
           1;
     }
@@ -160,7 +161,7 @@ class _TimetablePreviewState extends ConsumerState<TimetablePreview> {
                             milliseconds: DateTime.now().millisecondsSinceEpoch,
                           ).inDays;
 
-                          final dayIndex = (today - creationDay + 1 + pageImage - 366) % 14;
+                          final dayIndex = (today - creationDay + pageImage - 366) % 14;
                           return ListView(
                             physics: const BouncingScrollPhysics(
                               parent: AlwaysScrollableScrollPhysics(),
