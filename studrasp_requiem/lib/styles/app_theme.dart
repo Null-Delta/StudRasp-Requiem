@@ -47,10 +47,10 @@ class AppTheme {
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          primary: colors.accentPrimary,
-          onPrimary: colors.backgroundPrimary,
+          backgroundColor: colors.accentPrimary,
+          foregroundColor: colors.backgroundPrimary,
           shadowColor: Colors.transparent,
-          onSurface: colors.backgroundPrimary,
+          disabledBackgroundColor: colors.backgroundPrimary,
           surfaceTintColor: colors.backgroundPrimary,
           elevation: 0,
           padding: const EdgeInsets.all(0),
