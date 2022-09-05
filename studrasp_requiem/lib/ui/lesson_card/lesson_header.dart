@@ -2,19 +2,23 @@ import 'package:flutter/material.dart';
 
 import '../../models/time_interval/time_interval_model.dart';
 import '../../styles/build_context_extension.dart';
+import '../../styles/colors.dart';
 import '../../styles/widget_styles.dart';
+import 'card_styles/lesson_card.dart';
 
 class LessonHeader extends StatelessWidget {
   final int index;
   final TimeInterval interval;
   final Widget? suffix;
   final String? customText;
+  final LessonCardState state;
 
   const LessonHeader({
     Key? key,
     required this.index,
     required this.interval,
     this.suffix,
+    this.state = LessonCardState.normal,
     this.customText,
   }) : super(key: key);
 
@@ -33,11 +37,14 @@ class LessonHeader extends StatelessWidget {
             alignment: Alignment.center,
             decoration: BoxDecoration(
               borderRadius: BorderRadiusStyles.large,
-              color: colors.backgroundSecondary,
+              color: state == LessonCardState.next ? colors.accentPrimary : colors.backgroundSecondary,
             ),
             child: Text(
               index.toString(),
-              style: textStyles.smallLabel!.copyWith(fontWeight: FontWeight.bold),
+              style: textStyles.smallLabel!.copyWith(
+                fontWeight: FontWeight.bold,
+                color: state == LessonCardState.next ? colors.backgroundPrimary : colors.accentPrimary,
+              ),
             ),
           ),
           const SizedBox(

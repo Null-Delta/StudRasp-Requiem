@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../models/timetable/timetable_model.dart';
+import '../../models/user/user_model.dart';
 import '../../providers/current_timetable.dart';
 import '../../providers/providers.dart';
 import '../../styles/colors.dart';
@@ -22,9 +23,7 @@ import '../../styles/build_context_extension.dart';
 import 'widgets/lesson_placeholder.dart';
 
 class TimetablePage extends ConsumerStatefulWidget {
-  const TimetablePage({Key? key, required this.timetable}) : super(key: key);
-
-  final Timetable? timetable;
+  const TimetablePage({Key? key}) : super(key: key);
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _TimetablePageState();
@@ -34,26 +33,34 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
   static const initialPage = 366;
   final dayPageController = PageController(initialPage: initialPage);
   Timer? timer;
+  Timetable? timeTable;
 
-  Future<void> checkTimetable() async {
-    if (widget.timetable != null) {
-      final list = await ref
-          .read(globalRepositoryStore)
-          .getTimetablesOnId([widget.timetable!.id]);
+  Future<Timetable?> loadTimeTable() async {
+    await Future.delayed(const Duration(seconds: 1));
+
+    if (timeTable != null) {
+      final list = await ref.read(globalRepositoryStore).getTimetablesOnId([timeTable!.id]);
       if (list?.isNotEmpty == true) {
-        ref.read(localStorage.notifier).save(list!.first);
+        return list!.first;
       }
     }
+    return null;
   }
 
   @override
   void initState() {
     super.initState();
 
+    timeTable = ref.read(localStorage).currentTimetable;
+
     timer = Timer.periodic(const Duration(minutes: 1), (timer) {
       if (mounted) {
         ref.read(currentDate.notifier).state = DateTime.now();
       }
+    });
+
+    loadTimeTable().then((value) {
+      ref.read(localStorage.notifier).save(value ?? Timetable.empty(AppUser.empty()));
     });
   }
 
@@ -61,6 +68,24 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
   void dispose() {
     timer?.cancel();
     super.dispose();
+  }
+
+  int getNextLessonIndex() {
+    final date = ref.read(currentDate);
+
+    if (timeTable != null) {
+      if (timeTable!.config.timeIntervals[0].from > date.timeOfDay()) {
+        return 0;
+      }
+      for (int i = 0; i < timeTable!.config.timeIntervals.length - 1; i++) {
+        if (timeTable!.config.timeIntervals[i].from > date.timeOfDay() &&
+            timeTable!.config.timeIntervals[i + 1].to < date.timeOfDay()) {
+          return i + 1;
+        }
+      }
+    }
+
+    return -1;
   }
 
   @override
@@ -87,16 +112,15 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
       },
     );
 
-    final timeTable =
-        ref.watch(localStorage.select((value) => value.currentTimetable));
+    timeTable = ref.watch(localStorage.select((value) => value.currentTimetable));
+    final _ = ref.watch(currentDate);
 
     int creationDay = 0;
     if (timeTable != null) {
       creationDay = Duration(
-            milliseconds:
-                timeTable.creationDate.startOfDay().millisecondsSinceEpoch,
+            milliseconds: timeTable!.creationDate.startOfDay().millisecondsSinceEpoch,
           ).inDays -
-          timeTable.creationDate.weekday +
+          timeTable!.creationDate.weekday +
           1;
     }
     return Scaffold(
@@ -107,8 +131,7 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
           splashRadius: 24,
           onPressed: () {
             final selectedDate = DateTime.fromMillisecondsSinceEpoch(
-              ref.read(currentDate).millisecondsSinceEpoch +
-                  ref.read(selectedDuration).inMilliseconds,
+              ref.read(currentDate).millisecondsSinceEpoch + ref.read(selectedDuration).inMilliseconds,
             );
             showDatePicker(
               context: context,
@@ -118,14 +141,11 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
             ).then((date) {
               if (date != null) {
                 var now = Duration(
-                  milliseconds:
-                      ref.read(currentDate).startOfDay().millisecondsSinceEpoch,
+                  milliseconds: ref.read(currentDate).startOfDay().millisecondsSinceEpoch,
                 ).inDays;
 
-                final selected =
-                    Duration(milliseconds: date.millisecondsSinceEpoch).inDays;
-                ref.read(selectedDuration.notifier).state =
-                    Duration(days: selected - now);
+                final selected = Duration(milliseconds: date.millisecondsSinceEpoch).inDays;
+                ref.read(selectedDuration.notifier).state = Duration(days: selected - now);
                 ref.read(needSwipeDays.notifier).state = true;
               }
             });
@@ -169,7 +189,7 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Text(
-                    timeTable.name,
+                    timeTable!.name,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: textStyles.largeTitle,
@@ -191,19 +211,16 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
                     dragStartBehavior: DragStartBehavior.down,
                     onPageChanged: (value) {
                       if (!ref.read(daysSwiping)) {
-                        ref.read(selectedDuration.notifier).state =
-                            Duration(days: value - 366);
+                        ref.read(selectedDuration.notifier).state = Duration(days: value - 366);
                       }
                     },
                     itemCount: 1000,
                     itemBuilder: (context, pageIndex) {
                       final today = Duration(
-                        milliseconds:
-                            DateTime.now().startOfDay().millisecondsSinceEpoch,
+                        milliseconds: DateTime.now().startOfDay().millisecondsSinceEpoch,
                       ).inDays;
 
-                      final dayIndex =
-                          (today - creationDay + pageIndex - 366) % 14;
+                      final dayIndex = (today - creationDay + pageIndex - 366) % 14;
                       return ListView(
                         physics: const BouncingScrollPhysics(
                           parent: AlwaysScrollableScrollPhysics(),
@@ -211,11 +228,9 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
                         children: [
                           LabeledText(
                             label: "Неделя",
-                            text: timeTable.config.weekTypes[dayIndex ~/ 7],
+                            text: timeTable!.config.weekTypes[dayIndex ~/ 7],
                           ),
-                          if (timeTable.days[dayIndex].lessons
-                              .where((lesson) => !lesson.isEmpty)
-                              .isEmpty)
+                          if (timeTable!.days[dayIndex].lessons.where((lesson) => !lesson.isEmpty).isEmpty)
                             Padding(
                               padding: const EdgeInsets.only(
                                 left: 16,
@@ -227,11 +242,8 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
                               ),
                             )
                           else
-                            for (int index = 0;
-                                index < timeTable.days[dayIndex].lessons.length;
-                                index++)
-                              if (!timeTable
-                                  .days[dayIndex].lessons[index].isEmpty)
+                            for (int index = 0; index < timeTable!.days[dayIndex].lessons.length; index++)
+                              if (!timeTable!.days[dayIndex].lessons[index].isEmpty)
                                 Padding(
                                   key: ValueKey(index),
                                   padding: const EdgeInsets.only(
@@ -241,11 +253,13 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
                                   ),
                                   child: LessonCard(
                                     index: index + 1,
-                                    interval:
-                                        timeTable.config.timeIntervals[index],
-                                    lesson:
-                                        timeTable.days[dayIndex].lessons[index],
-                                    isToday: pageIndex == 366,
+                                    interval: timeTable!.config.timeIntervals[index],
+                                    lesson: timeTable!.days[dayIndex].lessons[index],
+                                    state: pageIndex == 366
+                                        ? (getNextLessonIndex() == index
+                                            ? LessonCardState.next
+                                            : LessonCardState.current)
+                                        : LessonCardState.normal,
                                   ),
                                 )
                         ],

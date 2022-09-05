@@ -15,4 +15,8 @@ extension DateTimeConverter on DateTime {
 
     return DateTime.fromMillisecondsSinceEpoch(start);
   }
+
+  Duration timeOfDay() {
+    return Duration(milliseconds: millisecondsSinceEpoch - startOfDay().millisecondsSinceEpoch);
+  }
 }

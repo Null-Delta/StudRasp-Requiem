@@ -9,18 +9,20 @@ import '../../../styles/widget_styles.dart';
 import '../lesson_header.dart';
 import '../lesson_body.dart';
 
+enum LessonCardState { normal, current, next }
+
 class LessonCard extends ConsumerStatefulWidget {
   final int index;
   final TimeInterval interval;
   final Lesson lesson;
-  final bool isToday;
+  final LessonCardState state;
 
   const LessonCard({
     Key? key,
     required this.index,
     required this.interval,
     required this.lesson,
-    this.isToday = false,
+    this.state = LessonCardState.next,
   }) : super(key: key);
 
   @override
@@ -38,14 +40,26 @@ class _LessonCardState extends ConsumerState<LessonCard> {
     final diffMinutes = widget.interval.to.inMinutes - nowMinutes;
 
     if (diffMinutes > 60) {
-      return "${diffMinutes / 60}ч ${diffMinutes % 60}м";
+      return "${diffMinutes ~/ 60}ч ${diffMinutes % 60}м";
+    } else {
+      return "$diffMinutesм";
+    }
+  }
+
+  String lessonStartTime() {
+    final nowMinutes = time.hour * 60 + time.minute;
+
+    final diffMinutes = widget.interval.from.inMinutes - nowMinutes;
+
+    if (diffMinutes > 60) {
+      return "${diffMinutes ~/ 60}ч ${diffMinutes % 60}м";
     } else {
       return "$diffMinutesм";
     }
   }
 
   Color cardBackground(AppColors colors) {
-    if (widget.isToday && isCurrent) {
+    if (widget.state == LessonCardState.current && isCurrent) {
       return colors.accentPrimary!;
     } else {
       return colors.backgroundPrimary!;
@@ -53,7 +67,7 @@ class _LessonCardState extends ConsumerState<LessonCard> {
   }
 
   Color cardBorder(AppColors colors) {
-    if (widget.isToday && isCurrent) {
+    if (widget.state == LessonCardState.current && isCurrent) {
       return colors.accentPrimary!;
     } else {
       return colors.separator!;
@@ -87,14 +101,19 @@ class _LessonCardState extends ConsumerState<LessonCard> {
               index: widget.index,
               interval: widget.interval,
               suffix: Text(
-                isCurrent ? "До конца: ${lessonEndTime()}" : "",
+                widget.state == LessonCardState.current && isCurrent
+                    ? "До конца: ${lessonEndTime()}"
+                    : widget.state == LessonCardState.next
+                        ? "До начала: ${lessonStartTime()}"
+                        : "",
                 style: textStyles.smallLabel!.copyWith(color: colors.disable),
               ),
+              state: widget.state,
             ),
           ),
           LessonBody(
             lesson: widget.lesson,
-            isCurrent: isCurrent && widget.isToday,
+            state: widget.state,
           ),
         ],
       ),

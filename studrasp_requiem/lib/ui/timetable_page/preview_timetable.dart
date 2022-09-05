@@ -51,6 +51,24 @@ class _TimetablePreviewState extends ConsumerState<TimetablePreview> {
     super.dispose();
   }
 
+  int getNextLessonIndex() {
+    final date = ref.read(currentDate);
+
+    if (widget.table != null) {
+      if (widget.table!.config.timeIntervals[0].from > date.timeOfDay()) {
+        return 0;
+      }
+      for (int i = 0; i < widget.table!.config.timeIntervals.length - 1; i++) {
+        if (widget.table!.config.timeIntervals[i].from > date.timeOfDay() &&
+            widget.table!.config.timeIntervals[i + 1].to < date.timeOfDay()) {
+          return i + 1;
+        }
+      }
+    }
+
+    return -1;
+  }
+
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
@@ -84,6 +102,8 @@ class _TimetablePreviewState extends ConsumerState<TimetablePreview> {
           1;
     }
 
+    final _ = ref.watch(currentDate);
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: colors.backgroundPrimary,
@@ -99,24 +119,26 @@ class _TimetablePreviewState extends ConsumerState<TimetablePreview> {
               initialDate: selectedDate,
               firstDate: selectedDate.subtract(const Duration(days: 365)),
               lastDate: selectedDate.add(const Duration(days: 365)),
-            ).then((date) {
-              if (date != null) {
-                var now = Duration(
-                  milliseconds: ref.read(currentDate).millisecondsSinceEpoch,
-                ).inMilliseconds;
+            ).then(
+              (date) {
+                if (date != null) {
+                  var now = Duration(
+                    milliseconds: ref.read(currentDate).millisecondsSinceEpoch,
+                  ).inMilliseconds;
 
-                now -= ref.read(currentDate).hour * 3600 * 1000;
-                now -= ref.read(currentDate).minute * 60 * 1000;
-                now -= ref.read(currentDate).second * 1000;
-                now -= ref.read(currentDate).millisecond;
+                  now -= ref.read(currentDate).hour * 3600 * 1000;
+                  now -= ref.read(currentDate).minute * 60 * 1000;
+                  now -= ref.read(currentDate).second * 1000;
+                  now -= ref.read(currentDate).millisecond;
 
-                final selected = Duration(milliseconds: date.millisecondsSinceEpoch).inDays;
-                ref.read(selectedDuration.notifier).state = Duration(
-                  days: selected - Duration(milliseconds: now).inDays,
-                );
-                ref.read(needSwipeDays.notifier).state = true;
-              }
-            });
+                  final selected = Duration(milliseconds: date.millisecondsSinceEpoch).inDays;
+                  ref.read(selectedDuration.notifier).state = Duration(
+                    days: selected - Duration(milliseconds: now).inDays,
+                  );
+                  ref.read(needSwipeDays.notifier).state = true;
+                }
+              },
+            );
           },
         ),
       ),
@@ -154,12 +176,12 @@ class _TimetablePreviewState extends ConsumerState<TimetablePreview> {
                       }
                     },
                     itemCount: 1000,
-                    itemBuilder: (context, pageImage) {
+                    itemBuilder: (context, pageIndex) {
                       final today = Duration(
                         milliseconds: DateTime.now().millisecondsSinceEpoch,
                       ).inDays;
 
-                      final dayIndex = (today - creationDay + pageImage - 366) % 14;
+                      final dayIndex = (today - creationDay + pageIndex - 366) % 14;
                       return ListView(
                         physics: const BouncingScrollPhysics(
                           parent: AlwaysScrollableScrollPhysics(),
@@ -205,7 +227,11 @@ class _TimetablePreviewState extends ConsumerState<TimetablePreview> {
                                     index: index + 1,
                                     interval: widget.table!.config.timeIntervals[index],
                                     lesson: widget.table!.days[dayIndex].lessons[index],
-                                    isToday: pageImage == 366,
+                                    state: pageIndex == 366
+                                        ? (getNextLessonIndex() == index
+                                            ? LessonCardState.next
+                                            : LessonCardState.current)
+                                        : LessonCardState.normal,
                                   ),
                                 )
                         ],

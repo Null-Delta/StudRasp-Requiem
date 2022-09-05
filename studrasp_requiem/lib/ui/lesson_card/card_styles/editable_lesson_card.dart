@@ -8,6 +8,7 @@ import '../../../styles/widget_styles.dart';
 import '../../widgets/popup_menu_action.dart';
 import '../lesson_body.dart';
 import '../lesson_header.dart';
+import 'lesson_card.dart';
 
 class EditableLessonCard extends StatelessWidget {
   final int index;
@@ -43,8 +44,7 @@ class EditableLessonCard extends StatelessWidget {
       child: Column(
         children: [
           Padding(
-            padding:
-                const EdgeInsets.only(left: 12, right: 6, top: 6, bottom: 0),
+            padding: const EdgeInsets.only(left: 12, right: 6, top: 6, bottom: 0),
             child: LessonHeader(
               index: index,
               interval: interval,
@@ -78,12 +78,14 @@ class EditableLessonCard extends StatelessWidget {
                 iconSize: 24,
                 elevation: 16,
                 splashRadius: 1,
-                icon: Assets.images.moreHorizontal
-                    .svg(color: colors.accentPrimary),
+                icon: Assets.images.moreHorizontal.svg(color: colors.accentPrimary),
               ),
             ),
           ),
-          LessonBody(lesson: lesson, isCurrent: false),
+          LessonBody(
+            lesson: lesson,
+            state: LessonCardState.normal,
+          ),
         ],
       ),
     );

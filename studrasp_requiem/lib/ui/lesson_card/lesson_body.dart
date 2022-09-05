@@ -2,15 +2,16 @@ import 'package:flutter/material.dart';
 
 import '../../models/lesson/lesson_model.dart';
 import '../../styles/build_context_extension.dart';
+import 'card_styles/lesson_card.dart';
 
 class LessonBody extends StatelessWidget {
   final Lesson lesson;
-  final bool isCurrent;
+  final LessonCardState state;
 
   const LessonBody({
     Key? key,
     required this.lesson,
-    required this.isCurrent,
+    required this.state,
   }) : super(key: key);
 
   @override
@@ -31,17 +32,13 @@ class LessonBody extends StatelessWidget {
                   maxLines: 3,
                   overflow: TextOverflow.ellipsis,
                   style: textStyles.subtitle!.copyWith(
-                    color: isCurrent
-                        ? colors.backgroundPrimary
-                        : colors.accentPrimary,
+                    color: state == LessonCardState.current ? colors.backgroundPrimary : colors.accentPrimary,
                   ),
                 ),
               ),
             ],
           ),
-          if (lesson.audience != '' ||
-              lesson.type != '' ||
-              lesson.teacher != '')
+          if (lesson.audience != '' || lesson.type != '' || lesson.teacher != '')
             Padding(
               padding: const EdgeInsets.only(top: 8),
               child: Row(

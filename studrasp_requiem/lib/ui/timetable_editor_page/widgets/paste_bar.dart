@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../providers/providers.dart';
 import '../../../styles/build_context_extension.dart';
+import '../../lesson_card/card_styles/lesson_card.dart';
 import '../../lesson_card/lesson_body.dart';
 
 class PasteBar extends ConsumerStatefulWidget {
@@ -34,8 +35,7 @@ class _PasteBarState extends ConsumerState<PasteBar> {
           color: colors.separator,
         ),
         Padding(
-          padding:
-              const EdgeInsets.only(top: 16, left: 16, right: 16, bottom: 8),
+          padding: const EdgeInsets.only(top: 16, left: 16, right: 16, bottom: 8),
           child: SizedBox(
             height: 36,
             child: Row(
@@ -62,7 +62,10 @@ class _PasteBarState extends ConsumerState<PasteBar> {
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 4),
-          child: LessonBody(lesson: lesson!, isCurrent: false),
+          child: LessonBody(
+            lesson: lesson!,
+            state: LessonCardState.current,
+          ),
         ),
       ],
     );

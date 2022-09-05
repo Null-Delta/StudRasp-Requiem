@@ -122,9 +122,7 @@ class _HomePageState extends ConsumerState<HomePage> {
   Widget build(BuildContext context) {
     final colors = context.colors;
     final pages = [
-      TimetablePage(
-        timetable: ref.watch(localStorage.select((value) => value.currentTimetable)),
-      ),
+      const TimetablePage(),
       const AuthUserPage(),
     ];
     return Scaffold(
