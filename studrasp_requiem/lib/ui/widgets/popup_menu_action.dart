@@ -34,11 +34,10 @@ class PopupMenuAction extends StatelessWidget {
           Text(
             text,
             style: textStyles.label!.copyWith(
-              color: style == PopupMenuActionStyle.destructive
-                  ? colors.destructive
-                  : colors.accentPrimary,
+              color: style == PopupMenuActionStyle.destructive ? colors.destructive : colors.accentPrimary,
             ),
           ),
+          const SizedBox(width: 16),
           const Spacer(),
           SizedBox(
             width: 20,

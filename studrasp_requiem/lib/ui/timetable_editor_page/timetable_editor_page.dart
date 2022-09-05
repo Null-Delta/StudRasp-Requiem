@@ -31,8 +31,7 @@ class TimetableEditorPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.read(currentEditingTimetable.notifier).state =
-        timeTable ?? Timetable.empty(ref.read(userAuth));
+    ref.read(currentEditingTimetable.notifier).state = timeTable ?? Timetable.empty(ref.read(userAuth));
     return const _TimetableEditor();
   }
 }
@@ -53,8 +52,7 @@ class _TimetableEditorPageState extends ConsumerState<_TimetableEditor> {
         List<Day> newDays = List<Day>.from(state.days)
           ..[lessonDay] = Day(
             lessons: List<Lesson>.from(state.days[lessonDay].lessons)
-              ..[lessonNumber] =
-                  const Lesson(name: '', type: '', teacher: '', audience: ''),
+              ..[lessonNumber] = const Lesson(name: '', type: '', teacher: '', audience: ''),
           );
         return state.copyWith(
           days: newDays,
@@ -74,8 +72,7 @@ class _TimetableEditorPageState extends ConsumerState<_TimetableEditor> {
       (state) {
         List<Day> newDays = List<Day>.from(state.days)
           ..[day] = Day(
-            lessons: List<Lesson>.from(state.days[day].lessons)
-              ..[index] = lesson,
+            lessons: List<Lesson>.from(state.days[day].lessons)..[index] = lesson,
           );
         return state.copyWith(
           days: newDays,
@@ -88,8 +85,7 @@ class _TimetableEditorPageState extends ConsumerState<_TimetableEditor> {
   void initState() {
     super.initState();
 
-    dayPageController =
-        PageController(initialPage: ref.read(currentDate).weekday - 1);
+    dayPageController = PageController(initialPage: ref.read(currentDate).weekday - 1);
   }
 
   @override
@@ -97,12 +93,9 @@ class _TimetableEditorPageState extends ConsumerState<_TimetableEditor> {
     final colors = Theme.of(context).extension<AppColors>()!;
     final textStyles = Theme.of(context).extension<AppTextStyles>()!;
 
-    final config =
-        ref.watch(currentEditingTimetable.select((value) => value.config));
-    final name =
-        ref.watch(currentEditingTimetable.select((value) => value.name));
-    final days =
-        ref.watch(currentEditingTimetable.select((value) => value.days));
+    final config = ref.watch(currentEditingTimetable.select((value) => value.config));
+    final name = ref.watch(currentEditingTimetable.select((value) => value.name));
+    final days = ref.watch(currentEditingTimetable.select((value) => value.days));
     final copiedLesson = ref.watch(editorCopiedLesson);
 
     ref.listen<bool>(
@@ -134,9 +127,7 @@ class _TimetableEditorPageState extends ConsumerState<_TimetableEditor> {
           onPressed: () {
             final Timetable newTimetable = ref.read(currentEditingTimetable);
             if (!newTimetable.isEmpty) {
-              ref
-                  .read(myTimetables.notifier)
-                  .save(ref.read(currentEditingTimetable));
+              ref.read(myTimetables.notifier).save(ref.read(currentEditingTimetable));
             }
             Navigator.of(context).pop();
           },
@@ -184,8 +175,7 @@ class _TimetableEditorPageState extends ConsumerState<_TimetableEditor> {
                 itemCount: 14,
                 onPageChanged: (value) {
                   if (!ref.read(daysSwiping)) {
-                    ref.read(selectedDuration.notifier).state =
-                        Duration(days: value - dayPageController.initialPage);
+                    ref.read(selectedDuration.notifier).state = Duration(days: value - dayPageController.initialPage);
                   }
                 },
                 itemBuilder: (context, dayIndex) {
@@ -241,11 +231,7 @@ class _TimetableEditorPageState extends ConsumerState<_TimetableEditor> {
                       log('onReorder');
 
                       final lessons = List<Lesson>.from(
-                        ref
-                            .watch(currentEditingTimetable.notifier)
-                            .state
-                            .days[dayIndex]
-                            .lessons,
+                        ref.watch(currentEditingTimetable.notifier).state.days[dayIndex].lessons,
                       );
 
                       final Lesson item = lessons.removeAt(oldIndex);
@@ -265,9 +251,7 @@ class _TimetableEditorPageState extends ConsumerState<_TimetableEditor> {
                       );
                     },
                     children: [
-                      for (int index = 0;
-                          index < days[dayIndex].lessons.length;
-                          index++)
+                      for (int index = 0; index < days[dayIndex].lessons.length; index++)
                         if (days[dayIndex].lessons[index].isEmpty)
                           Padding(
                             key: ValueKey(index),
@@ -300,8 +284,7 @@ class _TimetableEditorPageState extends ConsumerState<_TimetableEditor> {
                                   insertLesson(copiedLesson, dayIndex, index);
                                 }
                               },
-                              text:
-                                  copiedLesson == null ? null : "Вставить пару",
+                              text: copiedLesson == null ? null : "Вставить пару",
                             ),
                           )
                         else
@@ -318,8 +301,7 @@ class _TimetableEditorPageState extends ConsumerState<_TimetableEditor> {
                               actions: [
                                 PopupMenuAction(
                                   text: "Изменить",
-                                  svgIcon: Assets.images.iconEditOutline
-                                      .svg(color: colors.accentPrimary),
+                                  svgIcon: Assets.images.iconEditOutline.svg(color: colors.accentPrimary),
                                   action: () {
                                     ref
                                         .read(
@@ -333,24 +315,25 @@ class _TimetableEditorPageState extends ConsumerState<_TimetableEditor> {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) =>
-                                            const LessonEditorPage(),
+                                        builder: (context) => const LessonEditorPage(),
                                       ),
                                     );
                                   },
                                 ),
                                 PopupMenuAction(
                                   text: "Копировать пару",
-                                  svgIcon: Assets.images.command
-                                      .svg(color: colors.accentPrimary),
+                                  icon: Icon(
+                                    Icons.copy,
+                                    color: colors.accentPrimary,
+                                    size: 24,
+                                  ),
                                   action: () {
                                     copyLesson(days[dayIndex].lessons[index]);
                                   },
                                 ),
                                 PopupMenuAction(
                                   text: "Очистить",
-                                  svgIcon: Assets.images.trashFull
-                                      .svg(color: colors.accentPrimary),
+                                  svgIcon: Assets.images.trashFull.svg(color: colors.destructive),
                                   action: () {
                                     deleteLesson(dayIndex, index);
                                   },

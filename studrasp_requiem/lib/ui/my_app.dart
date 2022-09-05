@@ -81,12 +81,13 @@ class _MyAppState extends ConsumerState<MyApp> {
       child: Container(
         clipBehavior: Clip.antiAlias,
         decoration: const BoxDecoration(),
-        constraints: const BoxConstraints(maxWidth: 500),
+        constraints: const BoxConstraints(maxWidth: 400),
         child: MaterialApp.router(
           routeInformationProvider: _router.routeInformationProvider,
           routerDelegate: _router.routerDelegate,
           routeInformationParser: _router.routeInformationParser,
           localizationsDelegates: const [
+            GlobalCupertinoLocalizations.delegate,
             GlobalMaterialLocalizations.delegate,
           ],
           supportedLocales: const [
