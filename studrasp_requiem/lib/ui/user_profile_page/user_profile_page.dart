@@ -13,8 +13,7 @@ class UserProfilePage extends ConsumerStatefulWidget {
   const UserProfilePage({Key? key}) : super(key: key);
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _UserProfilePageState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _UserProfilePageState();
 }
 
 class _UserProfilePageState extends ConsumerState<UserProfilePage> {
@@ -77,9 +76,7 @@ class _UserProfilePageState extends ConsumerState<UserProfilePage> {
               Text(user.email, style: textStyle.subtitle),
               const SizedBox(height: 4),
               Text(
-                user.isVerified
-                    ? 'Почта подтверждена'
-                    : 'Почта не подтверждена',
+                user.isVerified ? 'Почта подтверждена' : 'Почта не подтверждена',
                 style: textStyle.label!.copyWith(
                   color: colors.disable,
                 ),
@@ -95,27 +92,10 @@ class _UserProfilePageState extends ConsumerState<UserProfilePage> {
                     padding: const EdgeInsets.symmetric(
                       horizontal: 16,
                     ),
-                    minimumSize: const Size(double.infinity, 42),
+                    minimumSize: const Size(double.infinity, 48),
                     textStyle: textStyle.label,
                   ),
                   child: const Text('Список расписаний'),
-                ),
-              ),
-              const SizedBox(height: 12),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                ),
-                child: ElevatedButton(
-                  onPressed: logout,
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                    ),
-                    minimumSize: const Size(double.infinity, 42),
-                    textStyle: textStyle.label,
-                  ),
-                  child: const Text('Настройки'),
                 ),
               ),
               const SizedBox(height: 12),
@@ -129,10 +109,32 @@ class _UserProfilePageState extends ConsumerState<UserProfilePage> {
                     padding: const EdgeInsets.symmetric(
                       horizontal: 16,
                     ),
-                    minimumSize: const Size(double.infinity, 42),
+                    minimumSize: const Size(double.infinity, 48),
                     textStyle: textStyle.label,
                   ),
                   child: const Text('О программе'),
+                ),
+              ),
+              const SizedBox(height: 12),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                ),
+                child: ElevatedButton(
+                  onPressed: logout,
+                  style: ElevatedButton.styleFrom(
+                    textStyle: textStyle.subtitle,
+                    backgroundColor: colors.backgroundPrimary,
+                    foregroundColor: colors.accentPrimary,
+                    side: BorderSide(
+                      color: colors.separator!,
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                    ),
+                    minimumSize: const Size(double.infinity, 48),
+                  ),
+                  child: const Text('Выход'),
                 ),
               ),
             ],

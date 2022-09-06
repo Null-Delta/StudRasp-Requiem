@@ -20,12 +20,10 @@ class EditableTimetableListPage extends ConsumerStatefulWidget {
   const EditableTimetableListPage({Key? key}) : super(key: key);
 
   @override
-  ConsumerState<EditableTimetableListPage> createState() =>
-      _EditableTimetableListPageState();
+  ConsumerState<EditableTimetableListPage> createState() => _EditableTimetableListPageState();
 }
 
-class _EditableTimetableListPageState
-    extends ConsumerState<EditableTimetableListPage> {
+class _EditableTimetableListPageState extends ConsumerState<EditableTimetableListPage> {
   ScrollController myTimeTablesController = ScrollController();
 
   bool showDivider = false;
@@ -96,8 +94,7 @@ class _EditableTimetableListPageState
               onPressed: () {
                 Navigator.pop(context);
               },
-              icon: Assets.images.circleChevronLeft
-                  .svg(color: colors.accentPrimary),
+              icon: Assets.images.circleChevronLeft.svg(color: colors.accentPrimary),
               splashRadius: 24,
             ),
           ),
@@ -107,8 +104,7 @@ class _EditableTimetableListPageState
               onPressed: () {
                 goToEditorPage();
               },
-              icon: Assets.images.iconPlusOutline
-                  .svg(color: colors.accentPrimary),
+              icon: Assets.images.iconPlusOutline.svg(color: colors.accentPrimary),
               color: colors.accentPrimary,
               splashRadius: 24,
             ),
@@ -136,7 +132,6 @@ class _EditableTimetableListPageState
               child: myTables.isEmpty
                   ? ListView(
                       children: [
-                        const Spacer(),
                         Container(
                           alignment: Alignment.center,
                           height: 256,
@@ -192,21 +187,16 @@ class _EditableTimetableListPageState
                             iconSize: 24,
                             elevation: 16,
                             splashRadius: 1,
-                            icon: Assets.images.moreHorizontal
-                                .svg(color: colors.accentPrimary),
+                            icon: Assets.images.moreHorizontal.svg(color: colors.accentPrimary),
                             onSelected: (value) {
                               if (value == 0) {
-                                ref
-                                    .read(localStorage.notifier)
-                                    .save(myTables[index]);
+                                ref.read(localStorage.notifier).save(myTables[index]);
                                 goToMainPage();
                               } else if (value == 1) {
                                 goToEditorPage(myTables[index]);
                               } else if (value == 2) {
                                 final id = myTables[index].id;
-                                ref
-                                    .read(globalRepositoryStore)
-                                    .deleteTimetable(id);
+                                ref.read(globalRepositoryStore).deleteTimetable(id);
                                 setState(() {
                                   myTables.removeWhere(
                                     (table) => table.id == id,
@@ -249,16 +239,14 @@ class _EditableTimetableListPageState
                                   value: 1,
                                   child: PopupMenuAction(
                                     text: 'Изменить',
-                                    svgIcon: Assets.images.iconEditOutline
-                                        .svg(color: colors.accentPrimary),
+                                    svgIcon: Assets.images.iconEditOutline.svg(color: colors.accentPrimary),
                                   ),
                                 ),
                                 PopupMenuItem(
                                   value: 2,
                                   child: PopupMenuAction(
                                     text: 'Удалить',
-                                    svgIcon: Assets.images.trashFull
-                                        .svg(color: colors.destructive),
+                                    svgIcon: Assets.images.trashFull.svg(color: colors.destructive),
                                     style: PopupMenuActionStyle.destructive,
                                   ),
                                 ),
@@ -266,9 +254,7 @@ class _EditableTimetableListPageState
                             },
                           ),
                           onTap: () {
-                            ref
-                                .read(localStorage.notifier)
-                                .save(myTables[index]);
+                            ref.read(localStorage.notifier).save(myTables[index]);
                             goToMainPage();
                           },
                         );

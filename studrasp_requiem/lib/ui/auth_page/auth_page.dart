@@ -40,8 +40,7 @@ class AuthPage extends ConsumerStatefulWidget {
   ConsumerState<ConsumerStatefulWidget> createState() => _AuthPageState();
 }
 
-class _AuthPageState extends ConsumerState<AuthPage>
-    with SingleTickerProviderStateMixin {
+class _AuthPageState extends ConsumerState<AuthPage> with SingleTickerProviderStateMixin {
   final email = TextEditingController();
   final name = TextEditingController();
   final password = TextEditingController();
@@ -59,13 +58,10 @@ class _AuthPageState extends ConsumerState<AuthPage>
 
   void auth() async {
     ref.read(_activeValidatorProvider.notifier).state = true;
-    final isValidate = validationController.state['email']! &&
-        validationController.state['password']!;
+    final isValidate = validationController.state['email']! && validationController.state['password']!;
 
     if (isValidate) {
-      await ref
-          .read(userAuth.notifier)
-          .auth(email: email.text, password: password.text);
+      await ref.read(userAuth.notifier).auth(email: email.text, password: password.text);
     }
   }
 
@@ -126,8 +122,7 @@ class _AuthPageState extends ConsumerState<AuthPage>
                     SizedBox(
                       height: 128,
                       width: 128,
-                      child: MediaQuery.of(context).platformBrightness ==
-                              Brightness.light
+                      child: MediaQuery.of(context).platformBrightness == Brightness.light
                           ? Assets.images.studRaspLightIcon.image()
                           : Assets.images.studRaspDarkIcon.image(),
                     ),
@@ -153,7 +148,7 @@ class _AuthPageState extends ConsumerState<AuthPage>
                 onPressed: isAuth ? auth : reg,
                 style: ElevatedButton.styleFrom(
                   textStyle: textStyles.subtitle,
-                  minimumSize: const Size(double.infinity, 42),
+                  minimumSize: const Size(double.infinity, 48),
                 ),
                 child: Text(isAuth ? 'Войти' : 'Зарегистрироваться'),
               ),
@@ -172,7 +167,7 @@ class _AuthPageState extends ConsumerState<AuthPage>
                   side: BorderSide(
                     color: colors.separator!,
                   ),
-                  minimumSize: const Size(double.infinity, 42),
+                  minimumSize: const Size(double.infinity, 48),
                 ),
                 child: Text(isAuth ? 'Зарегистрироваться' : 'Войти'),
               ),

@@ -8,6 +8,7 @@ import '../../models/timetable/timetable_model.dart';
 import '../../models/user/user_model.dart';
 import '../../providers/current_timetable.dart';
 import '../../providers/providers.dart';
+import '../../repositories/global_repository.dart';
 import '../../styles/colors.dart';
 import '../../styles/widget_styles.dart';
 import '../../support/date_time_converter.dart';
@@ -34,12 +35,13 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
   final dayPageController = PageController(initialPage: initialPage);
   Timer? timer;
   Timetable? timeTable;
+  late final TimetableGlobalSavesRepository globalStore;
 
   Future<Timetable?> loadTimeTable() async {
     await Future.delayed(const Duration(seconds: 1));
 
     if (timeTable != null) {
-      final list = await ref.read(globalRepositoryStore).getTimetablesOnId([timeTable!.id]);
+      final list = await globalStore.getTimetablesOnId([timeTable!.id]);
       if (list?.isNotEmpty == true) {
         return list!.first;
       }
@@ -50,6 +52,8 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
   @override
   void initState() {
     super.initState();
+
+    globalStore = ref.read(globalRepositoryStore);
 
     timeTable = ref.read(localStorage).currentTimetable;
 
@@ -71,21 +75,81 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
   }
 
   int getNextLessonIndex() {
-    final date = ref.read(currentDate);
+    final today = Duration(
+      milliseconds: DateTime.now().startOfDay().millisecondsSinceEpoch,
+    ).inDays;
+
+    var creationDay = 0;
 
     if (timeTable != null) {
-      if (timeTable!.config.timeIntervals[0].from > date.timeOfDay()) {
+      creationDay = Duration(
+            milliseconds: timeTable!.creationDate.startOfDay().millisecondsSinceEpoch,
+          ).inDays -
+          timeTable!.creationDate.weekday +
+          1;
+    }
+
+    final date = ref.read(currentDate);
+    final todayIndex = (today - creationDay) % 14;
+
+    if (timeTable != null) {
+      if (timeTable!.config.timeIntervals[0].from > date.timeOfDay() &&
+          !timeTable!.days[todayIndex].lessons[0].isEmpty) {
         return 0;
       }
+
       for (int i = 0; i < timeTable!.config.timeIntervals.length - 1; i++) {
-        if (timeTable!.config.timeIntervals[i].from > date.timeOfDay() &&
-            timeTable!.config.timeIntervals[i + 1].to < date.timeOfDay()) {
-          return i + 1;
+        if (!timeTable!.days[todayIndex].lessons[i + 1].isEmpty) {
+          if ((timeTable!.config.timeIntervals[i].to < date.timeOfDay() ||
+                  timeTable!.days[todayIndex].lessons[i].isEmpty) &&
+              timeTable!.config.timeIntervals[i + 1].from > date.timeOfDay()) {
+            return i + 1;
+          }
         }
       }
     }
 
     return -1;
+  }
+
+  int getCurrentLessonIndex() {
+    final today = Duration(
+      milliseconds: DateTime.now().startOfDay().millisecondsSinceEpoch,
+    ).inDays;
+
+    var creationDay = 0;
+
+    if (timeTable != null) {
+      creationDay = Duration(
+            milliseconds: timeTable!.creationDate.startOfDay().millisecondsSinceEpoch,
+          ).inDays -
+          timeTable!.creationDate.weekday +
+          1;
+    }
+
+    final date = ref.read(currentDate);
+    final todayIndex = (today - creationDay) % 14;
+
+    if (timeTable != null) {
+      for (int i = 0; i < timeTable!.config.timeIntervals.length - 1; i++) {
+        if (timeTable!.config.timeIntervals[i].constains(date) && !timeTable!.days[todayIndex].lessons[i].isEmpty) {
+          return i;
+        }
+      }
+    }
+
+    return -1;
+  }
+
+  LessonCardState getStateForIndex(int index, int pageIndex) {
+    if (pageIndex == 366) {
+      if (getNextLessonIndex() == index && getCurrentLessonIndex() == -1) {
+        return LessonCardState.next;
+      } else if (getCurrentLessonIndex() == index) {
+        return LessonCardState.current;
+      }
+    }
+    return LessonCardState.normal;
   }
 
   @override
@@ -113,7 +177,7 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
     );
 
     timeTable = ref.watch(localStorage.select((value) => value.currentTimetable));
-    final _ = ref.watch(currentDate);
+    final time = ref.watch(currentDate);
 
     int creationDay = 0;
     if (timeTable != null) {
@@ -123,6 +187,7 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
           timeTable!.creationDate.weekday +
           1;
     }
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: colors.backgroundPrimary,
@@ -220,6 +285,8 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
                         milliseconds: DateTime.now().startOfDay().millisecondsSinceEpoch,
                       ).inDays;
 
+                      print(today);
+
                       final dayIndex = (today - creationDay + pageIndex - 366) % 14;
                       return ListView(
                         physics: const BouncingScrollPhysics(
@@ -255,11 +322,7 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
                                     index: index + 1,
                                     interval: timeTable!.config.timeIntervals[index],
                                     lesson: timeTable!.days[dayIndex].lessons[index],
-                                    state: pageIndex == 366
-                                        ? (getNextLessonIndex() == index
-                                            ? LessonCardState.next
-                                            : LessonCardState.current)
-                                        : LessonCardState.normal,
+                                    state: getStateForIndex(index, pageIndex),
                                   ),
                                 )
                         ],
@@ -307,8 +370,7 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
         builder: (context) {
           return SearchPage<Timetable>(
             filter: (name) {
-              final repository = ref.read(globalRepositoryStore);
-              return repository.getSearchedTimetables(name);
+              return globalStore.getSearchedTimetables(name);
             },
             itemBuilder: (table) {
               return SearchedTableCard(

@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1009441715837:android:89b3dc568044e9a54ea314",
+        "mobilesdk_app_id": "1:1009441715837:android:74a9ceae8f81b7cb4ea314",
         "android_client_info": {
-          "package_name": "com.example.studrasp_requiem"
+          "package_name": "com.zednull.studrasp"
         }
       },
       "oauth_client": [
@@ -29,6 +29,14 @@
             {
               "client_id": "1009441715837-cgd6dcpruba24h2l1daiidt6h4ol8pk1.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "1009441715837-rkv51ppon1lj8iihjc3f18s73g215cig.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.null.zed.StudRasp",
+                "app_store_id": "1586606473"
+              }
             }
           ]
         }

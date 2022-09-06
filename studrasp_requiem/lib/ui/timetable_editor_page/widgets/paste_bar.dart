@@ -64,7 +64,7 @@ class _PasteBarState extends ConsumerState<PasteBar> {
           padding: const EdgeInsets.symmetric(horizontal: 4),
           child: LessonBody(
             lesson: lesson!,
-            state: LessonCardState.current,
+            state: LessonCardState.normal,
           ),
         ),
       ],

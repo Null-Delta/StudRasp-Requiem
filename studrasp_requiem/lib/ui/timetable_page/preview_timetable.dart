@@ -52,21 +52,82 @@ class _TimetablePreviewState extends ConsumerState<TimetablePreview> {
   }
 
   int getNextLessonIndex() {
-    final date = ref.read(currentDate);
+    final today = Duration(
+      milliseconds: DateTime.now().startOfDay().millisecondsSinceEpoch,
+    ).inDays;
+
+    var creationDay = 0;
 
     if (widget.table != null) {
-      if (widget.table!.config.timeIntervals[0].from > date.timeOfDay()) {
+      creationDay = Duration(
+            milliseconds: widget.table!.creationDate.startOfDay().millisecondsSinceEpoch,
+          ).inDays -
+          widget.table!.creationDate.weekday +
+          1;
+    }
+
+    final date = ref.read(currentDate);
+    final todayIndex = (today - creationDay) % 14;
+
+    if (widget.table != null) {
+      if (widget.table!.config.timeIntervals[0].from > date.timeOfDay() &&
+          !widget.table!.days[todayIndex].lessons[0].isEmpty) {
         return 0;
       }
+
       for (int i = 0; i < widget.table!.config.timeIntervals.length - 1; i++) {
-        if (widget.table!.config.timeIntervals[i].from > date.timeOfDay() &&
-            widget.table!.config.timeIntervals[i + 1].to < date.timeOfDay()) {
-          return i + 1;
+        if (!widget.table!.days[todayIndex].lessons[i + 1].isEmpty) {
+          if ((widget.table!.config.timeIntervals[i].to < date.timeOfDay() ||
+                  widget.table!.days[todayIndex].lessons[i].isEmpty) &&
+              widget.table!.config.timeIntervals[i + 1].from > date.timeOfDay()) {
+            return i + 1;
+          }
         }
       }
     }
 
     return -1;
+  }
+
+  int getCurrentLessonIndex() {
+    final today = Duration(
+      milliseconds: DateTime.now().startOfDay().millisecondsSinceEpoch,
+    ).inDays;
+
+    var creationDay = 0;
+
+    if (widget.table != null) {
+      creationDay = Duration(
+            milliseconds: widget.table!.creationDate.startOfDay().millisecondsSinceEpoch,
+          ).inDays -
+          widget.table!.creationDate.weekday +
+          1;
+    }
+
+    final date = ref.read(currentDate);
+    final todayIndex = (today - creationDay) % 14;
+
+    if (widget.table != null) {
+      for (int i = 0; i < widget.table!.config.timeIntervals.length - 1; i++) {
+        if (widget.table!.config.timeIntervals[i].constains(date) &&
+            !widget.table!.days[todayIndex].lessons[i].isEmpty) {
+          return i;
+        }
+      }
+    }
+
+    return -1;
+  }
+
+  LessonCardState getStateForIndex(int index, int pageIndex) {
+    if (pageIndex == 366) {
+      if (getNextLessonIndex() == index && getCurrentLessonIndex() == -1) {
+        return LessonCardState.next;
+      } else if (getCurrentLessonIndex() == index) {
+        return LessonCardState.current;
+      }
+    }
+    return LessonCardState.normal;
   }
 
   @override
@@ -102,7 +163,7 @@ class _TimetablePreviewState extends ConsumerState<TimetablePreview> {
           1;
     }
 
-    final _ = ref.watch(currentDate);
+    final time = ref.watch(currentDate);
 
     return Scaffold(
       appBar: AppBar(
@@ -123,13 +184,8 @@ class _TimetablePreviewState extends ConsumerState<TimetablePreview> {
               (date) {
                 if (date != null) {
                   var now = Duration(
-                    milliseconds: ref.read(currentDate).millisecondsSinceEpoch,
+                    milliseconds: ref.read(currentDate).startOfDay().millisecondsSinceEpoch,
                   ).inMilliseconds;
-
-                  now -= ref.read(currentDate).hour * 3600 * 1000;
-                  now -= ref.read(currentDate).minute * 60 * 1000;
-                  now -= ref.read(currentDate).second * 1000;
-                  now -= ref.read(currentDate).millisecond;
 
                   final selected = Duration(milliseconds: date.millisecondsSinceEpoch).inDays;
                   ref.read(selectedDuration.notifier).state = Duration(
@@ -178,8 +234,9 @@ class _TimetablePreviewState extends ConsumerState<TimetablePreview> {
                     itemCount: 1000,
                     itemBuilder: (context, pageIndex) {
                       final today = Duration(
-                        milliseconds: DateTime.now().millisecondsSinceEpoch,
+                        milliseconds: DateTime.now().startOfDay().millisecondsSinceEpoch,
                       ).inDays;
+                      print(today);
 
                       final dayIndex = (today - creationDay + pageIndex - 366) % 14;
                       return ListView(
@@ -227,11 +284,7 @@ class _TimetablePreviewState extends ConsumerState<TimetablePreview> {
                                     index: index + 1,
                                     interval: widget.table!.config.timeIntervals[index],
                                     lesson: widget.table!.days[dayIndex].lessons[index],
-                                    state: pageIndex == 366
-                                        ? (getNextLessonIndex() == index
-                                            ? LessonCardState.next
-                                            : LessonCardState.current)
-                                        : LessonCardState.normal,
+                                    state: getStateForIndex(index, pageIndex),
                                   ),
                                 )
                         ],

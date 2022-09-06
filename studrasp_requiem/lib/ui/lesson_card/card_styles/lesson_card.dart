@@ -30,8 +30,6 @@ class LessonCard extends ConsumerStatefulWidget {
 }
 
 class _LessonCardState extends ConsumerState<LessonCard> {
-  bool get isCurrent => widget.interval.constains(DateTime.now());
-
   DateTime time = DateTime.now();
 
   String lessonEndTime() {
@@ -59,7 +57,7 @@ class _LessonCardState extends ConsumerState<LessonCard> {
   }
 
   Color cardBackground(AppColors colors) {
-    if (widget.state == LessonCardState.current && isCurrent) {
+    if (widget.state == LessonCardState.current) {
       return colors.accentPrimary!;
     } else {
       return colors.backgroundPrimary!;
@@ -67,7 +65,7 @@ class _LessonCardState extends ConsumerState<LessonCard> {
   }
 
   Color cardBorder(AppColors colors) {
-    if (widget.state == LessonCardState.current && isCurrent) {
+    if (widget.state == LessonCardState.current) {
       return colors.accentPrimary!;
     } else {
       return colors.separator!;
@@ -101,7 +99,7 @@ class _LessonCardState extends ConsumerState<LessonCard> {
               index: widget.index,
               interval: widget.interval,
               suffix: Text(
-                widget.state == LessonCardState.current && isCurrent
+                widget.state == LessonCardState.current
                     ? "До конца: ${lessonEndTime()}"
                     : widget.state == LessonCardState.next
                         ? "До начала: ${lessonStartTime()}"

@@ -3,7 +3,6 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/timetable/timetable_model.dart';
-import '../providers/current_timetable.dart';
 import '../providers/providers.dart';
 import '../providers/user_auth.dart';
 import '../styles/build_context_extension.dart';
@@ -81,8 +80,9 @@ class _MyAppState extends ConsumerState<MyApp> {
       child: Container(
         clipBehavior: Clip.antiAlias,
         decoration: const BoxDecoration(),
-        constraints: const BoxConstraints(maxWidth: 400),
+        constraints: const BoxConstraints(maxWidth: 500),
         child: MaterialApp.router(
+          debugShowCheckedModeBanner: false,
           routeInformationProvider: _router.routeInformationProvider,
           routerDelegate: _router.routerDelegate,
           routeInformationParser: _router.routeInformationParser,

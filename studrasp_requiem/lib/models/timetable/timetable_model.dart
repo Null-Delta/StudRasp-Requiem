@@ -32,7 +32,7 @@ class Timetable with _$Timetable {
   //нужно получение данного пользователя
   factory Timetable.empty(AppUser user) {
     return Timetable(
-      id: "${user.id}:${DateTime.now().millisecondsSinceEpoch}",
+      id: "${user.id}_${DateTime.now().millisecondsSinceEpoch}",
       name: 'Новое расписание',
       days: [for (int i = 0; i < 14; i++) Day.empty()],
       owner: user,
