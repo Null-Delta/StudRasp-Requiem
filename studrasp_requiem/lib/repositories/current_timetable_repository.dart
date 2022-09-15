@@ -8,7 +8,7 @@ abstract class LocalStorageRepository {
   Future<Timetable?> loadCurrent();
   Future<List<String>> savedTimetables();
 
-  void saveCurrent(Timetable timetable);
+  void saveCurrent(Timetable? timetable);
   void addToSaved(String timetableId);
   void removeFromSaved(String timetableId);
 }
@@ -26,10 +26,14 @@ class CurrentLocalStoragePImpl implements LocalStorageRepository {
   }
 
   @override
-  void saveCurrent(Timetable timetable) {
+  void saveCurrent(Timetable? timetable) {
     SharedPreferences.getInstance().then(
       (value) {
-        value.setString('currentTimeTable', jsonEncode(timetable.toJson()));
+        if (timetable != null) {
+          value.setString('currentTimeTable', jsonEncode(timetable.toJson()));
+        } else {
+          value.remove('currentTimeTable');
+        }
       },
     );
   }

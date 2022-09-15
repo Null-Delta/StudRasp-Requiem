@@ -64,7 +64,7 @@ class _TimetablePageState extends ConsumerState<TimetablePage> {
     });
 
     loadTimeTable().then((value) {
-      ref.read(localStorage.notifier).save(value ?? Timetable.empty(AppUser.empty()));
+      ref.read(localStorage.notifier).save(value);
     });
   }
 

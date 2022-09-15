@@ -21,8 +21,7 @@ class LocalStorageModel {
   }
 }
 
-final localStorage =
-    StateNotifierProvider<LocalStorageNotifier, LocalStorageModel>((ref) {
+final localStorage = StateNotifierProvider<LocalStorageNotifier, LocalStorageModel>((ref) {
   return LocalStorageNotifier(LocalStorageModel(null, []));
 });
 
@@ -39,15 +38,14 @@ class LocalStorageNotifier extends StateNotifier<LocalStorageModel> {
 
   void load() async {
     Timetable? loadedTimetable = await localStorageRepository.loadCurrent();
-    List<String> savedTimetables =
-        await localStorageRepository.savedTimetables();
+    List<String> savedTimetables = await localStorageRepository.savedTimetables();
     state = state.copyWith(
       currentTimetable: loadedTimetable,
       savedTimetables: savedTimetables,
     );
   }
 
-  void save(Timetable timetable) {
+  void save(Timetable? timetable) {
     localStorageRepository.saveCurrent(timetable);
     log(timetable.toString());
     state = state.copyWith(currentTimetable: timetable);
@@ -55,15 +53,13 @@ class LocalStorageNotifier extends StateNotifier<LocalStorageModel> {
 
   void addToSavedTimeTables(String timetableId) {
     localStorageRepository.addToSaved(timetableId);
-    state = state
-        .copyWith(savedTimetables: [...state.savedTimetables, timetableId]);
+    state = state.copyWith(savedTimetables: [...state.savedTimetables, timetableId]);
   }
 
   void removeFromSavedTimeTables(String timetableId) {
     localStorageRepository.removeFromSaved(timetableId);
     state = state.copyWith(
-      savedTimetables:
-          state.savedTimetables.where((id) => id != timetableId).toList(),
+      savedTimetables: state.savedTimetables.where((id) => id != timetableId).toList(),
     );
   }
 }
