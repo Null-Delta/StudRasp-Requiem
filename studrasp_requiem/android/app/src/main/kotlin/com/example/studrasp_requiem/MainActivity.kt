@@ -1,4 +1,4 @@
-package com.example.studrasp_requiem
+package com.zednull.studrasp
 
 import io.flutter.embedding.android.FlutterActivity
 
